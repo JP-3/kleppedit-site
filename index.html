@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="description" content="Klypp LLC builds secure remote-to-home media workflow software, including the Klypp app." />
 
-  <!-- Open Graph (helps establish legitimacy when Apple or others preview the site) -->
+  <!-- Open Graph -->
   <meta property="og:title" content="Klypp LLC – Official Website" />
   <meta property="og:site_name" content="Klypp LLC" />
   <meta property="og:type" content="website" />
@@ -20,7 +20,6 @@
       --muted: #666;
       --card: #ffffff;
       --link: #0a66c2;
-      --ring: rgba(10, 102, 194, 0.15);
       --radius: 14px;
     }
     * { box-sizing: border-box; }
@@ -34,10 +33,11 @@
     .subtitle { color: var(--muted); margin: 0; }
     .grid {
       display: grid; gap: 16px;
-      grid-template-columns: 1fr; 
+      grid-template-columns: 1fr;
     }
     @media (min-width: 880px) {
       .grid { grid-template-columns: 1fr 1fr; }
+      .grid .products { grid-column: 1 / -1; } /* full-width Products card */
     }
     .card {
       background: var(--card);
@@ -63,12 +63,11 @@
       background: #f9fbff; border: 1px solid #e3efff; padding: 12px; border-radius: 10px;
     }
     .brand { font-weight: 600; }
-    .stacked { display: grid; gap: 16px; }
     .callout { border-left: 4px solid var(--link); padding-left: 12px; }
     .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); border: 0; }
   </style>
 
-  <!-- JSON-LD Organization markup to clearly associate site + entity -->
+  <!-- JSON-LD Organization -->
   <script type="application/ld+json">
   {
     "@context":"https://schema.org",
@@ -89,38 +88,33 @@
   <div class="wrap">
     <header>
       <h1>Klypp LLC</h1>
-      <p class="subtitle">Minnesota-registered limited liability company</p>
+      <p class="subtitle">
+        Minnesota-registered limited liability company ·
+        <a href="/support/">Support</a>
+      </p>
     </header>
 
     <div class="grid">
       <section class="card">
         <h2>About</h2>
         <p><span class="brand">Klypp LLC</span> builds secure <em>remote-to-home media workflow</em> software. Our flagship product, <strong>Klypp</strong>, connects your mobile devices to your home media server through a secure relay, enabling private, authenticated transfers and management.</p>
-        <p class="note">This is the official website for Klypp LLC and is publicly available at <span class="kbd">klyppedit.com</span>.</p>
-      </section>
-
-      <section class="card">
-        <h2>Contact</h2>
-        <p>Email: <a href="mailto:support@klyppedit.com">support@klyppedit.com</a></p>
-        <p>Mailing location: Minnesota, United States</p>
-        <!-- Optional phone if you want to add it later:
-        <p>Phone: <a href="tel:+1...">+1 (…)</a></p>
-        -->
-      </section>
-
-      <section class="card">
-        <h2>Products</h2>
-        <p><strong>Klypp</strong> — a secure relay-backed app that moves files from your phone to your home server. Features include client certificates, mutual TLS, and a privacy-first architecture.</p>
-        <ul>
-          <li>Platform: iOS &amp; Android (in development)</li>
-          <li>Server: .NET 8 / Linux &amp; Windows</li>
-        </ul>
       </section>
 
       <section class="card">
         <h2>Privacy</h2>
         <p>We design our products to minimize data collection. Klypp processes transfers end-to-end with authentication and encryption. We do not sell personal data.</p>
-        <p class="callout">For inquiries or requests, email <a href="mailto:privacy@klyppedit.com">privacy@klyppedit.com</a>.</p>
+        <p class="callout">For privacy inquiries, visit <a href="/support/">Support</a>.</p>
+      </section>
+
+      <section class="card products">
+        <h2>Products</h2>
+        <p><strong>Klypp</strong> — a secure relay-backed app that moves files from your phone to your home server.</p>
+        <ul>
+          <li>Platform: iOS &amp; Android (in development)</li>
+          <li>Server: .NET 8 / Linux &amp; Windows</li>
+          <li>Relay: zero-knowledge secure relay with mutual TLS (mTLS); traffic is end-to-end encrypted and never stored in the cloud</li>
+          <li>Deployment: runs on your own hardware/NAS or VPS; no third-party accounts required</li>
+        </ul>
       </section>
     </div>
 
