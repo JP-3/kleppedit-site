@@ -1,10 +1,13 @@
+<!-- index.html -->
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <title>Klypp LLC – Official Website</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="Klypp LLC builds secure remote-to-home media workflow software, including the Klypp app." />
+  <meta name="description"
+    content="Klypp LLC builds secure remote-to-home media workflow software, including the Klypp app." />
 
   <!-- Open Graph -->
   <meta property="og:title" content="Klypp LLC – Official Website" />
@@ -20,54 +23,130 @@
       --muted: #666;
       --card: #ffffff;
       --link: #0a66c2;
+      --ring: rgba(10, 102, 194, .15);
       --radius: 14px;
     }
-    * { box-sizing: border-box; }
+
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
-      margin: 0; padding: 32px 16px; background: var(--bg); color: var(--fg);
+      margin: 0;
+      padding: 32px 16px;
+      background: var(--bg);
+      color: var(--fg);
     }
-    .wrap { max-width: 820px; margin: 0 auto; }
-    header { text-align: center; margin-bottom: 28px; }
-    h1 { margin: 0 0 6px; font-size: 1.9rem; }
-    .subtitle { color: var(--muted); margin: 0; }
+
+    .wrap {
+      max-width: 820px;
+      margin: 0 auto;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 28px;
+    }
+
+    h1 {
+      margin: 0 0 6px;
+      font-size: 1.9rem;
+    }
+
+    .subtitle {
+      color: var(--muted);
+      margin: 0;
+    }
+
+    nav {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      margin: 12px 0 0;
+    }
+
+    nav a {
+      color: var(--link);
+      text-decoration: none;
+    }
+
+    nav a:hover {
+      text-decoration: underline;
+    }
+
     .grid {
-      display: grid; gap: 16px;
+      display: grid;
+      gap: 16px;
       grid-template-columns: 1fr;
     }
+
     @media (min-width: 880px) {
-      .grid { grid-template-columns: 1fr 1fr; }
-      .grid .products { grid-column: 1 / -1; } /* full-width Products card */
+      .grid {
+        grid-template-columns: 1fr 1fr;
+      }
     }
+
     .card {
       background: var(--card);
       border-radius: var(--radius);
-      box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+      box-shadow: 0 2px 10px rgba(0, 0, 0, .06);
       padding: 20px;
       border: 1px solid #eee;
     }
-    h2 { margin-top: 0; font-size: 1.2rem; }
-    p { line-height: 1.6; }
-    ul { margin: 0.6rem 0 0.2rem 1.1rem; }
-    a { color: var(--link); text-decoration: none; }
-    a:hover { text-decoration: underline; }
+
+    h2 {
+      margin-top: 0;
+      font-size: 1.2rem;
+    }
+
+    p {
+      line-height: 1.6;
+    }
+
+    ul {
+      margin: .6rem 0 .2rem 1.1rem;
+    }
+
+    a {
+      color: var(--link);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
     .kbd {
-      display: inline-block; padding: 2px 6px; border-radius: 6px;
-      background: #f0f3f7; border: 1px solid #dfe6ef; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-      font-size: 0.9em;
+      display: inline-block;
+      padding: 2px 6px;
+      border-radius: 6px;
+      background: #f0f3f7;
+      border: 1px solid #dfe6ef;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: .9em;
     }
+
     .footer {
-      text-align: center; color: var(--muted); margin-top: 22px; font-size: 0.95rem;
+      text-align: center;
+      color: var(--muted);
+      margin-top: 22px;
+      font-size: .95rem;
     }
+
     .note {
-      background: #f9fbff; border: 1px solid #e3efff; padding: 12px; border-radius: 10px;
+      background: #f9fbff;
+      border: 1px solid #e3efff;
+      padding: 12px;
+      border-radius: 10px;
     }
-    .brand { font-weight: 600; }
-    .callout { border-left: 4px solid var(--link); padding-left: 12px; }
-    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); border: 0; }
+
+    .brand {
+      font-weight: 600;
+    }
   </style>
 
-  <!-- JSON-LD Organization -->
+  <!-- JSON-LD -->
   <script type="application/ld+json">
   {
     "@context":"https://schema.org",
@@ -76,49 +155,61 @@
     "url":"https://www.klyppedit.com/",
     "email":"support@klyppedit.com",
     "logo":"https://www.klyppedit.com/favicon.ico",
-    "address": {
-      "@type": "PostalAddress",
-      "addressRegion": "Minnesota",
-      "addressCountry": "US"
-    }
+    "address": { "@type":"PostalAddress", "addressRegion":"Minnesota", "addressCountry":"US" }
   }
   </script>
 </head>
+
 <body>
   <div class="wrap">
     <header>
       <h1>Klypp LLC</h1>
-      <p class="subtitle">
-        Minnesota-registered limited liability company ·
-        <a href="/support/">Support</a>
-      </p>
+      <p class="subtitle">Minnesota-registered limited liability company</p>
+      <nav>
+        <a href="support/index.html">Support</a>
+        <a href="privacy/index.html">Privacy</a>
+        <a href="install-linux.html">Install (Linux)</a>
+      </nav>
     </header>
 
     <div class="grid">
       <section class="card">
         <h2>About</h2>
-        <p><span class="brand">Klypp LLC</span> builds secure <em>remote-to-home media workflow</em> software. Our flagship product, <strong>Klypp</strong>, connects your mobile devices to your home media server through a secure relay, enabling private, authenticated transfers and management.</p>
+        <p><span class="brand">Klypp LLC</span> builds secure <em>remote-to-home media workflow</em> software. Our
+          flagship product, <strong>Klypp</strong>, connects your mobile devices to your home media server through a
+          secure relay, enabling private, authenticated transfers and management.</p>
+        <p class="note">This is the official website for Klypp LLC, publicly available at <span
+            class="kbd">klyppedit.com</span>.</p>
+      </section>
+
+      <section class="card">
+        <h2>Contact</h2>
+        <p>Email: <a href="mailto:support@klyppedit.com">support@klyppedit.com</a></p>
+        <p>Mailing location: Minnesota, United States</p>
+      </section>
+
+      <section class="card">
+        <h2>Products</h2>
+        <p><strong>Klypp</strong> — a secure relay-backed app that moves files from your phone to your self-hosted media
+          server. Features include certificate-based auth and end-to-end encrypted transport.</p>
+        <ul>
+          <li>Platform: iOS &amp; Android (in development)</li>
+          <li>Server: .NET 8 / Linux &amp; Windows</li>
+          <li><a href="/install-linux.html">KlyppServer – Linux Install Guide</a></li>
+        </ul>
       </section>
 
       <section class="card">
         <h2>Privacy</h2>
-        <p>We design our products to minimize data collection. Klypp processes transfers end-to-end with authentication and encryption. We do not sell personal data.</p>
-        <p class="callout">For privacy inquiries, visit <a href="/support/">Support</a>.</p>
-      </section>
-
-      <section class="card products">
-        <h2>Products</h2>
-        <p><strong>Klypp</strong> — a secure relay-backed app that moves files from your phone to your home server.</p>
-        <ul>
-          <li>Platform: iOS &amp; Android (in development)</li>
-          <li>Server: .NET 8 / Linux &amp; Windows</li>
-          <li>Relay: zero-knowledge secure relay with mutual TLS (mTLS); traffic is end-to-end encrypted and never stored in the cloud</li>
-          <li>Deployment: runs on your own hardware/NAS or VPS; no third-party accounts required</li>
-        </ul>
+        <p>We design our products to minimize data collection. Klypp processes transfers with authentication and
+          encryption. We do not sell personal data.</p>
+        <p><a href="/privacy.html">Read our Privacy Policy</a></p>
       </section>
     </div>
 
-    <p class="footer">© 2025 Klypp LLC · <a href="https://www.klyppedit.com/">www.klyppedit.com</a></p>
+    <p class="footer">© 2025 Klypp LLC · <a href="/">www.klyppedit.com</a> · <a href="/support.html">Support</a> · <a
+        href="/privacy.html">Privacy</a></p>
   </div>
 </body>
+
 </html>
