@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Klypp LLC – Server Setup Guide</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Configure Klypp server destinations (Movies/TV/Kids), optional 4K splits, and TV multi-drive priority behavior." />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Klypp – Server Setup Guide" />
+  <meta property="og:site_name" content="Klypp LLC" />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://www.klyppedit.com/Setup/" />
+  <meta property="og:description" content="Configure Movies/TV/Kids destinations with optional 4K and understand TV drive priorities." />
+
+  <style>
+    :root{
+      --bg:#f7f7f8;
+      --fg:#262626;
+      --muted:#666;
+      --card:#ffffff;
+      --link:#0a66c2;
+      --ring:rgba(10,102,194,.15);
+      --radius:14px;
+      --border:#eee;
+      --shadow:0 2px 10px rgba(0,0,0,.06);
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+      margin:0;
+      padding:32px 16px;
+      background:var(--bg);
+      color:var(--fg);
+    }
+    .wrap{max-width:820px;margin:0 auto}
+    header{text-align:center;margin-bottom:20px}
+    h1{margin:0 0 6px;font-size:1.9rem}
+    .subtitle{color:var(--muted);margin:0}
+
+    /* Top site nav */
+    .topnav{
+      display:flex;gap:12px;justify-content:center;margin:12px 0 0;
+    }
+    .topnav a{color:var(--link);text-decoration:none}
+    .topnav a:hover{text-decoration:underline}
+
+    /* In-page subnav */
+    .subnav{
+      display:flex;gap:12px;justify-content:center;flex-wrap:wrap;
+      margin:16px auto 18px;padding:8px 10px;max-width:820px;
+      background:#f9fbff;border:1px solid #e3efff;border-radius:12px;
+    }
+    .subnav a{
+      text-decoration:none;color:var(--link);
+      padding:6px 10px;border-radius:999px;border:1px solid transparent;
+    }
+    .subnav a:hover{background:#eef6ff;border-color:#d5e9ff}
+    .subnav a.is-active{background:#e8f2ff;border-color:#cfe5ff}
+
+    .card{
+      background:var(--card);border-radius:var(--radius);
+      box-shadow:var(--shadow);padding:20px;border:1px solid var(--border);
+      margin-bottom:16px;
+    }
+    h2{margin-top:0;font-size:1.2rem}
+    h3{margin:1.1rem 0 .4rem;font-size:1.05rem}
+    p{line-height:1.6}
+    ul{margin:.6rem 0 .2rem 1.1rem}
+    a{color:var(--link);text-decoration:none}
+    a:hover{text-decoration:underline}
+    .kbd{
+      display:inline-block;padding:2px 6px;border-radius:6px;
+      background:#f0f3f7;border:1px solid #dfe6ef;
+      font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+      font-size:.9em;
+    }
+    .note{
+      background:#f9fbff;border:1px solid #e3efff;
+      padding:12px;border-radius:10px;
+    }
+    .footer{text-align:center;color:var(--muted);margin-top:22px;font-size:.95rem}
+
+    .grid{display:grid;gap:16px;grid-template-columns:1fr}
+    @media (min-width:880px){.grid{grid-template-columns:1fr 1fr}}
+
+    .muted{color:var(--muted)}
+    .list-tight li{margin:.25rem 0}
+
+    /* Section highlight when targeted */
+    section:target{outline:2px solid #cfe5ff; box-shadow:0 0 0 6px var(--ring)}
+
+    /* Gallery for mobile screenshots */
+    .gallery{
+      display:grid;
+      gap:12px;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      align-items:start;
+    }
+    .gallery figure{
+      margin:0;
+      background:#fff;
+      border:1px solid #e6e6e6;
+      border-radius:12px;
+      overflow:hidden;
+      box-shadow:0 2px 10px rgba(0,0,0,.06);
+    }
+    .gallery img{display:block;width:100%;height:auto}
+    .gallery figcaption{padding:8px 10px;color:#666;font-size:.9rem}
+
+    /* Basic section spacing tweaks */
+    #basic p.muted { margin: 8px 0; }
+    #basic .list-tight { margin: 4px 0 6px 1.1rem; }
+    #basic figure { margin: 8px 0 10px !important; }
+    #basic .gallery { margin-top: 10px; }
+  </style>
+
+  <!-- JSON-LD -->
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"TechArticle",
+    "headline":"Klypp – Server Setup Guide",
+    "about":["Movies","Television","Kids","4K","Folder routing","NAS priority"],
+    "author":{"@type":"Organization","name":"Klypp LLC"},
+    "publisher":{"@type":"Organization","name":"Klypp LLC"},
+    "inLanguage":"en-US",
+    "url":"https://www.klyppedit.com/Setup/"
+  }
+  </script>
+
+  <script>
+    // Simple active-state for subnav based on hash
+    window.addEventListener('DOMContentLoaded', () => {
+      const links = document.querySelectorAll('.subnav a');
+      const setActive = () => {
+        const hash = location.hash || '#basic'; // default to Basic on first load
+        links.forEach(a => {
+          const on = a.getAttribute('href') === hash;
+          a.classList.toggle('is-active', on);
+          a.setAttribute('aria-current', on ? 'page' : 'false');
+        });
+      };
+      window.addEventListener('hashchange', setActive);
+      setActive();
+    });
+  </script>
+</head>
+
+<body>
+  <div class="wrap">
+    <header>
+      <h1>Server Setup Guide</h1>
+      <p class="subtitle">Configure Movies/TV/Kids destinations, optional 4K splits, and TV multi-drive priority.</p>
+      <nav class="topnav">
+        <a href="../index.html">Home</a>
+        <a href="../support/index.html">Support</a>
+        <a href="../privacy/index.html">Privacy</a>
+      </nav>
+    </header>
+
+    <!-- In-page sub-navigation -->
+    <nav class="subnav">
+      <a href="#basic">Basic Setup</a>
+      <a href="#advanced">Advanced</a>
+    </nav>
+
+    <!-- BASIC -->
+    <section id="basic" class="card">
+      <h2>Basic Setup</h2>
+
+      <figure class="card" style="padding:0;margin:12px 0 16px">
+        <img src="../screenshots/ServerDrives.png" alt="Server Drives configuration example"
+          style="display:block;max-width:100%;height:auto;border-radius:12px;border:1px solid #e6e6e6" />
+        <figcaption style="padding:8px 12px;color:#666;font-size:.95rem">
+          Example drives/folders mapped for Klypp Server
+        </figcaption>
+      </figure>
+
+      <p class="muted"><strong>Recommended flow:</strong> <span class="kbd">MobileSaveLocation</span> → <span class="kbd">Incomplete</span> → <span class="kbd">Finished</span></p>
+
+      <ul class="list-tight">
+        <li><strong>MobileSaveLocation</strong> — where the mobile app uploads land (e.g., <code>/Users/you/Downloads</code>)</li>
+        <li><strong>Incomplete</strong> — where your Torrent client/DVD ripper app writes while it's in progress (e.g., <code>/Users/Qbit/Incomplete</code>)</li>
+        <li><strong>Finished</strong> — completed files; Klypp watches here and classifies each item (e.g., <code>/Users/Qbit/Finished</code>)</li>
+      </ul>
+
+      <p class="muted"><strong>Destination folders:</strong> one folder per media type.</p>
+      <ul class="list-tight">
+        <li>Movies (4K OFF) → <code>//Nas1/Movies</code></li>
+        <li>Television (4K OFF) → <code>//Nas1/TV</code></li>
+        <li>Music → <code>//Nas1/Music</code></li>
+      </ul>
+
+      <p class="muted">After you map these folders, Klypp Server will monitor <em>Finished</em> and move files into your library automatically.</p>
+
+      <p class="muted"><em>On Linux or macOS, you may need to adjust permissions. The service runs under the <code>klypp</code> user to keep access isolated from your personal account.</em></p>
+
+      <figure class="card" style="padding:0;margin:12px 0 16px">
+        <img src="../screenshots/ServerLogs.png" alt="Server log output while scanning"
+          style="display:block;max-width:100%;height:auto;border-radius:12px;border:1px solid #e6e6e6" />
+        <figcaption style="padding:8px 12px;color:#666;font-size:.95rem">
+          Live logs confirm path access is correct
+        </figcaption>
+      </figure>
+
+      <p class="muted">If you already have TV shows, you can scan existing folders to populate the mobile app — or start fresh with a new folder just for Klypp.</p>
+
+      <figure class="card" style="padding:0;margin:12px 0 16px">
+        <img src="../screenshots/TVFolders.png" alt="Example TV folder mapping"
+          style="display:block;max-width:100%;height:auto;border-radius:12px;border:1px solid #e6e6e6" />
+        <figcaption style="padding:8px 12px;color:#666;font-size:.95rem">
+          Example TV folder structure for scanning
+        </figcaption>
+      </figure>
+
+      <p class="muted">After a scan or a new upload, the mobile app will show your media.</p>
+
+      <div class="gallery" aria-label="Mobile app screenshots">
+        <figure>
+          <img src="../screenshots/UpcomingMedia.png" alt="Upcoming Media screen" />
+          <figcaption>Upcoming Media</figcaption>
+        </figure>
+        <figure>
+          <img src="../screenshots/MissingTVEpsiodes.png" alt="Missing TV Episodes screen" />
+          <figcaption>Missing TV Episodes</figcaption>
+        </figure>
+        <figure>
+          <img src="../screenshots/RecentlyAddedMedia.png" alt="Recently Added Media screen" />
+          <figcaption>Recently Added</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- ADVANCED -->
+    <section id="advanced" class="card">
+      <h2>How it Works (Simple, UI-Based)</h2>
+      <p>The app routes each title based on two things:</p>
+      <ol>
+        <li><strong>Type</strong> you can configure: <em>Movies, KidsMovies, Television, KidsTelevision</em></li>
+        <li>Whether that destination’s <strong>4K checkbox</strong> is ON (<em>4K path</em>) or OFF (<em>non-4K path</em>)</li>
+      </ol>
+      <p class="note">
+        There are no special names like “Kids4kMovies.” You simply enable a destination and choose if it’s for 4K or not.
+        You can enable both a non-4K and a 4K path for the same type.
+      </p>
+    </section>
+
+    <div class="grid">
+      <section class="card">
+        <h2>Common Movie Setups</h2>
+
+        <h3>1) One folder (catch-all)</h3>
+        <ul class="list-tight">
+          <li>Configure: <strong>Movies</strong> (4K OFF) → <code>C:\Movies\</code></li>
+          <li><strong>Result:</strong> non-4K, 4K, and kids movies all land under <code>C:\Movies\</code>.</li>
+        </ul>
+
+        <h3>2) 4K / non-4K split</h3>
+        <ul class="list-tight">
+          <li>Configure: <strong>Movies</strong> (4K OFF) → <code>C:\Movies\</code></li>
+          <li>Configure: <strong>Movies</strong> (4K ON) → <code>C:\4kMovies\</code></li>
+          <li><strong>Result:</strong> 4K → <code>C:\4kMovies\</code>; everything else (incl. kids) → <code>C:\Movies\</code>.</li>
+        </ul>
+
+        <h3>3) Separate kids (optional)</h3>
+        <ul class="list-tight">
+          <li>Add <strong>KidsMovies</strong> (4K OFF) → kids go there; non-kids follow the Movie flow above.</li>
+          <li>(Optional) Add <strong>KidsMovies</strong> (4K ON) if you also want kids-4K split.</li>
+        </ul>
+      </section>
+
+      <section class="card">
+        <h2>TV Setups (Practical Examples)</h2>
+
+        <h3>1) One folder (catch-all)</h3>
+        <ul class="list-tight">
+          <li>Configure: <strong>Television</strong> (4K OFF) → <code>C:\TV\</code></li>
+          <li><strong>Result:</strong> kids + non-kids + 4K all land under <code>C:\TV\</code>.</li>
+        </ul>
+
+        <h3>2) 4K / non-4K split</h3>
+        <ul class="list-tight">
+          <li>Configure: <strong>Television</strong> (4K OFF) → <code>C:\TV\</code></li>
+          <li>Configure: <strong>Television</strong> (4K ON) → <code>C:\UHDTV\</code></li>
+          <li><strong>Result:</strong> 4K → <code>C:\UHDTV\</code>; everything else (incl. kids) → <code>C:\TV\</code>.</li>
+        </ul>
+
+        <h3>3) Separate kids (non-4K)</h3>
+        <ul class="list-tight">
+          <li>Configure: <strong>KidsTelevision</strong> (4K OFF) → <code>C:\KidsTV\</code></li>
+          <li>Configure: <strong>Television</strong> (4K OFF) → <code>C:\TV\</code></li>
+          <li>(Optional) <strong>Television</strong> (4K ON) → <code>C:\UHDTV\</code></li>
+          <li><strong>Result:</strong> kids (non-4K) → <code>C:\KidsTV\</code>; non-kids follow the TV/UHD flow.</li>
+        </ul>
+
+        <h3>4) Separate kids + 4K split</h3>
+        <ul class="list-tight">
+          <li>Configure: <strong>KidsTelevision</strong> (4K OFF) → <code>C:\KidsTV\</code></li>
+          <li>Configure: <strong>KidsTelevision</strong> (4K ON) → <code>C:\KidsUHDTV\</code></li>
+          <li>Configure: <strong>Television</strong> (4K OFF) → <code>C:\TV\</code></li>
+          <li>Configure: <strong>Television</strong> (4K ON) → <code>C:\UHDTV\</code></li>
+          <li><strong>Result:</strong>
+            <ul>
+              <li>Kids 4K → <code>C:\KidsUHDTV\</code></li>
+              <li>Kids non-4K → <code>C:\KidsTV\</code></li>
+              <li>Non-kids 4K → <code>C:\UHDTV\</code></li>
+              <li>Non-kids non-4K → <code>C:\TV\</code></li>
+            </ul>
+          </li>
+        </ul>
+
+        <h3>5) Kids-only (no catch-all)</h3>
+        <ul class="list-tight">
+          <li>Configure: <strong>KidsTelevision</strong> (4K OFF) → <code>C:\KidsTV\</code></li>
+          <li><strong>Result:</strong> kids route; non-kids are skipped with a message.</li>
+        </ul>
+
+        <h3>6) 4K-only (no non-4K)</h3>
+        <ul class="list-tight">
+          <li>Configure: <strong>Television</strong> (4K ON) → <code>C:\UHDTV\</code></li>
+          <li><strong>Result:</strong> 4K routes; non-4K are skipped with a message.</li>
+        </ul>
+      </section>
+    </div>
+
+    <section class="card">
+      <h2>TV: Multiple Drives &amp; Priority (Exact Behavior)</h2>
+      <p>Each TV destination can have several paths, each with a <strong>Priority</strong> number.
+        The app checks them <em>in order</em>: <strong>1 → 2 → 3 → … → N</strong>.</p>
+      <ul>
+        <li><strong>Colocate if found:</strong> As it scans from <em>1</em> upward, if it finds the show folder on any drive, it uses that same drive for the new season/episode (keeps the show intact).</li>
+        <li><strong>New shows land on the last drive:</strong> If the scan reaches the end (<em>N</em>) without finding the show, the app creates the show on drive <em>N</em> (the last/lowest-priority drive).</li>
+        <li><strong>Why this matters:</strong> You can add new drives (higher numbers) while older lower-number drives fill up. Existing shows keep writing where they already live, and new shows naturally start on the newest “last” drive.</li>
+        <li><strong>If you remove a drive from the copy list:</strong> The app will write to whatever remains in the 1→N sequence. Doing this mid-series can split a show across drives, so prefer leaving older drives mounted and adding new ones with higher numbers. If you plan to retire a drive, wait until all shows on it have finished airing (or relocate them intentionally) before removing it.</li>
+      </ul>
+      <p><strong>In short:</strong> Scan priorities <span class="kbd">1..N</span> → if show exists at <span class="kbd">k</span>, write to <span class="kbd">k</span>; if not found anywhere, create on <span class="kbd">N</span>.</p>
+    </section>
+
+    <p class="footer">© 2025 Klypp LLC · <a href="../index.html">Home</a> · <a href="../support/index.html">Support</a> · <a href="../privacy/index.html">Privacy</a></p>
+  </div>
+</body>
+</html>
