@@ -135,7 +135,7 @@
     window.addEventListener('DOMContentLoaded', () => {
       const links = document.querySelectorAll('.subnav a');
       const setActive = () => {
-        const hash = location.hash || '#basic'; // default to Basic on first load
+        const hash = location.hash || '#definitions'; // default to Definitions on first load
         links.forEach(a => {
           const on = a.getAttribute('href') === hash;
           a.classList.toggle('is-active', on);
@@ -162,14 +162,41 @@
 
     <!-- In-page sub-navigation -->
     <nav class="subnav">
+      <a href="#definitions">Definitions</a>
       <a href="#basic">Basic Setup</a>
       <a href="#advanced">Advanced</a>
     </nav>
+
+    <!-- DEFINITIONS -->
+    <section id="definitions" class="card">
+      <h2>Definitions of Media Locations</h2>
+
+      <p class="muted">There are two types of drive locations that should be setup: pre-processing and post-processing locations.</p>
+
+      <p class="muted"><strong>Pre-processing locations</strong> are folders that Klypp uses before it processes the files that it finds.</p>
+      <p class="muted"><strong>Recommended flow:</strong> <span class="kbd">FileSaveLocation</span> → <span class="kbd">IncompletePath</span> → <span class="kbd">FinishedPath</span></p>
+      <ul class="list-tight">
+        <li><strong>FileSaveLocation</strong> - When a file is uploaded from your mobile device, Klypp will save it into this location.</li>
+        <li><strong>IncompletePath</strong> - While a torrent application is downloading a file or folder, it typically saves the partial download in a specific location on your hard drive. Set the IncompletePath to the partial download location so that Klypp can monitor the download progress.</li>
+        <li><strong>WatchedPath</strong> - When a torrent application has finished downloading a file or folder, it typically moves the full download into a final destination. Set the WatchedPath to the final destination so that Klypp knows when it should start processing the file(s).</li>
+      </ul>
+
+      <p class="muted"><strong>Destination locations:</strong> destinations for the files and folders after Klypp has processed them.</p>
+      <ul class="list-tight">
+        <li><strong>Music</strong> - All music is copied to this location. The 4K box is ignored for music.</li>
+        <li><strong>TV</strong>/<strong>TV4K</strong> - TV episodes are copied to this location.</li>
+        <li><strong>Movie</strong>/<strong>Movie4K</strong> - Movies are copied to this location.</li>
+        <li><strong>KidsTV</strong>/<strong>KidsTV4K</strong> - This location, if it is setup, overrides other TV locations for TV shows that are for younger audiences.</li>
+        <li><strong>KidsMovie</strong>/<strong>KidsMovie4K</strong> - This location, if it is setup, overrides other Movie locations for movies that are for younger audiences.</li>
+        <li><strong>4K</strong> - Video content (movies and TV episodes) can be separated by whether not the downloaded media is 4K. See the advanced setup guide for examples.</li>
+      </ul>
+    </section>
 
     <!-- BASIC -->
     <section id="basic" class="card">
       <h2>Basic Setup</h2>
 
+      <p class="muted">For the most basic setup, add locations for <em>Music</em>, <em>TV</em>, and <em>Movies</em> (all with the 4K box unchecked). With this setup, Klypp will move all movies into the <em>Movies</em> location, all TV episodes into the <em>TV</em> location, and all music into the <em>Music</em> location.</p>
       <figure class="card" style="padding:0;margin:12px 0 16px">
         <img src="../screenshots/ServerDrives.png" alt="Server Drives configuration example"
           style="display:block;max-width:100%;height:auto;border-radius:12px;border:1px solid #e6e6e6" />
@@ -178,24 +205,12 @@
         </figcaption>
       </figure>
 
-      <p class="muted"><strong>Recommended flow:</strong> <span class="kbd">MobileSaveLocation</span> → <span class="kbd">Incomplete</span> → <span class="kbd">Finished</span></p>
+      
 
-      <ul class="list-tight">
-        <li><strong>MobileSaveLocation</strong> — where the mobile app uploads land (e.g., <code>/Users/you/Downloads</code>)</li>
-        <li><strong>Incomplete</strong> — where your Torrent client/DVD ripper app writes while it's in progress (e.g., <code>/Users/Qbit/Incomplete</code>)</li>
-        <li><strong>Finished</strong> — completed files; Klypp watches here and classifies each item (e.g., <code>/Users/Qbit/Finished</code>)</li>
-      </ul>
+      
+      <p class="muted">After you map these folders, Klypp Server will monitor <em>WatchedPath</em> and move files into your library automatically.</p>
 
-      <p class="muted"><strong>Destination folders:</strong> one folder per media type.</p>
-      <ul class="list-tight">
-        <li>Movies (4K OFF) → <code>//Nas1/Movies</code></li>
-        <li>Television (4K OFF) → <code>//Nas1/TV</code></li>
-        <li>Music → <code>//Nas1/Music</code></li>
-      </ul>
-
-      <p class="muted">After you map these folders, Klypp Server will monitor <em>Finished</em> and move files into your library automatically.</p>
-
-      <p class="muted"><em>On Linux or macOS, you may need to adjust permissions. The service runs under the <code>klypp</code> user to keep access isolated from your personal account.</em></p>
+      <p class="muted"><em>On Linux or MacOS, you may need to adjust permissions. The service runs under the <code>klypp</code> user to keep access isolated from your personal account.</em></p>
 
       <figure class="card" style="padding:0;margin:12px 0 16px">
         <img src="../screenshots/ServerLogs.png" alt="Server log output while scanning"
@@ -236,11 +251,17 @@
     <!-- ADVANCED -->
     <section id="advanced" class="card">
       <h2>How it Works (Simple, UI-Based)</h2>
-      <p>The app routes each title based on two things:</p>
+      <p class="muted">The basic setup can be extended into a more granular version by adding KidsTV and KidsMovies to the mix. Klypp uses metadata from The Movie Database (TMDB) to determine which movies and shows are for kids, and puts them into their own locations.</p>
+      <p class="muted">To get even more advanced, you can check the 4K box for any of the movie and TV locations. When using the 4K box, it's recommended to also have a location with the 4K box unchecked (ie, one Movies location for non-4K content, and one for 4K content).</p>
+      <p class="muted">And finally, for the most advanced setup, you can split your locations across multiple storage devices. For example, if you have 2 Network Attached Storage (NAS) devices, you can tell Klypp to prioritize one over the other for each location.
+        Klypp is smart enough to detect if you already have a TV show on one of the devices, and it will keep putting new episodes for that show on that device, regardless of the priority order.</p>
+      <br />
+      <p class="muted">To summarize: Klypp routes each media title based on two things:</p>
       <ol>
         <li><strong>Type</strong> you can configure: <em>Movies, KidsMovies, Television, KidsTelevision</em></li>
-        <li>Whether that destination’s <strong>4K checkbox</strong> is ON (<em>4K path</em>) or OFF (<em>non-4K path</em>)</li>
+        <li>Whether that location’s <strong>4K checkbox</strong> is ON (<em>4K path</em>) or OFF (<em>non-4K path</em>)</li>
       </ol>
+
       <p class="note">
         There are no special names like “Kids4kMovies.” You simply enable a destination and choose if it’s for 4K or not.
         You can enable both a non-4K and a 4K path for the same type.
