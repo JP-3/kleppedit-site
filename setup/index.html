@@ -174,11 +174,11 @@
       <p class="muted">There are two types of drive locations that should be setup: pre-processing and post-processing locations.</p>
 
       <p class="muted"><strong>Pre-processing locations</strong> are folders that Klypp uses before it processes the files that it finds.</p>
-      <p class="muted"><strong>Recommended flow:</strong> <span class="kbd">FileSaveLocation</span> → <span class="kbd">IncompletePath</span> → <span class="kbd">FinishedPath</span></p>
+      <p class="muted"><strong>Recommended flow:</strong> <span class="kbd">FileSaveLocation</span> → <span class="kbd">IncompletePath</span> → <span class="kbd">CompletedPath</span></p>
       <ul class="list-tight">
         <li><strong>FileSaveLocation</strong> - When a file is uploaded from your mobile device, Klypp will save it into this location.</li>
-        <li><strong>IncompletePath</strong> - While a torrent application is downloading a file or folder, it typically saves the partial download in a specific location on your hard drive. Set the IncompletePath to the partial download location so that Klypp can monitor the download progress.</li>
-        <li><strong>WatchedPath</strong> - When a torrent application has finished downloading a file or folder, it typically moves the full download into a final destination. Set the WatchedPath to the final destination so that Klypp knows when it should start processing the file(s).</li>
+        <li><strong>IncompletePath</strong> - A staging folder for in-progress transfers. Point this to where partially written files live so Klypp can wait until they finish.</li>
+        <li><strong>CompletedPath</strong> - A ready-to-process folder. Once files are complete, place them here so Klypp knows when to start organizing them.</li>
       </ul>
 
       <p class="muted"><strong>Destination locations:</strong> destinations for the files and folders after Klypp has processed them.</p>
@@ -188,7 +188,7 @@
         <li><strong>Movie</strong>/<strong>Movie4K</strong> - Movies are copied to this location.</li>
         <li><strong>KidsTV</strong>/<strong>KidsTV4K</strong> - This location, if it is setup, overrides other TV locations for TV shows that are for younger audiences.</li>
         <li><strong>KidsMovie</strong>/<strong>KidsMovie4K</strong> - This location, if it is setup, overrides other Movie locations for movies that are for younger audiences.</li>
-        <li><strong>4K</strong> - Video content (movies and TV episodes) can be separated by whether not the downloaded media is 4K. See the advanced setup guide for examples.</li>
+        <li><strong>4K</strong> - Video content (movies and TV episodes) can be separated by whether or not the transferred media is 4K. See the advanced setup guide for examples.</li>
       </ul>
     </section>
 
@@ -208,7 +208,7 @@
       
 
       
-      <p class="muted">After you map these folders, Klypp Server will monitor <em>WatchedPath</em> and move files into your library automatically.</p>
+      <p class="muted">After you map these folders, Klypp Server will monitor <em>CompletedPath</em> and move files into your library automatically.</p>
 
       <p class="muted"><em>On Linux or MacOS, you may need to adjust permissions. The service runs under the <code>klypp</code> user to keep access isolated from your personal account.</em></p>
 
