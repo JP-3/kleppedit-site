@@ -14,70 +14,228 @@
   <meta property="og:description" content="Configure Movies/TV/Kids destinations with optional 4K and understand TV drive priorities." />
 
   <style>
+    @import url("https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap");
+
     :root{
-      --bg:#f7f7f8;
-      --fg:#262626;
-      --muted:#666;
-      --card:#ffffff;
-      --link:#0a66c2;
-      --ring:rgba(10,102,194,.15);
-      --radius:14px;
-      --border:#eee;
-      --shadow:0 2px 10px rgba(0,0,0,.06);
+      --bg:#0b0f17;
+      --fg:#e6edf7;
+      --muted:#9aa7bb;
+      --card:rgba(17, 23, 36, .72);
+      --link:#7fb2ff;
+      --accent:#3a7bff;
+      --accent-2:#36d1dc;
+      --ring:rgba(63,135,255,.28);
+      --radius:20px;
+      --border:rgba(141, 162, 196, .18);
+      --shadow:0 28px 80px rgba(0, 0, 0, .45);
+      --shadow-soft:0 14px 30px rgba(0, 0, 0, .28);
     }
     *{box-sizing:border-box}
     html{scroll-behavior:smooth}
     body{
-      font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+      font-family:"IBM Plex Sans","Segoe UI",Tahoma,sans-serif;
       margin:0;
-      padding:32px 16px;
-      background:var(--bg);
+      padding:34px 16px 54px;
+      background:
+        radial-gradient(900px 520px at 5% -10%, rgba(58,123,255,.22) 0%, rgba(58,123,255,0) 60%),
+        radial-gradient(1000px 520px at 110% 0%, rgba(54,209,220,.18) 0%, rgba(54,209,220,0) 60%),
+        radial-gradient(1000px 700px at 50% 120%, rgba(20,27,45,.9) 0%, rgba(11,15,23,0) 60%),
+        linear-gradient(180deg, #0b0f17 0%, #0c111b 100%);
       color:var(--fg);
     }
-    .wrap{max-width:820px;margin:0 auto}
-    header{text-align:center;margin-bottom:20px}
-    h1{margin:0 0 6px;font-size:1.9rem}
+    body::before{
+      content:"";
+      position:fixed;
+      inset:0;
+      background:
+        radial-gradient(circle at 20% 20%, rgba(255,255,255,.05), transparent 45%),
+        radial-gradient(circle at 80% 10%, rgba(255,255,255,.05), transparent 45%),
+        linear-gradient(90deg, rgba(255,255,255,.04) 1px, transparent 1px) 0 0/48px 48px,
+        linear-gradient(0deg, rgba(255,255,255,.03) 1px, transparent 1px) 0 0/48px 48px;
+      pointer-events:none;
+      z-index:-1;
+    }
+    .wrap{max-width:1040px;margin:0 auto}
+    header.hero{
+      text-align:center;
+      margin-bottom:22px;
+      background:linear-gradient(135deg, rgba(58,123,255,.18), rgba(54,209,220,.16));
+      border:1px solid rgba(122, 150, 200, .25);
+      border-radius:26px;
+      padding:24px 20px 18px;
+      box-shadow:var(--shadow-soft);
+      position:relative;
+      overflow:hidden;
+      backdrop-filter:blur(8px);
+      min-height:220px;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+    }
+    header.hero::after{
+      content:"";
+      position:absolute;
+      width:280px;height:280px;
+      right:-120px;top:-140px;
+      background:radial-gradient(circle at 30% 30%, rgba(255,255,255,.45), rgba(255,255,255,0));
+      pointer-events:none;
+    }
+    h1{
+      margin:0 0 6px;
+      font-family:"Sora","Trebuchet MS",sans-serif;
+      font-size:2.25rem;
+      letter-spacing:.2px;
+    }
     .subtitle{color:var(--muted);margin:0}
+    .eyebrow{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:6px 12px;
+      border-radius:999px;
+      background:rgba(10,16,28,.7);
+      border:1px solid rgba(141, 162, 196, .28);
+      color:#d6e2f5;
+      font-weight:600;
+      font-size:.82rem;
+      margin-bottom:10px;
+      text-transform:uppercase;
+      letter-spacing:.6px;
+    }
 
     /* Top site nav */
     .topnav{
-      display:flex;gap:12px;justify-content:center;margin:12px 0 0;
+      display:flex;
+      gap:10px;
+      justify-content:center;
+      margin:14px 0 0;
+      flex-wrap:wrap;
     }
-    .topnav a{color:var(--link);text-decoration:none}
-    .topnav a:hover{text-decoration:underline}
+    .topnav a{
+      color:var(--accent);
+      text-decoration:none;
+      padding:6px 12px;
+      border-radius:999px;
+      border:1px solid rgba(122, 150, 200, .28);
+      background:rgba(9, 14, 24, .7);
+      font-weight:600;
+      font-size:.92rem;
+    }
+    .topnav a:hover{
+      background:rgba(14, 22, 36, .85);
+      border-color:rgba(140, 170, 220, .45);
+    }
+
+    .topnav a.is-active{
+      background:linear-gradient(135deg, rgba(58,123,255,.35), rgba(54,209,220,.25));
+      border-color:rgba(123, 158, 220, .65);
+      color:#e8f1ff;
+      cursor:default;
+    }
 
     /* In-page subnav */
     .subnav{
-      display:flex;gap:12px;justify-content:center;flex-wrap:wrap;
-      margin:16px auto 18px;padding:8px 10px;max-width:820px;
-      background:#f9fbff;border:1px solid #e3efff;border-radius:12px;
+      display:flex;gap:10px;justify-content:center;flex-wrap:wrap;
+      margin:16px auto 20px;padding:10px 12px;max-width:920px;
+      background:rgba(12, 18, 30, .7);
+      border:1px solid rgba(141, 162, 196, .18);
+      border-radius:16px;
+      box-shadow:var(--shadow-soft);
     }
     .subnav a{
       text-decoration:none;color:var(--link);
-      padding:6px 10px;border-radius:999px;border:1px solid transparent;
+      padding:7px 12px;border-radius:999px;border:1px solid transparent;
+      font-weight:600;font-size:.93rem;
     }
-    .subnav a:hover{background:#eef6ff;border-color:#d5e9ff}
-    .subnav a.is-active{background:#e8f2ff;border-color:#cfe5ff}
+    .subnav a:hover{background:#eef4ff;border-color:#d6e2ff}
+    .subnav a.is-active{
+      background:linear-gradient(135deg, rgba(58,123,255,.35) 0%, rgba(54,209,220,.25) 100%);
+      border-color:rgba(123, 158, 220, .65);
+      color:#e8f1ff;
+    }
+
+    .layout{
+      display:grid;
+      gap:18px;
+      grid-template-columns:1fr;
+      align-items:start;
+    }
+    .rail{
+      position:relative;
+    }
+    .rail .subnav{
+      margin:0;
+      justify-content:flex-start;
+      padding:14px;
+      border-radius:16px;
+    }
+    .rail-title{
+      font-size:.85rem;
+      text-transform:uppercase;
+      letter-spacing:.12em;
+      color:#9aa7bb;
+      margin:0 0 10px 6px;
+      font-weight:600;
+    }
+    @media (min-width:980px){
+      .layout{grid-template-columns:240px 1fr}
+      .rail .subnav{
+        position:sticky;
+        top:20px;
+        flex-direction:column;
+        align-items:flex-start;
+      }
+      .rail .subnav a{width:100%}
+    }
 
     .card{
       background:var(--card);border-radius:var(--radius);
-      box-shadow:var(--shadow);padding:20px;border:1px solid var(--border);
-      margin-bottom:16px;
+      box-shadow:var(--shadow);padding:22px;border:1px solid var(--border);
+      margin-bottom:18px;
+      animation:rise .5s ease both;
+      position:relative;
+      backdrop-filter:blur(12px);
     }
-    h2{margin-top:0;font-size:1.2rem}
-    h3{margin:1.1rem 0 .4rem;font-size:1.05rem}
-    p{line-height:1.6}
+    .card::before{
+      content:"";
+      position:absolute;
+      inset:0 0 auto 0;
+      height:4px;
+      border-radius:var(--radius) var(--radius) 0 0;
+      background:linear-gradient(90deg, rgba(26,91,216,.6), rgba(0,160,166,.6));
+      opacity:.7;
+    }
+    @keyframes rise{
+      from{transform:translateY(6px);opacity:.75}
+      to{transform:translateY(0);opacity:1}
+    }
+    h2{
+      margin-top:0;
+      font-size:1.25rem;
+      font-family:"Sora","Trebuchet MS",sans-serif;
+      letter-spacing:.2px;
+    }
+    h3{
+      margin:1.1rem 0 .4rem;
+      font-size:1.05rem;
+      font-family:"Sora","Trebuchet MS",sans-serif;
+    }
+    p{line-height:1.7}
     ul{margin:.6rem 0 .2rem 1.1rem}
     a{color:var(--link);text-decoration:none}
     a:hover{text-decoration:underline}
     .kbd{
       display:inline-block;padding:2px 6px;border-radius:6px;
-      background:#f0f3f7;border:1px solid #dfe6ef;
+      background:rgba(10,16,28,.85);
+      border:1px solid rgba(141, 162, 196, .4);
+      color:#e6edf7;
       font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
       font-size:.9em;
     }
     .note{
-      background:#f9fbff;border:1px solid #e3efff;
+      background:rgba(13, 20, 32, .7);
+      border:1px solid rgba(141, 162, 196, .25);
       padding:12px;border-radius:10px;
     }
     .footer{text-align:center;color:var(--muted);margin-top:22px;font-size:.95rem}
@@ -89,7 +247,7 @@
     .list-tight li{margin:.25rem 0}
 
     /* Section highlight when targeted */
-    section:target{outline:2px solid #cfe5ff; box-shadow:0 0 0 6px var(--ring)}
+    section:target{outline:2px solid #cfe0ff; box-shadow:0 0 0 6px var(--ring)}
 
     /* Gallery for mobile screenshots */
     .gallery{
@@ -100,20 +258,24 @@
     }
     .gallery figure{
       margin:0;
-      background:#fff;
-      border:1px solid #e6e6e6;
+      background:rgba(12, 18, 30, .75);
+      border:1px solid rgba(141, 162, 196, .2);
       border-radius:12px;
       overflow:hidden;
-      box-shadow:0 2px 10px rgba(0,0,0,.06);
+      box-shadow:var(--shadow-soft);
     }
     .gallery img{display:block;width:100%;height:auto}
-    .gallery figcaption{padding:8px 10px;color:#666;font-size:.9rem}
+    .gallery figcaption{padding:8px 10px;color:var(--muted);font-size:.9rem}
 
     /* Basic section spacing tweaks */
     #basic p.muted { margin: 8px 0; }
     #basic .list-tight { margin: 4px 0 6px 1.1rem; }
     #basic figure { margin: 8px 0 10px !important; }
     #basic .gallery { margin-top: 10px; }
+
+    @media (prefers-reduced-motion: reduce){
+      *{animation-duration:.001ms !important;animation-iteration-count:1 !important;transition:none !important}
+    }
   </style>
 
   <!-- JSON-LD -->
@@ -150,26 +312,34 @@
 
 <body>
   <div class="wrap">
-    <header>
+    <header class="hero">
+      <div class="eyebrow">Server Setup</div>
       <h1>Server Setup Guide</h1>
       <p class="subtitle">Configure Movies/TV/Kids destinations, optional 4K splits, and TV multi-drive priority.</p>
       <nav class="topnav">
         <a href="../index.html">Home</a>
+        <a href="../setup/index.html" class="is-active" aria-current="page">Setup</a>
         <a href="../support/index.html">Support</a>
         <a href="../privacy/index.html">Privacy</a>
+        <a href="https://app.klyppedit.com/swagger">Server Download</a>
       </nav>
     </header>
 
-    <!-- In-page sub-navigation -->
-    <nav class="subnav">
-      <a href="#definitions">Definitions</a>
-      <a href="#basic">Basic Setup</a>
-      <a href="#advanced">Advanced</a>
-    </nav>
+    <div class="layout">
+      <aside class="rail">
+        <div class="rail-title">On this page</div>
+        <!-- In-page sub-navigation -->
+        <nav class="subnav">
+          <a href="#definitions">Definitions</a>
+          <a href="#basic">Basic Setup</a>
+          <a href="#advanced">Advanced</a>
+        </nav>
+      </aside>
 
-    <!-- DEFINITIONS -->
-    <section id="definitions" class="card">
-      <h2>Definitions of Media Locations</h2>
+      <main class="content">
+      <!-- DEFINITIONS -->
+      <section id="definitions" class="card">
+        <h2>Definitions of Media Locations</h2>
 
       <p class="muted">There are two types of drive locations that should be setup: pre-processing and post-processing locations.</p>
 
@@ -190,11 +360,11 @@
         <li><strong>KidsMovie</strong>/<strong>KidsMovie4K</strong> - This location, if it is setup, overrides other Movie locations for movies that are for younger audiences.</li>
         <li><strong>4K</strong> - Video content (movies and TV episodes) can be separated by whether or not the transferred media is 4K. See the advanced setup guide for examples.</li>
       </ul>
-    </section>
+      </section>
 
-    <!-- BASIC -->
-    <section id="basic" class="card">
-      <h2>Basic Setup</h2>
+      <!-- BASIC -->
+      <section id="basic" class="card">
+        <h2>Basic Setup</h2>
 
       <p class="muted">For the most basic setup, add locations for <em>Music</em>, <em>TV</em>, and <em>Movies</em> (all with the 4K box unchecked). With this setup, Klypp will move all movies into the <em>Movies</em> location, all TV episodes into the <em>TV</em> location, and all music into the <em>Music</em> location.</p>
       <figure class="card" style="padding:0;margin:12px 0 16px">
@@ -246,11 +416,11 @@
           <figcaption>Recently Added</figcaption>
         </figure>
       </div>
-    </section>
+      </section>
 
-    <!-- ADVANCED -->
-    <section id="advanced" class="card">
-      <h2>How it Works (Simple, UI-Based)</h2>
+      <!-- ADVANCED -->
+      <section id="advanced" class="card">
+        <h2>How it Works (Simple, UI-Based)</h2>
       <p class="muted">The basic setup can be extended into a more granular version by adding KidsTV and KidsMovies to the mix. Klypp uses metadata from The Movie Database (TMDB) to determine which movies and shows are for kids, and puts them into their own locations.</p>
       <p class="muted">To get even more advanced, you can check the 4K box for any of the movie and TV locations. When using the 4K box, it's recommended to also have a location with the 4K box unchecked (ie, one Movies location for non-4K content, and one for 4K content).</p>
       <p class="muted">And finally, for the most advanced setup, you can split your locations across multiple storage devices. For example, if you have 2 Network Attached Storage (NAS) devices, you can tell Klypp to prioritize one over the other for each location.
@@ -266,11 +436,11 @@
         There are no special names like “Kids4kMovies.” You simply enable a destination and choose if it’s for 4K or not.
         You can enable both a non-4K and a 4K path for the same type.
       </p>
-    </section>
+      </section>
 
-    <div class="grid">
-      <section class="card">
-        <h2>Common Movie Setups</h2>
+      <div class="grid">
+        <section class="card">
+          <h2>Common Movie Setups</h2>
 
         <h3>1) One folder (catch-all)</h3>
         <ul class="list-tight">
@@ -290,10 +460,10 @@
           <li>Add <strong>KidsMovies</strong> (4K OFF) → kids go there; non-kids follow the Movie flow above.</li>
           <li>(Optional) Add <strong>KidsMovies</strong> (4K ON) if you also want kids-4K split.</li>
         </ul>
-      </section>
+        </section>
 
-      <section class="card">
-        <h2>TV Setups (Practical Examples)</h2>
+        <section class="card">
+          <h2>TV Setups (Practical Examples)</h2>
 
         <h3>1) One folder (catch-all)</h3>
         <ul class="list-tight">
@@ -343,11 +513,11 @@
           <li>Configure: <strong>Television</strong> (4K ON) → <code>C:\UHDTV\</code></li>
           <li><strong>Result:</strong> 4K routes; non-4K are skipped with a message.</li>
         </ul>
-      </section>
-    </div>
+        </section>
+      </div>
 
-    <section class="card">
-      <h2>TV: Multiple Drives &amp; Priority (Exact Behavior)</h2>
+      <section class="card">
+        <h2>TV: Multiple Drives &amp; Priority (Exact Behavior)</h2>
       <p>Each TV destination can have several paths, each with a <strong>Priority</strong> number.
         The app checks them <em>in order</em>: <strong>1 → 2 → 3 → … → N</strong>.</p>
       <ul>
@@ -357,9 +527,11 @@
         <li><strong>If you remove a drive from the copy list:</strong> The app will write to whatever remains in the 1→N sequence. Doing this mid-series can split a show across drives, so prefer leaving older drives mounted and adding new ones with higher numbers. If you plan to retire a drive, wait until all shows on it have finished airing (or relocate them intentionally) before removing it.</li>
       </ul>
       <p><strong>In short:</strong> Scan priorities <span class="kbd">1..N</span> → if show exists at <span class="kbd">k</span>, write to <span class="kbd">k</span>; if not found anywhere, create on <span class="kbd">N</span>.</p>
-    </section>
+      </section>
+      </main>
+    </div>
 
-    <p class="footer">© 2025 Klypp LLC · <a href="../index.html">Home</a> · <a href="../support/index.html">Support</a> · <a href="../privacy/index.html">Privacy</a></p>
+    <p class="footer">© 2025 Klypp LLC · <a href="../index.html">Home</a> · <a href="../setup/index.html" class="is-active" aria-current="page">Setup</a> · <a href="../support/index.html">Support</a> · <a href="../privacy/index.html">Privacy</a> · <a href="https://app.klyppedit.com/swagger">Server Download</a></p>
   </div>
 </body>
 </html>
