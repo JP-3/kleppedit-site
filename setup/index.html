@@ -1,322 +1,467 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <title>Klypp LLC – Server Setup Guide</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="Configure Klypp server destinations (Movies/TV/Kids), optional 4K splits, and TV multi-drive priority behavior." />
+  <meta name="description"
+    content="Configure Klypp server destinations (Movies/TV/Kids), optional 4K splits, and TV multi-drive priority behavior." />
 
   <!-- Open Graph -->
   <meta property="og:title" content="Klypp – Server Setup Guide" />
   <meta property="og:site_name" content="Klypp LLC" />
   <meta property="og:type" content="article" />
   <meta property="og:url" content="https://www.klyppedit.com/Setup/" />
-  <meta property="og:description" content="Configure Movies/TV/Kids destinations with optional 4K and understand TV drive priorities." />
+  <meta property="og:description"
+    content="Configure Movies/TV/Kids destinations with optional 4K and understand TV drive priorities." />
 
   <style>
     @import url("https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap");
 
-    :root{
-      --bg:#0b0f17;
-      --fg:#e6edf7;
-      --muted:#9aa7bb;
-      --card:rgba(17, 23, 36, .72);
-      --link:#7fb2ff;
-      --accent:#3a7bff;
-      --accent-2:#36d1dc;
-      --ring:rgba(63,135,255,.28);
-      --radius:20px;
-      --border:rgba(141, 162, 196, .18);
-      --shadow:0 28px 80px rgba(0, 0, 0, .45);
-      --shadow-soft:0 14px 30px rgba(0, 0, 0, .28);
+    :root {
+      --bg: #0b0f17;
+      --fg: #e6edf7;
+      --muted: #9aa7bb;
+      --card: rgba(17, 23, 36, .72);
+      --link: #7fb2ff;
+      --accent: #3a7bff;
+      --accent-2: #36d1dc;
+      --ring: rgba(63, 135, 255, .28);
+      --radius: 20px;
+      --border: rgba(141, 162, 196, .18);
+      --shadow: 0 28px 80px rgba(0, 0, 0, .45);
+      --shadow-soft: 0 14px 30px rgba(0, 0, 0, .28);
     }
-    *{box-sizing:border-box}
-    html{scroll-behavior:smooth}
-    body{
-      font-family:"IBM Plex Sans","Segoe UI",Tahoma,sans-serif;
-      margin:0;
-      padding:34px 16px 54px;
+
+    * {
+      box-sizing: border-box
+    }
+
+    html {
+      scroll-behavior: smooth
+    }
+
+    body {
+      font-family: "IBM Plex Sans", "Segoe UI", Tahoma, sans-serif;
+      margin: 0;
+      padding: 34px 16px 54px;
       background:
-        radial-gradient(900px 520px at 5% -10%, rgba(58,123,255,.22) 0%, rgba(58,123,255,0) 60%),
-        radial-gradient(1000px 520px at 110% 0%, rgba(54,209,220,.18) 0%, rgba(54,209,220,0) 60%),
-        radial-gradient(1000px 700px at 50% 120%, rgba(20,27,45,.9) 0%, rgba(11,15,23,0) 60%),
+        radial-gradient(900px 520px at 5% -10%, rgba(58, 123, 255, .22) 0%, rgba(58, 123, 255, 0) 60%),
+        radial-gradient(1000px 520px at 110% 0%, rgba(54, 209, 220, .18) 0%, rgba(54, 209, 220, 0) 60%),
+        radial-gradient(1000px 700px at 50% 120%, rgba(20, 27, 45, .9) 0%, rgba(11, 15, 23, 0) 60%),
         linear-gradient(180deg, #0b0f17 0%, #0c111b 100%);
-      color:var(--fg);
+      color: var(--fg);
     }
-    body::before{
-      content:"";
-      position:fixed;
-      inset:0;
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
       background:
-        radial-gradient(circle at 20% 20%, rgba(255,255,255,.05), transparent 45%),
-        radial-gradient(circle at 80% 10%, rgba(255,255,255,.05), transparent 45%),
-        linear-gradient(90deg, rgba(255,255,255,.04) 1px, transparent 1px) 0 0/48px 48px,
-        linear-gradient(0deg, rgba(255,255,255,.03) 1px, transparent 1px) 0 0/48px 48px;
-      pointer-events:none;
-      z-index:-1;
+        radial-gradient(circle at 20% 20%, rgba(255, 255, 255, .05), transparent 45%),
+        radial-gradient(circle at 80% 10%, rgba(255, 255, 255, .05), transparent 45%),
+        linear-gradient(90deg, rgba(255, 255, 255, .04) 1px, transparent 1px) 0 0/48px 48px,
+        linear-gradient(0deg, rgba(255, 255, 255, .03) 1px, transparent 1px) 0 0/48px 48px;
+      pointer-events: none;
+      z-index: -1;
     }
-    .wrap{max-width:1040px;margin:0 auto}
-    header.hero{
-      text-align:center;
-      margin-bottom:22px;
-      background:linear-gradient(135deg, rgba(58,123,255,.18), rgba(54,209,220,.16));
-      border:1px solid rgba(122, 150, 200, .25);
-      border-radius:26px;
-      padding:24px 20px 18px;
-      box-shadow:var(--shadow-soft);
-      position:relative;
-      overflow:hidden;
-      backdrop-filter:blur(8px);
-      min-height:220px;
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-      justify-content:center;
+
+    .wrap {
+      max-width: 1040px;
+      margin: 0 auto
     }
-    header.hero::after{
-      content:"";
-      position:absolute;
-      width:280px;height:280px;
-      right:-120px;top:-140px;
-      background:radial-gradient(circle at 30% 30%, rgba(255,255,255,.45), rgba(255,255,255,0));
-      pointer-events:none;
+
+    header.hero {
+      text-align: center;
+      margin-bottom: 22px;
+      background: linear-gradient(135deg, rgba(58, 123, 255, .18), rgba(54, 209, 220, .16));
+      border: 1px solid rgba(122, 150, 200, .25);
+      border-radius: 26px;
+      padding: 24px 20px 18px;
+      box-shadow: var(--shadow-soft);
+      position: relative;
+      overflow: hidden;
+      backdrop-filter: blur(8px);
+      min-height: 220px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
     }
-    h1{
-      margin:0 0 6px;
-      font-family:"Sora","Trebuchet MS",sans-serif;
-      font-size:2.25rem;
-      letter-spacing:.2px;
+
+    header.hero::after {
+      content: "";
+      position: absolute;
+      width: 280px;
+      height: 280px;
+      right: -120px;
+      top: -140px;
+      background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, .45), rgba(255, 255, 255, 0));
+      pointer-events: none;
     }
-    .subtitle{color:var(--muted);margin:0}
-    .eyebrow{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      padding:6px 12px;
-      border-radius:999px;
-      background:rgba(10,16,28,.7);
-      border:1px solid rgba(141, 162, 196, .28);
-      color:#d6e2f5;
-      font-weight:600;
-      font-size:.82rem;
-      margin-bottom:10px;
-      text-transform:uppercase;
-      letter-spacing:.6px;
+
+    h1 {
+      margin: 0 0 6px;
+      font-family: "Sora", "Trebuchet MS", sans-serif;
+      font-size: 2.25rem;
+      letter-spacing: .2px;
+    }
+
+    .subtitle {
+      color: var(--muted);
+      margin: 0
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: rgba(10, 16, 28, .7);
+      border: 1px solid rgba(141, 162, 196, .28);
+      color: #d6e2f5;
+      font-weight: 600;
+      font-size: .82rem;
+      margin-bottom: 10px;
+      text-transform: uppercase;
+      letter-spacing: .6px;
     }
 
     /* Top site nav */
-    .topnav{
-      display:flex;
-      gap:10px;
-      justify-content:center;
-      margin:14px 0 0;
-      flex-wrap:wrap;
-    }
-    .topnav a{
-      color:var(--accent);
-      text-decoration:none;
-      padding:6px 12px;
-      border-radius:999px;
-      border:1px solid rgba(122, 150, 200, .28);
-      background:rgba(9, 14, 24, .7);
-      font-weight:600;
-      font-size:.92rem;
-    }
-    .topnav a:hover{
-      background:rgba(14, 22, 36, .85);
-      border-color:rgba(140, 170, 220, .45);
+    .topnav {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      margin: 14px 0 0;
+      flex-wrap: wrap;
     }
 
-    .topnav a.is-active{
-      background:linear-gradient(135deg, rgba(58,123,255,.35), rgba(54,209,220,.25));
-      border-color:rgba(123, 158, 220, .65);
-      color:#e8f1ff;
-      cursor:default;
+    .topnav a {
+      color: var(--accent);
+      text-decoration: none;
+      padding: 6px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(122, 150, 200, .28);
+      background: rgba(9, 14, 24, .7);
+      font-weight: 600;
+      font-size: .92rem;
     }
 
-    .hero-badges{
-      position:absolute;
-      top:16px;
-      left:16px;
-      display:inline-flex;
-      flex-direction:column;
-      gap:8px;
-      align-items:center;
-      z-index:2;
+    .topnav a:hover {
+      background: rgba(14, 22, 36, .85);
+      border-color: rgba(140, 170, 220, .45);
     }
 
-    .store-badge{
-      display:inline-flex;
-      align-items:center;
-      text-decoration:none;
-      background:transparent;
-      padding:0;
-      border-radius:0;
+    .topnav a.is-active {
+      background: linear-gradient(135deg, rgba(58, 123, 255, .35), rgba(54, 209, 220, .25));
+      border-color: rgba(123, 158, 220, .65);
+      color: #e8f1ff;
+      cursor: default;
     }
 
-    .store-badge img{
-      width:150px;
-      height:35px;
-      object-fit:contain;
-      display:block;
+    .hero-badges {
+      position: absolute;
+      top: 16px;
+      left: 16px;
+      display: inline-flex;
+      flex-direction: column;
+      gap: 8px;
+      align-items: center;
+      z-index: 2;
     }
 
-    .store-badge.ios img{
-      width:164px;
-      height:39px;
+    .store-badge {
+      display: inline-flex;
+      align-items: center;
+      text-decoration: none;
+      background: transparent;
+      padding: 0;
+      border-radius: 0;
     }
 
-    .store-badge:hover{ text-decoration:none; }
+    .store-badge img {
+      width: 150px;
+      height: 35px;
+      object-fit: contain;
+      display: block;
+    }
 
-    @media (max-width:720px){
-      .hero-badges{
-        position:static;
-        margin-bottom:10px;
-        align-self:flex-start;
+    .store-badge.ios img {
+      width: 164px;
+      height: 39px;
+    }
+
+    .store-badge:hover {
+      text-decoration: none;
+    }
+
+    @media (max-width:720px) {
+      .hero-badges {
+        position: static;
+        margin-bottom: 10px;
+        align-self: flex-start;
       }
     }
 
     /* In-page subnav */
-    .subnav{
-      display:flex;gap:10px;justify-content:center;flex-wrap:wrap;
-      margin:16px auto 20px;padding:10px 12px;max-width:920px;
-      background:rgba(12, 18, 30, .7);
-      border:1px solid rgba(141, 162, 196, .18);
-      border-radius:16px;
-      box-shadow:var(--shadow-soft);
-    }
-    .subnav a{
-      text-decoration:none;color:var(--link);
-      padding:7px 12px;border-radius:999px;border:1px solid transparent;
-      font-weight:600;font-size:.93rem;
-    }
-    .subnav a:hover{background:#eef4ff;border-color:#d6e2ff}
-    .subnav a.is-active{
-      background:linear-gradient(135deg, rgba(58,123,255,.35) 0%, rgba(54,209,220,.25) 100%);
-      border-color:rgba(123, 158, 220, .65);
-      color:#e8f1ff;
+    .subnav {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin: 16px auto 20px;
+      padding: 10px 12px;
+      max-width: 920px;
+      background: rgba(12, 18, 30, .7);
+      border: 1px solid rgba(141, 162, 196, .18);
+      border-radius: 16px;
+      box-shadow: var(--shadow-soft);
     }
 
-    .layout{
-      display:grid;
-      gap:18px;
-      grid-template-columns:1fr;
-      align-items:start;
+    .subnav a {
+      text-decoration: none;
+      color: var(--link);
+      padding: 7px 12px;
+      border-radius: 999px;
+      border: 1px solid transparent;
+      font-weight: 600;
+      font-size: .93rem;
     }
-    .rail{
-      position:relative;
+
+    .subnav a:hover {
+      background: #eef4ff;
+      border-color: #d6e2ff
     }
-    .rail .subnav{
-      margin:0;
-      justify-content:flex-start;
-      padding:14px;
-      border-radius:16px;
+
+    .subnav a.is-active {
+      background: linear-gradient(135deg, rgba(58, 123, 255, .35) 0%, rgba(54, 209, 220, .25) 100%);
+      border-color: rgba(123, 158, 220, .65);
+      color: #e8f1ff;
     }
-    .rail-title{
-      font-size:.85rem;
-      text-transform:uppercase;
-      letter-spacing:.12em;
-      color:#9aa7bb;
-      margin:0 0 10px 6px;
-      font-weight:600;
+
+    .layout {
+      display: grid;
+      gap: 18px;
+      grid-template-columns: 1fr;
+      align-items: start;
     }
-    @media (min-width:980px){
-      .layout{grid-template-columns:240px 1fr}
-      .rail .subnav{
-        position:sticky;
-        top:20px;
-        flex-direction:column;
-        align-items:flex-start;
+
+    .rail {
+      position: relative;
+    }
+
+    .rail .subnav {
+      margin: 0;
+      justify-content: flex-start;
+      padding: 14px;
+      border-radius: 16px;
+    }
+
+    .rail-title {
+      font-size: .85rem;
+      text-transform: uppercase;
+      letter-spacing: .12em;
+      color: #9aa7bb;
+      margin: 0 0 10px 6px;
+      font-weight: 600;
+    }
+
+    @media (min-width:980px) {
+      .layout {
+        grid-template-columns: 240px 1fr
       }
-      .rail .subnav a{width:100%}
+
+      /* Make the whole left rail sticky (title + nav) */
+      .rail {
+        position: sticky;
+        top: 20px;
+        align-self: start;
+        height: fit-content;
+      }
+
+      /* Keep the nav vertical inside the sticky rail */
+      .rail .subnav {
+        position: static;
+        /* prevent double-sticky */
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .rail .subnav a {
+        width: 100%
+      }
     }
 
-    .card{
-      background:var(--card);border-radius:var(--radius);
-      box-shadow:var(--shadow);padding:22px;border:1px solid var(--border);
-      margin-bottom:18px;
-      animation:rise .5s ease both;
-      position:relative;
-      backdrop-filter:blur(12px);
-    }
-    .card::before{
-      content:"";
-      position:absolute;
-      inset:0 0 auto 0;
-      height:4px;
-      border-radius:var(--radius) var(--radius) 0 0;
-      background:linear-gradient(90deg, rgba(26,91,216,.6), rgba(0,160,166,.6));
-      opacity:.7;
-    }
-    @keyframes rise{
-      from{transform:translateY(6px);opacity:.75}
-      to{transform:translateY(0);opacity:1}
-    }
-    h2{
-      margin-top:0;
-      font-size:1.25rem;
-      font-family:"Sora","Trebuchet MS",sans-serif;
-      letter-spacing:.2px;
-    }
-    h3{
-      margin:1.1rem 0 .4rem;
-      font-size:1.05rem;
-      font-family:"Sora","Trebuchet MS",sans-serif;
-    }
-    p{line-height:1.7}
-    ul{margin:.6rem 0 .2rem 1.1rem}
-    a{color:var(--link);text-decoration:none}
-    a:hover{text-decoration:underline}
-    .kbd{
-      display:inline-block;padding:2px 6px;border-radius:6px;
-      background:rgba(10,16,28,.85);
-      border:1px solid rgba(141, 162, 196, .4);
-      color:#e6edf7;
-      font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
-      font-size:.9em;
-    }
-    .note{
-      background:rgba(13, 20, 32, .7);
-      border:1px solid rgba(141, 162, 196, .25);
-      padding:12px;border-radius:10px;
-    }
-    .footer{text-align:center;color:var(--muted);margin-top:22px;font-size:.95rem}
 
-    .grid{display:grid;gap:16px;grid-template-columns:1fr}
-    @media (min-width:880px){.grid{grid-template-columns:1fr 1fr}}
+    .card {
+      background: var(--card);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 22px;
+      border: 1px solid var(--border);
+      margin-bottom: 18px;
+      animation: rise .5s ease both;
+      position: relative;
+      backdrop-filter: blur(12px);
+    }
 
-    .muted{color:var(--muted)}
-    .list-tight li{margin:.25rem 0}
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: 0 0 auto 0;
+      height: 4px;
+      border-radius: var(--radius) var(--radius) 0 0;
+      background: linear-gradient(90deg, rgba(26, 91, 216, .6), rgba(0, 160, 166, .6));
+      opacity: .7;
+    }
+
+    @keyframes rise {
+      from {
+        transform: translateY(6px);
+        opacity: .75
+      }
+
+      to {
+        transform: translateY(0);
+        opacity: 1
+      }
+    }
+
+    h2 {
+      margin-top: 0;
+      font-size: 1.25rem;
+      font-family: "Sora", "Trebuchet MS", sans-serif;
+      letter-spacing: .2px;
+    }
+
+    h3 {
+      margin: 1.1rem 0 .4rem;
+      font-size: 1.05rem;
+      font-family: "Sora", "Trebuchet MS", sans-serif;
+    }
+
+    p {
+      line-height: 1.7
+    }
+
+    ul {
+      margin: .6rem 0 .2rem 1.1rem
+    }
+
+    a {
+      color: var(--link);
+      text-decoration: none
+    }
+
+    a:hover {
+      text-decoration: underline
+    }
+
+    .kbd {
+      display: inline-block;
+      padding: 2px 6px;
+      border-radius: 6px;
+      background: rgba(10, 16, 28, .85);
+      border: 1px solid rgba(141, 162, 196, .4);
+      color: #e6edf7;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: .9em;
+    }
+
+    .note {
+      background: rgba(13, 20, 32, .7);
+      border: 1px solid rgba(141, 162, 196, .25);
+      padding: 12px;
+      border-radius: 10px;
+    }
+
+    .footer {
+      text-align: center;
+      color: var(--muted);
+      margin-top: 22px;
+      font-size: .95rem
+    }
+
+    .grid {
+      display: grid;
+      gap: 16px;
+      grid-template-columns: 1fr
+    }
+
+    @media (min-width:880px) {
+      .grid {
+        grid-template-columns: 1fr 1fr
+      }
+    }
+
+    .muted {
+      color: var(--muted)
+    }
+
+    .list-tight li {
+      margin: .25rem 0
+    }
 
     /* Section highlight when targeted */
-    section:target{outline:2px solid #cfe0ff; box-shadow:0 0 0 6px var(--ring)}
+    section:target {
+      outline: 2px solid #cfe0ff;
+      box-shadow: 0 0 0 6px var(--ring)
+    }
 
     /* Gallery for mobile screenshots */
-    .gallery{
-      display:grid;
-      gap:12px;
+    .gallery {
+      display: grid;
+      gap: 12px;
       grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-      align-items:start;
+      align-items: start;
     }
-    .gallery figure{
-      margin:0;
-      background:rgba(12, 18, 30, .75);
-      border:1px solid rgba(141, 162, 196, .2);
-      border-radius:12px;
-      overflow:hidden;
-      box-shadow:var(--shadow-soft);
+
+    .gallery figure {
+      margin: 0;
+      background: rgba(12, 18, 30, .75);
+      border: 1px solid rgba(141, 162, 196, .2);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: var(--shadow-soft);
     }
-    .gallery img{display:block;width:100%;height:auto}
-    .gallery figcaption{padding:8px 10px;color:var(--muted);font-size:.9rem}
+
+    .gallery img {
+      display: block;
+      width: 100%;
+      height: auto
+    }
+
+    .gallery figcaption {
+      padding: 8px 10px;
+      color: var(--muted);
+      font-size: .9rem
+    }
 
     /* Basic section spacing tweaks */
-    #basic p.muted { margin: 8px 0; }
-    #basic .list-tight { margin: 4px 0 6px 1.1rem; }
-    #basic figure { margin: 8px 0 10px !important; }
-    #basic .gallery { margin-top: 10px; }
+    #basic p.muted {
+      margin: 8px 0;
+    }
 
-    @media (prefers-reduced-motion: reduce){
-      *{animation-duration:.001ms !important;animation-iteration-count:1 !important;transition:none !important}
+    #basic .list-tight {
+      margin: 4px 0 6px 1.1rem;
+    }
+
+    #basic figure {
+      margin: 8px 0 10px !important;
+    }
+
+    #basic .gallery {
+      margin-top: 10px;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      * {
+        animation-duration: .001ms !important;
+        animation-iteration-count: 1 !important;
+        transition: none !important
+      }
     }
   </style>
 
@@ -356,10 +501,13 @@
   <div class="wrap">
     <header class="hero">
       <div class="hero-badges">
-        <a class="store-badge ios" href="https://testflight.apple.com/join/W4XHxtNN" target="_blank" rel="noreferrer" aria-label="Download on the App Store">
+        <a class="store-badge ios" href="https://testflight.apple.com/join/W4XHxtNN" target="_blank" rel="noreferrer"
+          aria-label="Download on the App Store">
           <img src="../assets/app-store-badge.svg" alt="Download on the App Store" />
         </a>
-        <a class="store-badge android" href="https://play.google.com/store/apps/details?id=com.klyppedit.klypp&pcampaignid=web_share" target="_blank" rel="noreferrer" aria-label="Get Klypp on Google Play (beta)">
+        <a class="store-badge android"
+          href="https://play.google.com/store/apps/details?id=com.klyppedit.klypp&pcampaignid=web_share" target="_blank"
+          rel="noreferrer" aria-label="Get Klypp on Google Play (beta)">
           <img src="../assets/google-play-badge.svg" alt="Get it on Google Play" />
         </a>
       </div>
@@ -382,224 +530,314 @@
         <nav class="subnav">
           <a href="#definitions">Definitions</a>
           <a href="#basic">Basic Setup</a>
-          <a href="#advanced">Advanced</a>
+          <a href="#advanced">Advanced Setup</a>
+          <a href="#advanced-movies">Advanced: Movie Setups</a>
+          <a href="#advanced-tv">Advanced: TV Setups</a>
+          <a href="#tv-priority">TV Priority Behavior</a>
+          <a href="#direct-uploads">Direct Uploads</a>
         </nav>
       </aside>
 
       <main class="content">
-      <!-- DEFINITIONS -->
-      <section id="definitions" class="card">
-        <h2>Definitions of Media Locations</h2>
+        <!-- DEFINITIONS -->
+        <section id="definitions" class="card">
+          <h2>Definitions of Media Locations</h2>
 
-      <p class="muted">There are two types of drive locations that should be setup: pre-processing and post-processing locations.</p>
+          <p class="muted">There are two types of drive locations that should be setup: pre-processing and
+            post-processing locations.</p>
 
-      <p class="muted"><strong>Pre-processing locations</strong> are folders that Klypp uses before it processes the files that it finds.</p>
-      <p class="muted"><strong>Recommended flow:</strong> <span class="kbd">FileSaveLocation</span> → <span class="kbd">IncompletePath</span> → <span class="kbd">CompletedPath</span></p>
-      <ul class="list-tight">
-        <li><strong>FileSaveLocation</strong> - When a file is uploaded from your mobile device, Klypp will save it into this location.</li>
-        <li><strong>IncompletePath</strong> - A staging folder for in-progress transfers. Point this to where partially written files live so Klypp can wait until they finish.</li>
-        <li><strong>CompletedPath</strong> - A ready-to-process folder. Once files are complete, place them here so Klypp knows when to start organizing them.</li>
-      </ul>
+          <p class="muted"><strong>Pre-processing locations</strong> are folders that Klypp uses before it processes the
+            files that it finds.</p>
+          <p class="muted"><strong>Recommended flow:</strong> <span class="kbd">FileSaveLocation</span> → <span
+              class="kbd">IncompletePath</span> → <span class="kbd">CompletedPath</span></p>
+          <ul class="list-tight">
+            <li><strong>FileSaveLocation</strong> - When a file is uploaded from your mobile device, Klypp will save it
+              into this location.</li>
+            <li><strong>IncompletePath</strong> - A staging folder for in-progress transfers. Point this to where
+              partially written files live so Klypp can wait until they finish.</li>
+            <li><strong>CompletedPath</strong> - A ready-to-process folder. Once files are complete, place them here so
+              Klypp knows when to start organizing them.</li>
+          </ul>
 
-      <p class="muted"><strong>Destination locations:</strong> destinations for the files and folders after Klypp has processed them.</p>
-      <ul class="list-tight">
-        <li><strong>Music</strong> - All music is copied to this location. The 4K box is ignored for music.</li>
-        <li><strong>TV</strong>/<strong>TV4K</strong> - TV episodes are copied to this location.</li>
-        <li><strong>Movie</strong>/<strong>Movie4K</strong> - Movies are copied to this location.</li>
-        <li><strong>KidsTV</strong>/<strong>KidsTV4K</strong> - This location, if it is setup, overrides other TV locations for TV shows that are for younger audiences.</li>
-        <li><strong>KidsMovie</strong>/<strong>KidsMovie4K</strong> - This location, if it is setup, overrides other Movie locations for movies that are for younger audiences.</li>
-        <li><strong>4K</strong> - Video content (movies and TV episodes) can be separated by whether or not the transferred media is 4K. See the advanced setup guide for examples.</li>
-      </ul>
-      </section>
-
-      <!-- BASIC -->
-      <section id="basic" class="card">
-        <h2>Basic Setup</h2>
-
-      <p class="muted">For the most basic setup, add locations for <em>Music</em>, <em>TV</em>, and <em>Movies</em> (all with the 4K box unchecked). With this setup, Klypp will move all movies into the <em>Movies</em> location, all TV episodes into the <em>TV</em> location, and all music into the <em>Music</em> location.</p>
-      <figure class="card" style="padding:0;margin:12px 0 16px">
-        <img src="../screenshots/ServerDrives.png" alt="Server Drives configuration example"
-          style="display:block;max-width:100%;height:auto;border-radius:12px;border:1px solid #e6e6e6" />
-        <figcaption style="padding:8px 12px;color:#666;font-size:.95rem">
-          Example drives/folders mapped for Klypp Server
-        </figcaption>
-      </figure>
-
-      
-
-      
-      <p class="muted">After you map these folders, Klypp Server will monitor <em>CompletedPath</em> and move files into your library automatically.</p>
-
-      <p class="muted"><em>On Linux or MacOS, you may need to adjust permissions. The service runs under the <code>klypp</code> user to keep access isolated from your personal account.</em></p>
-
-      <figure class="card" style="padding:0;margin:12px 0 16px">
-        <img src="../screenshots/ServerLogs.png" alt="Server log output while scanning"
-          style="display:block;max-width:100%;height:auto;border-radius:12px;border:1px solid #e6e6e6" />
-        <figcaption style="padding:8px 12px;color:#666;font-size:.95rem">
-          Live logs confirm path access is correct
-        </figcaption>
-      </figure>
-
-      <p class="muted">If you already have TV shows, you can scan existing folders to populate the mobile app — or start fresh with a new folder just for Klypp.</p>
-
-      <figure class="card" style="padding:0;margin:12px 0 16px">
-        <img src="../screenshots/TVFolders.png" alt="Example TV folder mapping"
-          style="display:block;max-width:100%;height:auto;border-radius:12px;border:1px solid #e6e6e6" />
-        <figcaption style="padding:8px 12px;color:#666;font-size:.95rem">
-          Example TV folder structure for scanning
-        </figcaption>
-      </figure>
-
-      <p class="muted">After a scan or a new upload, the mobile app will show your media.</p>
-
-      <div class="gallery" aria-label="Mobile app screenshots">
-        <figure>
-          <img src="../screenshots/UpcomingMedia.png" alt="Upcoming Media screen" />
-          <figcaption>Upcoming Media</figcaption>
-        </figure>
-        <figure>
-          <img src="../screenshots/MissingTVEpsiodes.png" alt="Missing TV Episodes screen" />
-          <figcaption>Missing TV Episodes</figcaption>
-        </figure>
-        <figure>
-          <img src="../screenshots/RecentlyAddedMedia.png" alt="Recently Added Media screen" />
-          <figcaption>Recently Added</figcaption>
-        </figure>
-      </div>
-      </section>
-
-      <p class="muted">Snapshot screen for quick monitoring, file transfer progress and easy searching for TV and Movies</p>
-
-      <div class="gallery" aria-label="Mobile app screenshots">
-        <figure>
-          <img src="../screenshots/Snapshot.png" alt="Snapshot screen" />
-          <figcaption>Snapshot</figcaption>
-        </figure>
-        <figure>
-          <img src="../screenshots/Transfers.png" alt="Media Transfers screen" />
-          <figcaption>Media Transfers</figcaption>
-        </figure>
-        <figure>
-          <img src="../screenshots/Search.png" alt="Search screen" />
-          <figcaption>Search</figcaption>
-        </figure>
-      </div>
-      </section>
-
-      <!-- ADVANCED -->
-      <section id="advanced" class="card">
-        <h2>How it Works (Simple, UI-Based)</h2>
-      <p class="muted">The basic setup can be extended into a more granular version by adding KidsTV and KidsMovies to the mix. Klypp uses metadata from The Movie Database (TMDB) to determine which movies and shows are for kids, and puts them into their own locations.</p>
-      <p class="muted">To get even more advanced, you can check the 4K box for any of the movie and TV locations. When using the 4K box, it's recommended to also have a location with the 4K box unchecked (ie, one Movies location for non-4K content, and one for 4K content).</p>
-      <p class="muted">And finally, for the most advanced setup, you can split your locations across multiple storage devices. For example, if you have 2 Network Attached Storage (NAS) devices, you can tell Klypp to prioritize one over the other for each location.
-        Klypp is smart enough to detect if you already have a TV show on one of the devices, and it will keep putting new episodes for that show on that device, regardless of the priority order.</p>
-      <br />
-      <p class="muted">To summarize: Klypp routes each media title based on two things:</p>
-      <ol>
-        <li><strong>Type</strong> you can configure: <em>Movies, KidsMovies, Television, KidsTelevision</em></li>
-        <li>Whether that location’s <strong>4K checkbox</strong> is ON (<em>4K path</em>) or OFF (<em>non-4K path</em>)</li>
-      </ol>
-
-      <p class="note">
-        There are no special names like “Kids4kMovies.” You simply enable a destination and choose if it’s for 4K or not.
-        You can enable both a non-4K and a 4K path for the same type.
-      </p>
-      </section>
-
-      <div class="grid">
-        <section class="card">
-          <h2>Common Movie Setups</h2>
-
-        <h3>1) One folder (catch-all)</h3>
-        <ul class="list-tight">
-          <li>Configure: <strong>Movies</strong> (4K OFF) → <code>C:\Movies\</code></li>
-          <li><strong>Result:</strong> non-4K, 4K, and kids movies all land under <code>C:\Movies\</code>.</li>
-        </ul>
-
-        <h3>2) 4K / non-4K split</h3>
-        <ul class="list-tight">
-          <li>Configure: <strong>Movies</strong> (4K OFF) → <code>C:\Movies\</code></li>
-          <li>Configure: <strong>Movies</strong> (4K ON) → <code>C:\4kMovies\</code></li>
-          <li><strong>Result:</strong> 4K → <code>C:\4kMovies\</code>; everything else (incl. kids) → <code>C:\Movies\</code>.</li>
-        </ul>
-
-        <h3>3) Separate kids (optional)</h3>
-        <ul class="list-tight">
-          <li>Add <strong>KidsMovies</strong> (4K OFF) → kids go there; non-kids follow the Movie flow above.</li>
-          <li>(Optional) Add <strong>KidsMovies</strong> (4K ON) if you also want kids-4K split.</li>
-        </ul>
+          <p class="muted"><strong>Destination locations:</strong> destinations for the files and folders after Klypp
+            has processed them.</p>
+          <ul class="list-tight">
+            <li><strong>Music</strong> - All music is copied to this location. The 4K box is ignored for music.</li>
+            <li><strong>TV</strong>/<strong>TV4K</strong> - TV episodes are copied to this location.</li>
+            <li><strong>Movie</strong>/<strong>Movie4K</strong> - Movies are copied to this location.</li>
+            <li><strong>KidsTV</strong>/<strong>KidsTV4K</strong> - This location, if it is setup, overrides other TV
+              locations for TV shows that are for younger audiences.</li>
+            <li><strong>KidsMovie</strong>/<strong>KidsMovie4K</strong> - This location, if it is setup, overrides other
+              Movie locations for movies that are for younger audiences.</li>
+            <li><strong>4K</strong> - Video content (movies and TV episodes) can be separated by whether or not the
+              transferred media is 4K. See the advanced setup guide for examples.</li>
+          </ul>
         </section>
 
-        <section class="card">
-          <h2>TV Setups (Practical Examples)</h2>
+        <!-- BASIC -->
+        <section id="basic" class="card">
+          <h2>Basic Setup</h2>
 
-        <h3>1) One folder (catch-all)</h3>
-        <ul class="list-tight">
-          <li>Configure: <strong>Television</strong> (4K OFF) → <code>C:\TV\</code></li>
-          <li><strong>Result:</strong> kids + non-kids + 4K all land under <code>C:\TV\</code>.</li>
-        </ul>
+          <p class="muted">For the most basic setup, add locations for <em>Music</em>, <em>TV</em>, and <em>Movies</em>
+            (all with the 4K box unchecked). With this setup, Klypp will move all movies into the <em>Movies</em>
+            location, all TV episodes into the <em>TV</em> location, and all music into the <em>Music</em> location.</p>
+          <figure class="card" style="padding:0;margin:12px 0 16px">
+            <img src="../screenshots/ServerDrives.png" alt="Server Drives configuration example"
+              style="display:block;max-width:100%;height:auto;border-radius:12px;border:1px solid #e6e6e6" />
+            <figcaption style="padding:8px 12px;color:#666;font-size:.95rem">
+              Example drives/folders mapped for Klypp Server
+            </figcaption>
+          </figure>
 
-        <h3>2) 4K / non-4K split</h3>
-        <ul class="list-tight">
-          <li>Configure: <strong>Television</strong> (4K OFF) → <code>C:\TV\</code></li>
-          <li>Configure: <strong>Television</strong> (4K ON) → <code>C:\UHDTV\</code></li>
-          <li><strong>Result:</strong> 4K → <code>C:\UHDTV\</code>; everything else (incl. kids) → <code>C:\TV\</code>.</li>
-        </ul>
 
-        <h3>3) Separate kids (non-4K)</h3>
-        <ul class="list-tight">
-          <li>Configure: <strong>KidsTelevision</strong> (4K OFF) → <code>C:\KidsTV\</code></li>
-          <li>Configure: <strong>Television</strong> (4K OFF) → <code>C:\TV\</code></li>
-          <li>(Optional) <strong>Television</strong> (4K ON) → <code>C:\UHDTV\</code></li>
-          <li><strong>Result:</strong> kids (non-4K) → <code>C:\KidsTV\</code>; non-kids follow the TV/UHD flow.</li>
-        </ul>
 
-        <h3>4) Separate kids + 4K split</h3>
-        <ul class="list-tight">
-          <li>Configure: <strong>KidsTelevision</strong> (4K OFF) → <code>C:\KidsTV\</code></li>
-          <li>Configure: <strong>KidsTelevision</strong> (4K ON) → <code>C:\KidsUHDTV\</code></li>
-          <li>Configure: <strong>Television</strong> (4K OFF) → <code>C:\TV\</code></li>
-          <li>Configure: <strong>Television</strong> (4K ON) → <code>C:\UHDTV\</code></li>
-          <li><strong>Result:</strong>
-            <ul>
-              <li>Kids 4K → <code>C:\KidsUHDTV\</code></li>
-              <li>Kids non-4K → <code>C:\KidsTV\</code></li>
-              <li>Non-kids 4K → <code>C:\UHDTV\</code></li>
-              <li>Non-kids non-4K → <code>C:\TV\</code></li>
+
+          <p class="muted">After you map these folders, Klypp Server will monitor <em>CompletedPath</em> and move files
+            into your library automatically.</p>
+
+          <p class="muted"><em>On Linux or MacOS, you may need to adjust permissions. The service runs under the
+              <code>klypp</code> user to keep access isolated from your personal account.</em></p>
+
+          <figure class="card" style="padding:0;margin:12px 0 16px">
+            <img src="../screenshots/ServerLogs.png" alt="Server log output while scanning"
+              style="display:block;max-width:100%;height:auto;border-radius:12px;border:1px solid #e6e6e6" />
+            <figcaption style="padding:8px 12px;color:#666;font-size:.95rem">
+              Live logs confirm path access is correct
+            </figcaption>
+          </figure>
+
+          <p class="muted">If you already have TV shows, you can scan existing folders to populate the mobile app — or
+            start fresh with a new folder just for Klypp.</p>
+
+          <figure class="card" style="padding:0;margin:12px 0 16px">
+            <img src="../screenshots/TVFolders.png" alt="Example TV folder mapping"
+              style="display:block;max-width:100%;height:auto;border-radius:12px;border:1px solid #e6e6e6" />
+            <figcaption style="padding:8px 12px;color:#666;font-size:.95rem">
+              Example TV folder structure for scanning
+            </figcaption>
+          </figure>
+
+          <p class="muted">After a scan or a new upload, the mobile app will show your media.</p>
+
+          <div class="gallery" aria-label="Mobile app screenshots">
+            <figure>
+              <img src="../screenshots/UpcomingMedia.png" alt="Upcoming Media screen" />
+              <figcaption>Upcoming Media</figcaption>
+            </figure>
+            <figure>
+              <img src="../screenshots/MissingTVEpsiodes.png" alt="Missing TV Episodes screen" />
+              <figcaption>Missing TV Episodes</figcaption>
+            </figure>
+            <figure>
+              <img src="../screenshots/RecentlyAddedMedia.png" alt="Recently Added Media screen" />
+              <figcaption>Recently Added</figcaption>
+            </figure>
+          </div>
+        </section>
+
+        <p class="muted">Snapshot screen for quick monitoring, file transfer progress and easy searching for TV and
+          Movies</p>
+
+        <div class="gallery" aria-label="Mobile app screenshots">
+          <figure>
+            <img src="../screenshots/Snapshot.png" alt="Snapshot screen" />
+            <figcaption>Snapshot</figcaption>
+          </figure>
+          <figure>
+            <img src="../screenshots/Transfers.png" alt="Media Transfers screen" />
+            <figcaption>Media Transfers</figcaption>
+          </figure>
+          <figure>
+            <img src="../screenshots/Search.png" alt="Search screen" />
+            <figcaption>Search</figcaption>
+          </figure>
+        </div>
+        </section>
+
+        <!-- ADVANCED -->
+        <section id="advanced" class="card">
+          <h2>How it Works (Simple, UI-Based)</h2>
+          <p class="muted">The basic setup can be extended into a more granular version by adding KidsTV and KidsMovies
+            to the mix. Klypp uses metadata from The Movie Database (TMDB) to determine which movies and shows are for
+            kids, and puts them into their own locations.</p>
+          <p class="muted">To get even more advanced, you can check the 4K box for any of the movie and TV locations.
+            When using the 4K box, it's recommended to also have a location with the 4K box unchecked (ie, one Movies
+            location for non-4K content, and one for 4K content).</p>
+          <p class="muted">And finally, for the most advanced setup, you can split your locations across multiple
+            storage devices. For example, if you have 2 Network Attached Storage (NAS) devices, you can tell Klypp to
+            prioritize one over the other for each location.
+            Klypp is smart enough to detect if you already have a TV show on one of the devices, and it will keep
+            putting new episodes for that show on that device, regardless of the priority order.</p>
+          <br />
+          <p class="muted">To summarize: Klypp routes each media title based on two things:</p>
+          <ol>
+            <li><strong>Type</strong> you can configure: <em>Movies, KidsMovies, Television, KidsTelevision</em></li>
+            <li>Whether that location’s <strong>4K checkbox</strong> is ON (<em>4K path</em>) or OFF (<em>non-4K
+                path</em>)</li>
+          </ol>
+
+          <p class="note">
+            There are no special names like “Kids4kMovies.” You simply enable a destination and choose if it’s for 4K or
+            not.
+            You can enable both a non-4K and a 4K path for the same type.
+          </p>
+        </section>
+
+        <div class="grid">
+          <section id="advanced-movies" class="card">
+            <h2>Common Movie Setups</h2>
+
+            <h3>1) One folder (catch-all)</h3>
+            <ul class="list-tight">
+              <li>Configure: <strong>Movies</strong> (4K OFF) → <code>C:\Movies\</code></li>
+              <li><strong>Result:</strong> non-4K, 4K, and kids movies all land under <code>C:\Movies\</code>.</li>
             </ul>
-          </li>
-        </ul>
 
-        <h3>5) Kids-only (no catch-all)</h3>
-        <ul class="list-tight">
-          <li>Configure: <strong>KidsTelevision</strong> (4K OFF) → <code>C:\KidsTV\</code></li>
-          <li><strong>Result:</strong> kids route; non-kids are skipped with a message.</li>
-        </ul>
+            <h3>2) 4K / non-4K split</h3>
+            <ul class="list-tight">
+              <li>Configure: <strong>Movies</strong> (4K OFF) → <code>C:\Movies\</code></li>
+              <li>Configure: <strong>Movies</strong> (4K ON) → <code>C:\4kMovies\</code></li>
+              <li><strong>Result:</strong> 4K → <code>C:\4kMovies\</code>; everything else (incl. kids) →
+                <code>C:\Movies\</code>.</li>
+            </ul>
 
-        <h3>6) 4K-only (no non-4K)</h3>
-        <ul class="list-tight">
-          <li>Configure: <strong>Television</strong> (4K ON) → <code>C:\UHDTV\</code></li>
-          <li><strong>Result:</strong> 4K routes; non-4K are skipped with a message.</li>
-        </ul>
+            <h3>3) Separate kids (optional)</h3>
+            <ul class="list-tight">
+              <li>Add <strong>KidsMovies</strong> (4K OFF) → kids go there; non-kids follow the Movie flow above.</li>
+              <li>(Optional) Add <strong>KidsMovies</strong> (4K ON) if you also want kids-4K split.</li>
+            </ul>
+          </section>
+
+           <section id="advanced-tv" class="card">
+            <h2>TV Setups (Practical Examples)</h2>
+
+            <h3>1) One folder (catch-all)</h3>
+            <ul class="list-tight">
+              <li>Configure: <strong>Television</strong> (4K OFF) → <code>C:\TV\</code></li>
+              <li><strong>Result:</strong> kids + non-kids + 4K all land under <code>C:\TV\</code>.</li>
+            </ul>
+
+            <h3>2) 4K / non-4K split</h3>
+            <ul class="list-tight">
+              <li>Configure: <strong>Television</strong> (4K OFF) → <code>C:\TV\</code></li>
+              <li>Configure: <strong>Television</strong> (4K ON) → <code>C:\UHDTV\</code></li>
+              <li><strong>Result:</strong> 4K → <code>C:\UHDTV\</code>; everything else (incl. kids) →
+                <code>C:\TV\</code>.</li>
+            </ul>
+
+            <h3>3) Separate kids (non-4K)</h3>
+            <ul class="list-tight">
+              <li>Configure: <strong>KidsTelevision</strong> (4K OFF) → <code>C:\KidsTV\</code></li>
+              <li>Configure: <strong>Television</strong> (4K OFF) → <code>C:\TV\</code></li>
+              <li>(Optional) <strong>Television</strong> (4K ON) → <code>C:\UHDTV\</code></li>
+              <li><strong>Result:</strong> kids (non-4K) → <code>C:\KidsTV\</code>; non-kids follow the TV/UHD flow.
+              </li>
+            </ul>
+
+            <h3>4) Separate kids + 4K split</h3>
+            <ul class="list-tight">
+              <li>Configure: <strong>KidsTelevision</strong> (4K OFF) → <code>C:\KidsTV\</code></li>
+              <li>Configure: <strong>KidsTelevision</strong> (4K ON) → <code>C:\KidsUHDTV\</code></li>
+              <li>Configure: <strong>Television</strong> (4K OFF) → <code>C:\TV\</code></li>
+              <li>Configure: <strong>Television</strong> (4K ON) → <code>C:\UHDTV\</code></li>
+              <li><strong>Result:</strong>
+                <ul>
+                  <li>Kids 4K → <code>C:\KidsUHDTV\</code></li>
+                  <li>Kids non-4K → <code>C:\KidsTV\</code></li>
+                  <li>Non-kids 4K → <code>C:\UHDTV\</code></li>
+                  <li>Non-kids non-4K → <code>C:\TV\</code></li>
+                </ul>
+              </li>
+            </ul>
+
+            <h3>5) Kids-only (no catch-all)</h3>
+            <ul class="list-tight">
+              <li>Configure: <strong>KidsTelevision</strong> (4K OFF) → <code>C:\KidsTV\</code></li>
+              <li><strong>Result:</strong> kids route; non-kids are skipped with a message.</li>
+            </ul>
+
+            <h3>6) 4K-only (no non-4K)</h3>
+            <ul class="list-tight">
+              <li>Configure: <strong>Television</strong> (4K ON) → <code>C:\UHDTV\</code></li>
+              <li><strong>Result:</strong> 4K routes; non-4K are skipped with a message.</li>
+            </ul>
+          </section>
+        </div>
+
+        <section id="tv-priority" class="card">
+          <h2>TV: Multiple Drives &amp; Priority (Exact Behavior)</h2>
+          <p>Each TV destination can have several paths, each with a <strong>Priority</strong> number.
+            The app checks them <em>in order</em>: <strong>1 → 2 → 3 → … → N</strong>.</p>
+          <ul>
+            <li><strong>Colocate if found:</strong> As it scans from <em>1</em> upward, if it finds the show folder on
+              any drive, it uses that same drive for the new season/episode (keeps the show intact).</li>
+            <li><strong>New shows land on the last drive:</strong> If the scan reaches the end (<em>N</em>) without
+              finding the show, the app creates the show on drive <em>N</em> (the last/lowest-priority drive).</li>
+            <li><strong>Why this matters:</strong> You can add new drives (higher numbers) while older lower-number
+              drives fill up. Existing shows keep writing where they already live, and new shows naturally start on the
+              newest “last” drive.</li>
+            <li><strong>If you remove a drive from the copy list:</strong> The app will write to whatever remains in the
+              1→N sequence. Doing this mid-series can split a show across drives, so prefer leaving older drives mounted
+              and adding new ones with higher numbers. If you plan to retire a drive, wait until all shows on it have
+              finished airing (or relocate them intentionally) before removing it.</li>
+          </ul>
+          <p><strong>In short:</strong> Scan priorities <span class="kbd">1..N</span> → if show exists at <span
+              class="kbd">k</span>, write to <span class="kbd">k</span>; if not found anywhere, create on <span
+              class="kbd">N</span>.</p>
         </section>
-      </div>
 
-      <section class="card">
-        <h2>TV: Multiple Drives &amp; Priority (Exact Behavior)</h2>
-      <p>Each TV destination can have several paths, each with a <strong>Priority</strong> number.
-        The app checks them <em>in order</em>: <strong>1 → 2 → 3 → … → N</strong>.</p>
-      <ul>
-        <li><strong>Colocate if found:</strong> As it scans from <em>1</em> upward, if it finds the show folder on any drive, it uses that same drive for the new season/episode (keeps the show intact).</li>
-        <li><strong>New shows land on the last drive:</strong> If the scan reaches the end (<em>N</em>) without finding the show, the app creates the show on drive <em>N</em> (the last/lowest-priority drive).</li>
-        <li><strong>Why this matters:</strong> You can add new drives (higher numbers) while older lower-number drives fill up. Existing shows keep writing where they already live, and new shows naturally start on the newest “last” drive.</li>
-        <li><strong>If you remove a drive from the copy list:</strong> The app will write to whatever remains in the 1→N sequence. Doing this mid-series can split a show across drives, so prefer leaving older drives mounted and adding new ones with higher numbers. If you plan to retire a drive, wait until all shows on it have finished airing (or relocate them intentionally) before removing it.</li>
-      </ul>
-      <p><strong>In short:</strong> Scan priorities <span class="kbd">1..N</span> → if show exists at <span class="kbd">k</span>, write to <span class="kbd">k</span>; if not found anywhere, create on <span class="kbd">N</span>.</p>
-      </section>
+        <!-- ADVANCED: DIRECT UPLOADS (BYPASS RELAY) -->
+        <section id="direct-uploads" class="card">
+          <h2>Advanced: Direct Uploads (Bypass the Relay)</h2>
+
+          <p class="muted">
+            By default, Klypp uploads can go through the relay so you don’t need to expose your server to the internet.
+            If you prefer to bypass the relay completely, you can use a private VPN network to reach your server
+            directly
+            from your phone — while keeping the server secure (no port forwarding).
+          </p>
+
+          <h3>Recommended apps (cross-platform)</h3>
+          <ul class="list-tight">
+            <li><strong>Tailscale</strong> (easy setup, device-to-device, works great for direct uploads)</li>
+            <li><strong>ZeroTier</strong> (similar idea, also cross-platform)</li>
+            <li><strong>WireGuard</strong> (more manual, great if you want full control)</li>
+          </ul>
+
+          <h3>How it works</h3>
+          <ul class="list-tight">
+            <li>You install the VPN app on <strong>both</strong> your server and your phone.</li>
+            <li>The VPN gives your server a private IP/hostname that only your devices can access.</li>
+            <li>Klypp uploads go to that private address instead of the relay.</li>
+          </ul>
+
+          <p class="note">
+            <strong>Security tip:</strong> Keep your server private. Do <strong>not</strong> open/forward ports on your
+            router for uploads.
+            Using a private VPN means your upload endpoint stays off the public internet.
+          </p>
+
+          <h3>Mobile app: Find Server (VPN IP dropdown)</h3>
+          <p class="muted">
+            In the mobile app, go to <strong>Settings</strong> → <strong>Find Server</strong>.
+            Klypp will scan and show discovered servers on your network. If you’re connected to a VPN
+            (like Tailscale/ZeroTier), you can select your server’s <strong>VPN IP</strong> from the dropdown.
+          </p>
+
+          <h3>Example</h3>
+          <p class="muted">
+            If your server’s VPN IP is <code>100.x.y.z</code>, your upload endpoint can be:
+            <br />
+            <code>http://100.x.y.z:8081/api/upload</code>
+          </p>
+        </section>
       </main>
     </div>
 
-    <p class="footer">© 2025 Klypp LLC · <a href="../index.html">Home</a> · <a href="../setup/index.html" class="is-active" aria-current="page">Setup</a> · <a href="../support/index.html">Support</a> · <a href="../privacy/index.html">Privacy</a> · <a href="https://app.klyppedit.com/swagger">Server Downloads</a></p>
+    <p class="footer">© 2025 Klypp LLC · <a href="../index.html">Home</a> · <a href="../setup/index.html"
+        class="is-active" aria-current="page">Setup</a> · <a href="../support/index.html">Support</a> · <a
+        href="../privacy/index.html">Privacy</a> · <a href="https://app.klyppedit.com/swagger">Server Downloads</a></p>
   </div>
 </body>
+
 </html>
