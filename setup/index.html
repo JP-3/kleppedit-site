@@ -698,7 +698,8 @@
               <li>Configure: <strong>Movies</strong> (4K OFF) → <code>C:\Movies\</code></li>
               <li>Configure: <strong>Movies</strong> (4K ON) → <code>C:\4kMovies\</code></li>
               <li><strong>Result:</strong> 4K → <code>C:\4kMovies\</code>; everything else (incl. kids) →
-                <code>C:\Movies\</code>.</li>
+                <code>C:\Movies\</code>.
+              </li>
             </ul>
 
             <h3>3) Separate kids (optional)</h3>
@@ -708,7 +709,7 @@
             </ul>
           </section>
 
-           <section id="advanced-tv" class="card">
+          <section id="advanced-tv" class="card">
             <h2>TV Setups (Practical Examples)</h2>
 
             <h3>1) One folder (catch-all)</h3>
@@ -722,7 +723,8 @@
               <li>Configure: <strong>Television</strong> (4K OFF) → <code>C:\TV\</code></li>
               <li>Configure: <strong>Television</strong> (4K ON) → <code>C:\UHDTV\</code></li>
               <li><strong>Result:</strong> 4K → <code>C:\UHDTV\</code>; everything else (incl. kids) →
-                <code>C:\TV\</code>.</li>
+                <code>C:\TV\</code>.
+              </li>
             </ul>
 
             <h3>3) Separate kids (non-4K)</h3>
@@ -791,15 +793,17 @@
           <h2>Advanced: Direct Uploads (Bypass the Relay)</h2>
 
           <p class="muted">
-            By default, Klypp uploads can go through the relay so you don’t need to expose your server to the internet.
-            If you prefer to bypass the relay completely, you can use a private VPN network to reach your server
-            directly
-            from your phone — while keeping the server secure (no port forwarding).
+            By default, Klypp uploads can go through the relay so you don’t need to make your server reachable from the
+            public
+            internet. If you prefer to bypass the relay, you can use a private VPN network (like Tailscale, ZeroTier, or
+            WireGuard) to connect your phone to your server using a private network address. This can reduce internet
+            exposure,
+            but security still depends on how your VPN, firewall, devices, and server are configured.
           </p>
 
           <h3>Recommended apps (cross-platform)</h3>
           <ul class="list-tight">
-            <li><strong>Tailscale</strong> (easy setup, device-to-device, works great for direct uploads)</li>
+            <li><strong>Tailscale</strong> (easy setup, device-to-device, works well for direct uploads)</li>
             <li><strong>ZeroTier</strong> (similar idea, also cross-platform)</li>
             <li><strong>WireGuard</strong> (more manual, great if you want full control)</li>
           </ul>
@@ -807,14 +811,18 @@
           <h3>How it works</h3>
           <ul class="list-tight">
             <li>You install the VPN app on <strong>both</strong> your server and your phone.</li>
-            <li>The VPN gives your server a private IP/hostname that only your devices can access.</li>
+            <li>The VPN assigns your server a private IP/hostname that is reachable only by devices on that VPN.</li>
             <li>Klypp uploads go to that private address instead of the relay.</li>
           </ul>
 
           <p class="note">
-            <strong>Security tip:</strong> Keep your server private. Do <strong>not</strong> open/forward ports on your
-            router for uploads.
-            Using a private VPN means your upload endpoint stays off the public internet.
+            <strong>Security tips:</strong> If you don’t need your upload service public, avoid opening/forwarding
+            router ports
+            for uploads. Keep your server and VPN clients updated, and use firewall rules to restrict access where
+            possible.
+            Using a private VPN typically keeps the upload address off the open internet, but it’s not a
+            guarantee—review your
+            configuration.
           </p>
 
           <h3>Mobile app: Find Server (VPN IP dropdown)</h3>
@@ -826,9 +834,11 @@
 
           <h3>Example</h3>
           <p class="muted">
-            If your server’s VPN IP is <code>100.x.y.z</code>, your upload endpoint can be:
+            If your server’s VPN IP is <code>100.x.y.z</code>, for example, your upload endpoint could be:
             <br />
             <code>http://100.x.y.z:8081/api/upload</code>
+            <br />
+            <span class="muted">(If your server supports HTTPS, prefer <code>https://</code>.)</span>
           </p>
         </section>
       </main>
