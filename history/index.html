@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Klypp History</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Release and milestone history for Klypp and KlyppServer." />
+  <style>
+    @import url("https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap");
+
+    :root {
+      --bg: #0b0f17;
+      --fg: #e6edf7;
+      --muted: #9aa7bb;
+      --card: rgba(17, 23, 36, 0.72);
+      --link: #7fb2ff;
+      --accent: #3a7bff;
+      --accent-2: #36d1dc;
+      --ring: rgba(63, 135, 255, .28);
+      --radius: 20px;
+      --border: rgba(141, 162, 196, .18);
+      --shadow: 0 28px 80px rgba(0, 0, 0, .45);
+      --shadow-soft: 0 14px 30px rgba(0, 0, 0, .28);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      font-family: "IBM Plex Sans", "Segoe UI", Tahoma, sans-serif;
+      margin: 0;
+      padding: 34px 16px 54px;
+      background:
+        radial-gradient(900px 520px at 5% -10%, rgba(58, 123, 255, .22) 0%, rgba(58, 123, 255, 0) 60%),
+        radial-gradient(1000px 520px at 110% 0%, rgba(54, 209, 220, .18) 0%, rgba(54, 209, 220, 0) 60%),
+        radial-gradient(1000px 700px at 50% 120%, rgba(20, 27, 45, .9) 0%, rgba(11, 15, 23, 0) 60%),
+        linear-gradient(180deg, #0b0f17 0%, #0c111b 100%);
+      color: var(--fg);
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(circle at 20% 20%, rgba(255, 255, 255, .05), transparent 45%),
+        radial-gradient(circle at 80% 10%, rgba(255, 255, 255, .05), transparent 45%),
+        linear-gradient(90deg, rgba(255, 255, 255, .04) 1px, transparent 1px) 0 0/48px 48px,
+        linear-gradient(0deg, rgba(255, 255, 255, .03) 1px, transparent 1px) 0 0/48px 48px;
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    .wrap { max-width: 1040px; margin: 0 auto; }
+
+    header.hero {
+      text-align: center;
+      margin-bottom: 20px;
+      background: linear-gradient(135deg, rgba(58, 123, 255, .18), rgba(54, 209, 220, .16));
+      border: 1px solid rgba(122, 150, 200, .25);
+      border-radius: 26px;
+      padding: 24px 20px 18px;
+      box-shadow: var(--shadow-soft);
+      position: relative;
+      overflow: hidden;
+      backdrop-filter: blur(8px);
+      min-height: 220px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    header.hero::after {
+      content: "";
+      position: absolute;
+      width: 260px;
+      height: 260px;
+      right: -120px;
+      top: -140px;
+      background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, .45), rgba(255, 255, 255, 0));
+      pointer-events: none;
+    }
+
+    .hero-badges {
+      position: absolute;
+      top: 16px;
+      left: 16px;
+      display: inline-flex;
+      flex-direction: column;
+      gap: 8px;
+      align-items: center;
+      z-index: 2;
+    }
+
+    .store-badge { display: inline-flex; align-items: center; text-decoration: none; background: transparent; padding: 0; border-radius: 0; }
+    .store-badge img { width: 150px; height: 35px; object-fit: contain; display: block; }
+    .store-badge.ios img { width: 164px; height: 39px; }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: rgba(10, 16, 28, .7);
+      border: 1px solid rgba(141, 162, 196, .28);
+      color: #d6e2f5;
+      font-weight: 600;
+      font-size: .82rem;
+      margin-bottom: 10px;
+      text-transform: uppercase;
+      letter-spacing: .6px;
+    }
+
+    h1 { margin: 0 0 6px; font-family: "Sora", "Trebuchet MS", sans-serif; }
+    .subtitle { color: var(--muted); margin: 0; }
+
+    nav {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      margin: 14px 0 0;
+      flex-wrap: wrap;
+    }
+
+    nav a {
+      color: var(--accent);
+      text-decoration: none;
+      padding: 6px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(122, 150, 200, .28);
+      background: rgba(9, 14, 24, .7);
+      font-weight: 600;
+      font-size: .92rem;
+    }
+
+    nav a:hover {
+      background: rgba(14, 22, 36, .85);
+      border-color: rgba(140, 170, 220, .45);
+    }
+
+    nav a.is-active {
+      background: linear-gradient(135deg, rgba(58, 123, 255, .35), rgba(54, 209, 220, .25));
+      border-color: rgba(123, 158, 220, .65);
+      color: #e8f1ff;
+      cursor: default;
+    }
+
+    .card {
+      background: var(--card);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 22px;
+      border: 1px solid var(--border);
+      position: relative;
+      backdrop-filter: blur(12px);
+      margin-bottom: 14px;
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: 0 0 auto 0;
+      height: 4px;
+      border-radius: var(--radius) var(--radius) 0 0;
+      background: linear-gradient(90deg, rgba(26, 91, 216, .6), rgba(0, 160, 166, .6));
+      opacity: .7;
+    }
+
+    .entry-head { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; align-items: center; }
+    .entry-head h3 { margin: 0; font-family: "Sora", "Trebuchet MS", sans-serif; font-size: 1.05rem; }
+    .date-pill {
+      display: inline-block;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(141, 162, 196, .45);
+      background: rgba(9, 14, 24, .6);
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    ul { margin: 10px 0 0 1.1rem; }
+    li { line-height: 1.65; margin-bottom: 2px; }
+    a { color: var(--link); }
+    .footer { text-align: center; color: var(--muted); margin-top: 22px; font-size: .95rem; }
+
+    @media (max-width: 720px) {
+      .hero-badges { position: static; margin-bottom: 10px; align-self: flex-start; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="hero">
+      <div class="hero-badges">
+        <a class="store-badge ios" href="https://apps.apple.com/us/app/klypp/id6753725499" target="_blank" rel="noreferrer" aria-label="Download on the App Store">
+          <img src="../assets/app-store-badge.svg" alt="Download on the App Store" />
+        </a>
+        <a class="store-badge android" href="https://play.google.com/store/apps/details?id=com.klyppedit.klypp" target="_blank" rel="noreferrer" aria-label="Get Klypp on Google Play (beta)">
+          <img src="../assets/google-play-badge.svg" alt="Get it on Google Play" />
+        </a>
+      </div>
+      <div class="eyebrow">Release Notes</div>
+      <h1>Klypp History</h1>
+      <p class="subtitle">Real project milestones from repository history. New releases will be added manually.</p>
+      <nav>
+        <a href="../index.html">Home</a>
+        <a href="../setup/index.html">Setup</a>
+        <a href="../support/index.html">Support</a>
+        <a href="../faq/index.html">FAQ</a>
+        <a href="../history/index.html" class="is-active" aria-current="page">History</a>
+        <a href="../privacy/index.html">Privacy</a>
+        <a href="https://app.klyppedit.com/swagger">Server Downloads</a>
+      </nav>
+    </header>
+    <section class="card"><div class="entry-head"><h3>Cross-platform ephemeral key fix</h3><span class="date-pill">May 21, 2026</span></div><ul><li>Fixed ephemeral key behavior for Windows, Linux, and macOS compatibility.</li><li>Closed platform-specific mismatch issues affecting auth/handshake reliability.</li></ul></section>
+    <section class="card"><div class="entry-head"><h3>File mover quiet-time/sleep behavior</h3><span class="date-pill">May 17-21, 2026</span></div><ul><li>Added quiet-time behavior so files can queue before processing.</li><li>Helped support overnight/NAS-friendly processing windows.</li></ul></section>
+    <section class="card"><div class="entry-head"><h3>Plex refresh integration and path guidance</h3><span class="date-pill">May 16-17, 2026</span></div><ul><li>Added server-triggered Plex refresh functionality.</li><li>Added user guidance for exact path matching expectations between Plex and KlyppServer.</li></ul></section>
+    <section class="card"><div class="entry-head"><h3>Relay cert/token self-heal and 401 retry</h3><span class="date-pill">May 1 - May 21, 2026</span></div><ul><li>Added relay token refresh and cert reissue retry on auth failures.</li><li>Improved self-healing around cert lifecycle and silent-close reconnect edge cases.</li></ul></section>
+    <section class="card"><div class="entry-head"><h3>Startup preflight and offline deferral tuning</h3><span class="date-pill">April 26-27, 2026</span></div><ul><li>Made destination preflight failures non-fatal at startup where appropriate.</li><li>Capped offline deferral backoff to keep retries bounded and predictable.</li></ul></section>
+    <section class="card"><div class="entry-head"><h3>Cert-only media/auth path hardening</h3><span class="date-pill">April 18-21, 2026</span></div><ul><li>Enforced cert-based internal billing/media auth flows.</li><li>Removed older fallback auth paths to reduce mixed-mode risk.</li></ul></section>
+    <section class="card"><div class="entry-head"><h3>CORS allowlist hardening</h3><span class="date-pill">April 20, 2026</span></div><ul><li>Added explicit origin allowlist policy handling.</li><li>Tightened cross-origin behavior to reduce accidental exposure.</li></ul></section>
+    <section class="card"><div class="entry-head"><h3>API auth lockdown and bearer-only upload auth</h3><span class="date-pill">April 20, 2026</span></div><ul><li>Required authentication across key operational API endpoints.</li><li>Enforced bearer-only auth model for direct upload endpoints.</li></ul></section>
+    <section class="card"><div class="entry-head"><h3>Loopback default and LAN opt-in</h3><span class="date-pill">April 20, 2026</span></div><ul><li>Changed default binding to loopback for safer local-first posture.</li><li>Added explicit LAN opt-in setting and UI controls for broader exposure.</li></ul></section>
+    <section class="card"><div class="entry-head"><h3>Windows installer/signing hardening</h3><span class="date-pill">April 7, 2026</span></div><ul><li>Improved fresh-install behavior requiring proper code-signing flow.</li><li>Hardened installer path for production-style Windows deployments.</li></ul></section>
+    <section class="card"><div class="entry-head"><h3>Direct vs relay upload gating changes</h3><span class="date-pill">April 1, 2026</span></div><ul><li>Adjusted direct-vs-relay upload gating logic.</li><li>Reduced unnecessary blocking/counting behavior for WebUI server paths.</li></ul></section>
+    <section class="card"><div class="entry-head"><h3>Custom mover matching</h3><span class="date-pill">March 29, 2026</span></div><ul><li>Added personal matching string support for mover behavior.</li><li>Enabled more user-specific movie/TV routing decisions.</li></ul></section>
+    <section class="card"><div class="entry-head"><h3>Custom scripts and script history</h3><span class="date-pill">February 4 - March 27, 2026</span></div><ul><li>Added custom script runner/invocation capability for mobile/server workflows.</li><li>Added script history/action tracking and scheduling/push integration.</li></ul></section>
+    <section class="card"><div class="entry-head"><h3>Push notifications added and refined</h3><span class="date-pill">March 21 - May 17, 2026</span></div><ul><li>Added iOS/Android push notification capabilities.</li><li>Iterated on throttling, naming, and payload clarity to reduce spam/noise.</li></ul></section>
+    <section class="card"><div class="entry-head"><h3>Windows connectivity/reconnect hardening</h3><span class="date-pill">March 4-6, 2026</span></div><ul><li>Added reconnect logic to reduce stale stream issues on Windows.</li><li>Improved diagnostics and stability for long-running Windows connectivity.</li></ul></section>
+    <section class="card"><div class="entry-head"><h3>.NET 10 update cycle</h3><span class="date-pill">February 27, 2026</span></div><ul><li>Updated project/runtime alignment around .NET 10.</li><li>Included follow-up fixes for disconnect/regression behavior after upgrade.</li></ul></section>
+    <section class="card"><div class="entry-head"><h3>Docker version/update behavior</h3><span class="date-pill">February 18, 2026</span></div><ul><li>Made update UI resolve Docker version correctly.</li><li>Adjusted update actions where Docker-managed updates should apply instead.</li></ul></section>
+    <section class="card"><div class="entry-head"><h3>Scheduled scans and controls</h3><span class="date-pill">February 14, 2026</span></div><ul><li>Added scheduled scans for ongoing library/upcoming synchronization.</li><li>Added disable toggle and randomized schedule offsets to avoid API spikes.</li></ul></section>
+    <section class="card"><div class="entry-head"><h3>Build/version visibility and artifact naming</h3><span class="date-pill">February 2, 2026</span></div><ul><li>Added server version visibility in WebUI.</li><li>Updated build outputs to include version in artifact naming conventions.</li></ul></section>
+    <section class="card"><div class="entry-head"><h3>DB maintenance actions</h3><span class="date-pill">January 31 - February 4, 2026</span></div><ul><li>Added maintenance actions/buttons for clearing operational DB tables.</li><li>Expanded admin controls for queue/data cleanup from UI.</li></ul></section>
+    <section class="card"><div class="entry-head"><h3>Processing queue DB persistence</h3><span class="date-pill">February 4, 2026</span></div><ul><li>Persisted queued/deferred items to DB for crash/reboot continuity.</li><li>Added jump-queue behavior to support reprioritization workflows.</li></ul></section>
+    <section class="card"><div class="entry-head"><h3>Queue status and out-of-space handling</h3><span class="date-pill">January 26, 2026</span></div><ul><li>Added queue status tracking and surfaced deferred reasons.</li><li>Improved behavior/reporting when destination storage is out of space.</li></ul></section>
+    <section class="card"><div class="entry-head"><h3>WinRAR/unar transfer tagging</h3><span class="date-pill">January 26, 2026</span></div><ul><li>Added unrar-related tags/events so clients can display extraction state.</li><li>Improved transfer visibility for archives that require extraction steps.</li></ul></section>
+    <section class="card"><div class="entry-head"><h3>Pause/resume transfer handling</h3><span class="date-pill">January 27, 2026</span></div><ul><li>Improved pause/resume state handling for transfer lifecycle.</li><li>Fixed behavior around completed items during pause transitions.</li></ul></section>
+    <section class="card"><div class="entry-head"><h3>TMDB manager removal and relay lookup cleanup</h3><span class="date-pill">January 27 - March 12, 2026</span></div><ul><li>Removed legacy TMDB manager implementation.</li><li>Renamed/refined lookup logging for clearer relay-based media resolution diagnostics.</li></ul></section>
+    <section class="card"><div class="entry-head"><h3>DB cleanup and table removal</h3><span class="date-pill">December 11, 2025</span></div><ul><li>Removed unused database tables and related dead methods.</li><li>Reduced schema and code complexity around stale storage paths.</li></ul></section>
+    <section class="card"><div class="entry-head"><h3>Scanner matching and ignore hierarchy</h3><span class="date-pill">November 29, 2025 - March 13, 2026</span></div><ul><li>Improved TV episode matching logic including harder naming cases.</li><li>Implemented and hardened show/season/episode ignore hierarchy behavior.</li></ul></section>
+    <section class="card"><div class="entry-head"><h3>Missing episodes/timezone correctness</h3><span class="date-pill">November 24-30, 2025</span></div><ul><li>Corrected missing-episode ordering and date interpretation issues.</li><li>Fixed UTC/local-date behavior that caused same-day airing confusion.</li></ul></section>
+    <section class="card"><div class="entry-head"><h3>Windows LAN reachability update</h3><span class="date-pill">November 6, 2025</span></div><ul><li>Switched to LAN-reachable binding behavior for Windows installs.</li><li>Made local network access easier for remote/mobile clients.</li></ul></section>
+    <section class="card"><div class="entry-head"><h3>Server settings/version UI</h3><span class="date-pill">November 8, 2025</span></div><ul><li>Added server settings surface in WebUI.</li><li>Exposed version information directly in UI for quicker diagnostics.</li></ul></section>
+    <section class="card"><div class="entry-head"><h3>Docker build/publish improvements</h3><span class="date-pill">November 29, 2025</span></div><ul><li>Cleaned up Docker build/publish pipeline warnings and behavior.</li><li>Improved consistency for containerized deployment workflows.</li></ul></section>
+    <section class="card"><div class="entry-head"><h3>Upload routing to avoid watcher conflicts</h3><span class="date-pill">January 6, 2026</span></div><ul><li>Routed specific upload paths/subfolders to avoid NightsWatch interference.</li><li>Prevented captures/uploads from being prematurely processed by scan workflows.</li></ul></section>
+    <section class="card"><div class="entry-head"><h3>Kestrel/direct-upload stability</h3><span class="date-pill">December 31, 2025 - January 8, 2026</span></div><ul><li>Increased upload robustness for larger files and unstable connections.</li><li>Fixed direct upload connection behavior that previously failed under certain conditions.</li></ul></section>
+    <section class="card"><div class="entry-head"><h3>Bulk/direct upload route work</h3><span class="date-pill">January 9, 2026</span></div><ul><li>Added bulk upload route capability for higher-throughput ingest scenarios.</li><li>Expanded server API surface for upload workflows used by clients.</li></ul></section>
+    <section class="card"><div class="entry-head"><h3>Hardcoded config moved to configuration</h3><span class="date-pill">January 9, 2026</span></div><ul><li>Moved operational values out of hardcoded code paths.</li><li>Improved environment flexibility and reduced code edits for deploy changes.</li></ul></section>
+    <section class="card"><div class="entry-head"><h3>Windows installer introduced</h3><span class="date-pill">September 2, 2025</span></div><ul><li>Added Windows installer support for packaged distribution.</li><li>Enabled packaged install flow rather than manual publish-only setup.</li></ul></section>
+    <section class="card"><div class="entry-head"><h3>DB-on-launch and token usage fixes</h3><span class="date-pill">September 1, 2025</span></div><ul><li>Added startup database creation/initialization flow.</li><li>Corrected token usage from login so authenticated calls worked reliably.</li></ul></section>
+    <section class="card"><div class="entry-head"><h3>Drives page added</h3><span class="date-pill">August 31, 2025</span></div><ul><li>Added UI for managing drive/media path configuration.</li><li>Made storage settings editable from the browser instead of file-only setup.</li></ul></section>
+    <section class="card"><div class="entry-head"><h3>WebUI login working</h3><span class="date-pill">August 30, 2025</span></div><ul><li>Implemented a functional login flow for WebUI access.</li><li>Added initial auth gating so services/actions required authenticated access.</li></ul></section>
+    <section class="card"><div class="entry-head"><h3>WebUI started</h3><span class="date-pill">August 30, 2025</span></div><ul><li>Introduced the initial WebUI project and early page framework.</li><li>Established the path for browser-based server administration.</li></ul></section>
+    <section class="card"><div class="entry-head"><h3>NAS failover and .partial copy strategy</h3><span class="date-pill">August 26-28, 2025</span></div><ul><li>Added deferred queue behavior when NAS/storage is unavailable.</li><li>Introduced .partial handling to prevent incomplete media from being detected as complete.</li></ul></section>
+    <section class="card"><div class="entry-head"><h3>Connection resilience basics</h3><span class="date-pill">July 12-13, 2025</span></div><ul><li>Added keep-alive ping support to reduce stale relay/server sessions.</li><li>Explicitly terminated unauthenticated/tokenless connections for safer behavior.</li></ul></section>
+    <section class="card"><div class="entry-head"><h3>Relay cert retrieval and local reuse</h3><span class="date-pill">July 11, 2025</span></div><ul><li>Server started consuming certificates provided by Relay after auth.</li><li>Certificate reuse was added so reconnects could avoid unnecessary regeneration.</li></ul></section>
+    <section class="card"><div class="entry-head"><h3>NightsWatch added/integrated</h3><span class="date-pill">June 18-21, 2025</span></div><ul><li>Added NightsWatch projects into the solution and connected scanning components.</li><li>Brought over enough watcher functionality to be usable while cleanup remained.</li></ul></section>
+
+
+    <section class="card"><div class="entry-head"><h3>Project initialized</h3><span class="date-pill">June 14, 2025</span></div><ul><li>Bootstrapped the repository with core project structure and solution files.</li><li>Took the original POC project and used it as the foundation for a new production-ready version.</li></ul></section>
+
+    <p class="footer">© 2026 Klypp LLC · <a href="../index.html">Home</a> · <a href="../setup/index.html">Setup</a> · <a href="../support/index.html">Support</a> · <a href="../faq/index.html">FAQ</a> · <a href="../history/index.html">History</a> · <a href="../privacy/index.html">Privacy</a> · <a href="https://app.klyppedit.com/swagger">Server Downloads</a></p>
+  </div>
+</body>
+</html>
