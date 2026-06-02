@@ -21,6 +21,14 @@
       --border: rgba(141, 162, 196, .18);
       --shadow: 0 28px 80px rgba(0, 0, 0, .45);
       --shadow-soft: 0 14px 30px rgba(0, 0, 0, .28);
+      --server-accent: #6aa8ff;
+      --server-accent-2: #47d0c7;
+      --mobile-accent: #78e08f;
+      --mobile-accent-2: #2ecc71;
+      --android-accent: #b5f07d;
+      --android-accent-2: #84cc16;
+      --ios-accent: #ffb37a;
+      --ios-accent-2: #ff7f50;
     }
 
     * { box-sizing: border-box; }
@@ -114,6 +122,39 @@
 
     h1 { margin: 0 0 6px; font-family: "Sora", "Trebuchet MS", sans-serif; }
     .subtitle { color: var(--muted); margin: 0; }
+    .legend {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin: 14px 0 2px;
+    }
+
+    .legend-pill,
+    .entry-kind {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 6px 11px;
+      border-radius: 999px;
+      border: 1px solid rgba(141, 162, 196, .24);
+      background: rgba(9, 14, 24, .58);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: #e6edf7;
+    }
+
+    .legend-pill::before,
+    .entry-kind::before {
+      content: "";
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: currentColor;
+      box-shadow: 0 0 0 4px rgba(255, 255, 255, .05);
+    }
 
     nav {
       display: flex;
@@ -168,6 +209,13 @@
     }
 
     .entry-head { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; align-items: center; }
+    .entry-meta {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
     .entry-head h3 { margin: 0; font-family: "Sora", "Trebuchet MS", sans-serif; font-size: 1.05rem; }
     .date-pill {
       display: inline-block;
@@ -178,6 +226,66 @@
       color: var(--muted);
       font-size: 12px;
       font-weight: 600;
+    }
+
+    .card-server {
+      background:
+        linear-gradient(180deg, rgba(18, 28, 46, .82), rgba(14, 19, 31, .74));
+      border-color: rgba(106, 168, 255, .22);
+    }
+
+    .card-server::before {
+      background: linear-gradient(90deg, rgba(106, 168, 255, .9), rgba(71, 208, 199, .8));
+    }
+
+    .card-mobile {
+      background:
+        linear-gradient(180deg, rgba(16, 34, 24, .82), rgba(11, 20, 15, .74));
+      border-color: rgba(120, 224, 143, .22);
+    }
+
+    .card-mobile::before {
+      background: linear-gradient(90deg, rgba(120, 224, 143, .95), rgba(46, 204, 113, .78));
+    }
+
+    .card-android {
+      background:
+        linear-gradient(180deg, rgba(32, 39, 14, .82), rgba(18, 22, 10, .74));
+      border-color: rgba(181, 240, 125, .22);
+    }
+
+    .card-android::before {
+      background: linear-gradient(90deg, rgba(181, 240, 125, .95), rgba(132, 204, 22, .78));
+    }
+
+    .card-ios {
+      background:
+        linear-gradient(180deg, rgba(41, 25, 18, .82), rgba(22, 16, 14, .74));
+      border-color: rgba(255, 179, 122, .24);
+    }
+
+    .card-ios::before {
+      background: linear-gradient(90deg, rgba(255, 179, 122, .95), rgba(255, 127, 80, .82));
+    }
+
+    .kind-server,
+    .legend-server {
+      color: var(--server-accent);
+    }
+
+    .kind-mobile,
+    .legend-mobile {
+      color: var(--mobile-accent);
+    }
+
+    .kind-android,
+    .legend-android {
+      color: var(--android-accent);
+    }
+
+    .kind-ios,
+    .legend-ios {
+      color: var(--ios-accent);
     }
 
     ul { margin: 10px 0 0 1.1rem; }
@@ -204,6 +312,12 @@
       <div class="eyebrow">Release Notes</div>
       <h1>Klypp History</h1>
       <p class="subtitle">A timeline of product and platform milestones.</p>
+      <div class="legend" aria-label="History entry types">
+        <span class="legend-pill legend-server">Server</span>
+        <span class="legend-pill legend-mobile">Mobile App</span>
+        <span class="legend-pill legend-android">Android</span>
+        <span class="legend-pill legend-ios">iOS</span>
+      </div>
       <nav>
         <a href="../index.html">Home</a>
         <a href="../setup/index.html">Setup</a>
@@ -214,53 +328,75 @@
         <a href="https://app.klyppedit.com/swagger">Server Downloads</a>
       </nav>
     </header>
-    <section class="card"><div class="entry-head"><h3>Cross-platform ephemeral key fix</h3><span class="date-pill">0.26.521</span></div><ul><li>Fixed ephemeral key behavior for Windows, Linux, and macOS compatibility.</li><li>Closed platform-specific mismatch issues affecting auth/handshake reliability.</li></ul></section>
-    <section class="card"><div class="entry-head"><h3>File mover quiet-time/sleep behavior</h3><span class="date-pill">0.26.517</span></div><ul><li>Added quiet-time behavior so files can queue before processing.</li><li>Helped support overnight/NAS-friendly processing windows.</li></ul></section>
-    <section class="card"><div class="entry-head"><h3>Plex refresh integration and path guidance</h3><span class="date-pill">0.26.516</span></div><ul><li>Added server-triggered Plex refresh functionality.</li><li>Added user guidance for exact path matching expectations between Plex and KlyppServer.</li></ul></section>
-    <section class="card"><div class="entry-head"><h3>Relay cert/token self-heal and 401 retry</h3><span class="date-pill">0.26.501</span></div><ul><li>Added relay token refresh and cert reissue retry on auth failures.</li><li>Improved self-healing around cert lifecycle and silent-close reconnect edge cases.</li></ul></section>
-    <section class="card"><div class="entry-head"><h3>Startup preflight and offline deferral tuning</h3><span class="date-pill">0.26.426</span></div><ul><li>Made destination preflight failures non-fatal at startup where appropriate.</li><li>Capped offline deferral backoff to keep retries bounded and predictable.</li></ul></section>
-    <section class="card"><div class="entry-head"><h3>Cert-only media/auth path hardening</h3><span class="date-pill">0.26.418</span></div><ul><li>Enforced cert-based internal billing/media auth flows.</li><li>Removed older fallback auth paths to reduce mixed-mode risk.</li></ul></section>
-    <section class="card"><div class="entry-head"><h3>CORS allowlist hardening</h3><span class="date-pill">0.26.420</span></div><ul><li>Added explicit origin allowlist policy handling.</li><li>Tightened cross-origin behavior to reduce accidental exposure.</li></ul></section>
-    <section class="card"><div class="entry-head"><h3>API auth lockdown and bearer-only upload auth</h3><span class="date-pill">0.26.420</span></div><ul><li>Required authentication across key operational API endpoints.</li><li>Enforced bearer-only auth model for direct upload endpoints.</li></ul></section>
-    <section class="card"><div class="entry-head"><h3>Loopback default and LAN opt-in</h3><span class="date-pill">0.26.420</span></div><ul><li>Changed default binding to loopback for safer local-first posture.</li><li>Added explicit LAN opt-in setting and UI controls for broader exposure.</li></ul></section>
-    <section class="card"><div class="entry-head"><h3>Windows installer/signing hardening</h3><span class="date-pill">0.26.407</span></div><ul><li>Improved fresh-install behavior requiring proper code-signing flow.</li><li>Hardened installer path for production-style Windows deployments.</li></ul></section>
-    <section class="card"><div class="entry-head"><h3>Direct vs relay upload gating changes</h3><span class="date-pill">0.26.401</span></div><ul><li>Adjusted direct-vs-relay upload gating logic.</li><li>Reduced unnecessary blocking/counting behavior for WebUI server paths.</li></ul></section>
-    <section class="card"><div class="entry-head"><h3>Custom mover matching</h3><span class="date-pill">0.26.329</span></div><ul><li>Added personal matching string support for mover behavior.</li><li>Enabled more user-specific movie/TV routing decisions.</li></ul></section>
-    <section class="card"><div class="entry-head"><h3>Custom scripts and script history</h3><span class="date-pill">0.26.204</span></div><ul><li>Added custom script runner/invocation capability for mobile/server workflows.</li><li>Added script history/action tracking and scheduling/push integration.</li></ul></section>
-    <section class="card"><div class="entry-head"><h3>Push notifications added and refined</h3><span class="date-pill">0.26.321</span></div><ul><li>Added iOS/Android push notification capabilities.</li><li>Iterated on throttling, naming, and payload clarity to reduce spam/noise.</li></ul></section>
-    <section class="card"><div class="entry-head"><h3>Windows connectivity/reconnect hardening</h3><span class="date-pill">0.26.304</span></div><ul><li>Added reconnect logic to reduce stale stream issues on Windows.</li><li>Improved diagnostics and stability for long-running Windows connectivity.</li></ul></section>
-    <section class="card"><div class="entry-head"><h3>.NET 10 update cycle</h3><span class="date-pill">0.26.227</span></div><ul><li>Updated project/runtime alignment around .NET 10.</li><li>Included follow-up fixes for disconnect/regression behavior after upgrade.</li></ul></section>
-    <section class="card"><div class="entry-head"><h3>Docker version/update behavior</h3><span class="date-pill">0.26.218</span></div><ul><li>Made update UI resolve Docker version correctly.</li><li>Adjusted update actions where Docker-managed updates should apply instead.</li></ul></section>
-    <section class="card"><div class="entry-head"><h3>Scheduled scans and controls</h3><span class="date-pill">0.26.214</span></div><ul><li>Added scheduled scans for ongoing library/upcoming synchronization.</li><li>Added disable toggle and randomized schedule offsets to avoid API spikes.</li></ul></section>
-    <section class="card"><div class="entry-head"><h3>Build/version visibility and artifact naming</h3><span class="date-pill">0.26.202</span></div><ul><li>Added server version visibility in WebUI.</li><li>Updated build outputs to include version in artifact naming conventions.</li></ul></section>
-    <section class="card"><div class="entry-head"><h3>DB maintenance actions</h3><span class="date-pill">0.26.131</span></div><ul><li>Added maintenance actions/buttons for clearing operational DB tables.</li><li>Expanded admin controls for queue/data cleanup from UI.</li></ul></section>
-    <section class="card"><div class="entry-head"><h3>Processing queue DB persistence</h3><span class="date-pill">0.26.204</span></div><ul><li>Persisted queued/deferred items to DB for crash/reboot continuity.</li><li>Added jump-queue behavior to support reprioritization workflows.</li></ul></section>
-    <section class="card"><div class="entry-head"><h3>Queue status and out-of-space handling</h3><span class="date-pill">0.26.126</span></div><ul><li>Added queue status tracking and surfaced deferred reasons.</li><li>Improved behavior/reporting when destination storage is out of space.</li></ul></section>
-    <section class="card"><div class="entry-head"><h3>WinRAR/unar transfer tagging</h3><span class="date-pill">0.26.126</span></div><ul><li>Added unrar-related tags/events so clients can display extraction state.</li><li>Improved transfer visibility for archives that require extraction steps.</li></ul></section>
-    <section class="card"><div class="entry-head"><h3>Pause/resume transfer handling</h3><span class="date-pill">0.26.127</span></div><ul><li>Improved pause/resume state handling for transfer lifecycle.</li><li>Fixed behavior around completed items during pause transitions.</li></ul></section>
-    <section class="card"><div class="entry-head"><h3>TMDB manager removal and relay lookup cleanup</h3><span class="date-pill">0.26.127</span></div><ul><li>Removed legacy TMDB manager implementation.</li><li>Renamed/refined lookup logging for clearer relay-based media resolution diagnostics.</li></ul></section>
-    <section class="card"><div class="entry-head"><h3>DB cleanup and table removal</h3><span class="date-pill">0.25.1211</span></div><ul><li>Removed unused database tables and related dead methods.</li><li>Reduced schema and code complexity around stale storage paths.</li></ul></section>
-    <section class="card"><div class="entry-head"><h3>Scanner matching and ignore hierarchy</h3><span class="date-pill">0.25.1129</span></div><ul><li>Improved TV episode matching logic including harder naming cases.</li><li>Implemented and hardened show/season/episode ignore hierarchy behavior.</li></ul></section>
-    <section class="card"><div class="entry-head"><h3>Missing episodes/timezone correctness</h3><span class="date-pill">0.25.1124</span></div><ul><li>Corrected missing-episode ordering and date interpretation issues.</li><li>Fixed UTC/local-date behavior that caused same-day airing confusion.</li></ul></section>
-    <section class="card"><div class="entry-head"><h3>Windows LAN reachability update</h3><span class="date-pill">0.25.1106</span></div><ul><li>Switched to LAN-reachable binding behavior for Windows installs.</li><li>Made local network access easier for remote/mobile clients.</li></ul></section>
-    <section class="card"><div class="entry-head"><h3>Server settings/version UI</h3><span class="date-pill">0.25.1108</span></div><ul><li>Added server settings surface in WebUI.</li><li>Exposed version information directly in UI for quicker diagnostics.</li></ul></section>
-    <section class="card"><div class="entry-head"><h3>Docker build/publish improvements</h3><span class="date-pill">0.25.1129</span></div><ul><li>Cleaned up Docker build/publish pipeline warnings and behavior.</li><li>Improved consistency for containerized deployment workflows.</li></ul></section>
-    <section class="card"><div class="entry-head"><h3>Upload routing to avoid watcher conflicts</h3><span class="date-pill">0.26.106</span></div><ul><li>Routed specific upload paths/subfolders to avoid NightsWatch interference.</li><li>Prevented captures/uploads from being prematurely processed by scan workflows.</li></ul></section>
-    <section class="card"><div class="entry-head"><h3>Kestrel/direct-upload stability</h3><span class="date-pill">0.25.1231</span></div><ul><li>Increased upload robustness for larger files and unstable connections.</li><li>Fixed direct upload connection behavior that previously failed under certain conditions.</li></ul></section>
-    <section class="card"><div class="entry-head"><h3>Bulk/direct upload route work</h3><span class="date-pill">0.26.109</span></div><ul><li>Added bulk upload route capability for higher-throughput ingest scenarios.</li><li>Expanded server API surface for upload workflows used by clients.</li></ul></section>
-    <section class="card"><div class="entry-head"><h3>Hardcoded config moved to configuration</h3><span class="date-pill">0.26.109</span></div><ul><li>Moved operational values out of hardcoded code paths.</li><li>Improved environment flexibility and reduced code edits for deploy changes.</li></ul></section>
-    <section class="card"><div class="entry-head"><h3>Windows installer introduced</h3><span class="date-pill">0.25.902</span></div><ul><li>Added Windows installer support for packaged distribution.</li><li>Enabled packaged install flow rather than manual publish-only setup.</li></ul></section>
-    <section class="card"><div class="entry-head"><h3>DB-on-launch and token usage fixes</h3><span class="date-pill">0.25.901</span></div><ul><li>Added startup database creation/initialization flow.</li><li>Corrected token usage from login so authenticated calls worked reliably.</li></ul></section>
-    <section class="card"><div class="entry-head"><h3>Drives page added</h3><span class="date-pill">0.25.831</span></div><ul><li>Added UI for managing drive/media path configuration.</li><li>Made storage settings editable from the browser instead of file-only setup.</li></ul></section>
-    <section class="card"><div class="entry-head"><h3>WebUI login working</h3><span class="date-pill">0.25.830</span></div><ul><li>Implemented a functional login flow for WebUI access.</li><li>Added initial auth gating so services/actions required authenticated access.</li></ul></section>
-    <section class="card"><div class="entry-head"><h3>WebUI started</h3><span class="date-pill">0.25.830</span></div><ul><li>Introduced the initial WebUI project and early page framework.</li><li>Established the path for browser-based server administration.</li></ul></section>
-    <section class="card"><div class="entry-head"><h3>NAS failover and .partial copy strategy</h3><span class="date-pill">0.25.826</span></div><ul><li>Added deferred queue behavior when NAS/storage is unavailable.</li><li>Introduced .partial handling to prevent incomplete media from being detected as complete.</li></ul></section>
-    <section class="card"><div class="entry-head"><h3>Connection resilience basics</h3><span class="date-pill">0.25.712</span></div><ul><li>Added keep-alive ping support to reduce stale relay/server sessions.</li><li>Explicitly terminated unauthenticated/tokenless connections for safer behavior.</li></ul></section>
-    <section class="card"><div class="entry-head"><h3>Relay cert retrieval and local reuse</h3><span class="date-pill">0.25.711</span></div><ul><li>Server started consuming certificates provided by Relay after auth.</li><li>Certificate reuse was added so reconnects could avoid unnecessary regeneration.</li></ul></section>
-    <section class="card"><div class="entry-head"><h3>NightsWatch added/integrated</h3><span class="date-pill">0.25.618</span></div><ul><li>Added NightsWatch projects into the solution and connected scanning components.</li><li>Brought over enough watcher functionality to be usable while cleanup remained.</li></ul></section>
-
-
-    <section class="card"><div class="entry-head"><h3>Project initialized</h3><span class="date-pill">0.25.614</span></div><ul><li>Bootstrapped the repository with core project structure and solution files.</li><li>Took the original POC project and used it as the foundation for a new production-ready version.</li></ul></section>
+    <section class="card card-server"><div class="entry-head"><h3>Cross-platform ephemeral key fix</h3><div class="entry-meta"><span class="entry-kind kind-server">Server</span><span class="date-pill">0.26.521</span></div></div><ul><li>Fixed ephemeral key behavior for Windows, Linux, and macOS compatibility.</li><li>Closed platform-specific mismatch issues affecting auth/handshake reliability.</li></ul></section>
+    <section class="card card-mobile"><div class="entry-head"><h3>Music search added</h3><div class="entry-meta"><span class="entry-kind kind-mobile">Mobile App</span><span class="date-pill">2.1.4 (86)</span></div></div><ul><li>Added music search support in the mobile app.</li><li>Expanded browsing beyond earlier library search behavior.</li></ul></section>
+    <section class="card card-server"><div class="entry-head"><h3>File mover quiet-time/sleep behavior</h3><div class="entry-meta"><span class="entry-kind kind-server">Server</span><span class="date-pill">0.26.517</span></div></div><ul><li>Added quiet-time behavior so files can queue before processing.</li><li>Helped support overnight/NAS-friendly processing windows.</li></ul></section>
+    <section class="card card-server"><div class="entry-head"><h3>Plex refresh integration and path guidance</h3><div class="entry-meta"><span class="entry-kind kind-server">Server</span><span class="date-pill">0.26.516</span></div></div><ul><li>Added server-triggered Plex refresh functionality.</li><li>Added user guidance for exact path matching expectations between Plex and KlyppServer.</li></ul></section>
+    <section class="card card-server"><div class="entry-head"><h3>Relay cert/token self-heal and 401 retry</h3><div class="entry-meta"><span class="entry-kind kind-server">Server</span><span class="date-pill">0.26.501</span></div></div><ul><li>Added relay token refresh and cert reissue retry on auth failures.</li><li>Improved self-healing around cert lifecycle and silent-close reconnect edge cases.</li></ul></section>
+    <section class="card card-android"><div class="entry-head"><h3>Android snapshot loading fix</h3><div class="entry-meta"><span class="entry-kind kind-android">Android</span><span class="date-pill">2.1.3 (85)</span></div></div><ul><li>Fixed Android loading behavior so snapshot items render instead of a blank screen.</li><li>Improved first-load reliability in the app.</li></ul></section>
+    <section class="card card-ios"><div class="entry-head"><h3>iOS direct upload fixes</h3><div class="entry-meta"><span class="entry-kind kind-ios">iOS</span><span class="date-pill">2.0 (101)</span></div></div><ul><li>Updated iOS configuration to improve direct upload behavior.</li><li>Reduced upload friction on Apple devices.</li></ul></section>
+    <section class="card card-server"><div class="entry-head"><h3>Startup preflight and offline deferral tuning</h3><div class="entry-meta"><span class="entry-kind kind-server">Server</span><span class="date-pill">0.26.426</span></div></div><ul><li>Made destination preflight failures non-fatal at startup where appropriate.</li><li>Capped offline deferral backoff to keep retries bounded and predictable.</li></ul></section>
+    <section class="card card-mobile"><div class="entry-head"><h3>Onboarding and account flow rework</h3><div class="entry-meta"><span class="entry-kind kind-mobile">Mobile App</span><span class="date-pill">2.1.2 (84)</span></div></div><ul><li>Added onboarding screens and updated account and pro navigation.</li><li>Improved first-run experience and account discoverability.</li></ul></section>
+    <section class="card card-mobile"><div class="entry-head"><h3>Theme and palette refresh</h3><div class="entry-meta"><span class="entry-kind kind-mobile">Mobile App</span><span class="date-pill">2.1.1 (83)</span></div></div><ul><li>Centralized MAUI theme tokens for the mobile app.</li><li>Applied a more consistent production-ready color system.</li></ul></section>
+    <section class="card card-mobile"><div class="entry-head"><h3>MAUI 10 production UI refresh</h3><div class="entry-meta"><span class="entry-kind kind-mobile">Mobile App</span><span class="date-pill">2.1 (82)</span></div></div><ul><li>Refreshed layout, spacing, pills, flyout styling, and card surfaces.</li><li>Improved overall polish across the app.</li></ul></section>
+    <section class="card card-server"><div class="entry-head"><h3>Loopback default and LAN opt-in</h3><div class="entry-meta"><span class="entry-kind kind-server">Server</span><span class="date-pill">0.26.420</span></div></div><ul><li>Changed default binding to loopback for safer local-first posture.</li><li>Added explicit LAN opt-in setting and UI controls for broader exposure.</li></ul></section>
+    <section class="card card-server"><div class="entry-head"><h3>API auth lockdown and bearer-only upload auth</h3><div class="entry-meta"><span class="entry-kind kind-server">Server</span><span class="date-pill">0.26.420</span></div></div><ul><li>Required authentication across key operational API endpoints.</li><li>Enforced bearer-only auth model for direct upload endpoints.</li></ul></section>
+    <section class="card card-server"><div class="entry-head"><h3>CORS allowlist hardening</h3><div class="entry-meta"><span class="entry-kind kind-server">Server</span><span class="date-pill">0.26.420</span></div></div><ul><li>Added explicit origin allowlist policy handling.</li><li>Tightened cross-origin behavior to reduce accidental exposure.</li></ul></section>
+    <section class="card card-server"><div class="entry-head"><h3>Cert-only media/auth path hardening</h3><div class="entry-meta"><span class="entry-kind kind-server">Server</span><span class="date-pill">0.26.418</span></div></div><ul><li>Enforced cert-based internal billing/media auth flows.</li><li>Removed older fallback auth paths to reduce mixed-mode risk.</li></ul></section>
+    <section class="card card-server"><div class="entry-head"><h3>Windows installer/signing hardening</h3><div class="entry-meta"><span class="entry-kind kind-server">Server</span><span class="date-pill">0.26.407</span></div></div><ul><li>Improved fresh-install behavior requiring proper code-signing flow.</li><li>Hardened installer path for production-style Windows deployments.</li></ul></section>
+    <section class="card card-server"><div class="entry-head"><h3>Direct vs relay upload gating changes</h3><div class="entry-meta"><span class="entry-kind kind-server">Server</span><span class="date-pill">0.26.401</span></div></div><ul><li>Adjusted direct-vs-relay upload gating logic.</li><li>Reduced unnecessary blocking and counting behavior for WebUI server paths.</li></ul></section>
+    <section class="card card-mobile"><div class="entry-head"><h3>Auth storage hardening</h3><div class="entry-meta"><span class="entry-kind kind-mobile">Mobile App</span><span class="date-pill">2.0.4</span></div></div><ul><li>Tightened token storage and removed weaker fallback behavior.</li><li>Improved account and session reliability on device.</li></ul></section>
+    <section class="card card-server"><div class="entry-head"><h3>Custom mover matching</h3><div class="entry-meta"><span class="entry-kind kind-server">Server</span><span class="date-pill">0.26.329</span></div></div><ul><li>Added personal matching string support for mover behavior.</li><li>Enabled more user-specific movie and TV routing decisions.</li></ul></section>
+    <section class="card card-mobile"><div class="entry-head"><h3>Subscription and quota enforcement</h3><div class="entry-meta"><span class="entry-kind kind-mobile">Mobile App</span><span class="date-pill">2.0.3</span></div></div><ul><li>Added subscription access and quota-aware upload checks.</li><li>Aligned the app with production monetization behavior.</li></ul></section>
+    <section class="card card-server"><div class="entry-head"><h3>Push notifications added and refined</h3><div class="entry-meta"><span class="entry-kind kind-server">Server</span><span class="date-pill">0.26.321</span></div></div><ul><li>Added iOS and Android push notification capabilities.</li><li>Iterated on throttling, naming, and payload clarity to reduce spam and noise.</li></ul></section>
+    <section class="card card-mobile"><div class="entry-head"><h3>Push notifications added</h3><div class="entry-meta"><span class="entry-kind kind-mobile">Mobile App</span><span class="date-pill">2.0.2</span></div></div><ul><li>Added push notification support across the mobile app.</li><li>Improved event awareness without requiring the app to stay open.</li></ul></section>
+    <section class="card card-server"><div class="entry-head"><h3>Windows connectivity/reconnect hardening</h3><div class="entry-meta"><span class="entry-kind kind-server">Server</span><span class="date-pill">0.26.304</span></div></div><ul><li>Added reconnect logic to reduce stale stream issues on Windows.</li><li>Improved diagnostics and stability for long-running Windows connectivity.</li></ul></section>
+    <section class="card card-mobile"><div class="entry-head"><h3>Cross-platform subscriptions</h3><div class="entry-meta"><span class="entry-kind kind-mobile">Mobile App</span><span class="date-pill">2.0.1</span></div></div><ul><li>Added Apple and Google purchase flow groundwork.</li><li>Hardened entitlement sync and purchase recovery.</li></ul></section>
+    <section class="card card-server"><div class="entry-head"><h3>.NET 10 update cycle</h3><div class="entry-meta"><span class="entry-kind kind-server">Server</span><span class="date-pill">0.26.227</span></div></div><ul><li>Updated project and runtime alignment around .NET 10.</li><li>Included follow-up fixes for disconnect and regression behavior after upgrade.</li></ul></section>
+    <section class="card card-mobile"><div class="entry-head"><h3>Snapshot refresh and reconnect hardening</h3><div class="entry-meta"><span class="entry-kind kind-mobile">Mobile App</span><span class="date-pill">2.0</span></div></div><ul><li>Improved snapshot refresh responsiveness and error recovery.</li><li>Hardened reconnect behavior when resuming the app.</li></ul></section>
+    <section class="card card-server"><div class="entry-head"><h3>Docker version/update behavior</h3><div class="entry-meta"><span class="entry-kind kind-server">Server</span><span class="date-pill">0.26.218</span></div></div><ul><li>Made update UI resolve Docker version correctly.</li><li>Adjusted update actions where Docker-managed updates should apply instead.</li></ul></section>
+    <section class="card card-ios"><div class="entry-head"><h3>Local update and status notifications</h3><div class="entry-meta"><span class="entry-kind kind-ios">iOS</span><span class="date-pill">2.0.1 (102)</span></div></div><ul><li>Added better app awareness around server status and update state.</li><li>Improved visibility when the server needed attention.</li></ul></section>
+    <section class="card card-server"><div class="entry-head"><h3>Scheduled scans and controls</h3><div class="entry-meta"><span class="entry-kind kind-server">Server</span><span class="date-pill">0.26.214</span></div></div><ul><li>Added scheduled scans for ongoing library and upcoming synchronization.</li><li>Added disable toggle and randomized schedule offsets to avoid API spikes.</li></ul></section>
+    <section class="card card-server"><div class="entry-head"><h3>Processing queue DB persistence</h3><div class="entry-meta"><span class="entry-kind kind-server">Server</span><span class="date-pill">0.26.204</span></div></div><ul><li>Persisted queued and deferred items to DB for crash and reboot continuity.</li><li>Added jump-queue behavior to support reprioritization workflows.</li></ul></section>
+    <section class="card card-server"><div class="entry-head"><h3>Custom scripts and script history</h3><div class="entry-meta"><span class="entry-kind kind-server">Server</span><span class="date-pill">0.26.204</span></div></div><ul><li>Added custom script runner and invocation capability for mobile and server workflows.</li><li>Added script history, action tracking, scheduling, and push integration.</li></ul></section>
+    <section class="card card-mobile"><div class="entry-head"><h3>Custom scripts and queue integration</h3><div class="entry-meta"><span class="entry-kind kind-mobile">Mobile App</span><span class="date-pill">2.0.6</span></div></div><ul><li>Added support for mobile-driven script execution and queue visibility.</li><li>Expanded advanced control workflows from the app.</li></ul></section>
+    <section class="card card-mobile"><div class="entry-head"><h3>Server build visibility in mobile</h3><div class="entry-meta"><span class="entry-kind kind-mobile">Mobile App</span><span class="date-pill">2.0.5</span></div></div><ul><li>Added server build details to the mobile app.</li><li>Made it easier to compare app behavior against the connected server version.</li></ul></section>
+    <section class="card card-server"><div class="entry-head"><h3>Build/version visibility and artifact naming</h3><div class="entry-meta"><span class="entry-kind kind-server">Server</span><span class="date-pill">0.26.202</span></div></div><ul><li>Added server version visibility in WebUI.</li><li>Updated build outputs to include version in artifact naming conventions.</li></ul></section>
+    <section class="card card-ios"><div class="entry-head"><h3>iOS app track introduced</h3><div class="entry-meta"><span class="entry-kind kind-ios">iOS</span><span class="date-pill">1.0</span></div></div><ul><li>Started the iOS app track after the Android foundation was already established.</li><li>Brought core Klypp workflows onto Apple devices.</li></ul></section>
+    <section class="card card-server"><div class="entry-head"><h3>DB maintenance actions</h3><div class="entry-meta"><span class="entry-kind kind-server">Server</span><span class="date-pill">0.26.131</span></div></div><ul><li>Added maintenance actions and buttons for clearing operational DB tables.</li><li>Expanded admin controls for queue and data cleanup from UI.</li></ul></section>
+    <section class="card card-mobile"><div class="entry-head"><h3>Queue and transfer visibility</h3><div class="entry-meta"><span class="entry-kind kind-mobile">Mobile App</span><span class="date-pill">1.9</span></div></div><ul><li>Improved visibility into uploads, queued work, and transfer states.</li><li>Gave mobile better operational feedback from the server.</li></ul></section>
+    <section class="card card-server"><div class="entry-head"><h3>Pause/resume transfer handling</h3><div class="entry-meta"><span class="entry-kind kind-server">Server</span><span class="date-pill">0.26.127</span></div></div><ul><li>Improved pause and resume state handling for transfer lifecycle.</li><li>Fixed behavior around completed items during pause transitions.</li></ul></section>
+    <section class="card card-server"><div class="entry-head"><h3>TMDB manager removal and relay lookup cleanup</h3><div class="entry-meta"><span class="entry-kind kind-server">Server</span><span class="date-pill">0.26.127</span></div></div><ul><li>Removed legacy TMDB manager implementation.</li><li>Renamed and refined lookup logging for clearer relay-based media resolution diagnostics.</li></ul></section>
+    <section class="card card-server"><div class="entry-head"><h3>WinRAR/unar transfer tagging</h3><div class="entry-meta"><span class="entry-kind kind-server">Server</span><span class="date-pill">0.26.126</span></div></div><ul><li>Added unrar-related tags and events so clients can display extraction state.</li><li>Improved transfer visibility for archives that require extraction steps.</li></ul></section>
+    <section class="card card-server"><div class="entry-head"><h3>Queue status and out-of-space handling</h3><div class="entry-meta"><span class="entry-kind kind-server">Server</span><span class="date-pill">0.26.126</span></div></div><ul><li>Added queue status tracking and surfaced deferred reasons.</li><li>Improved behavior and reporting when destination storage is out of space.</li></ul></section>
+    <section class="card card-mobile"><div class="entry-head"><h3>Bulk upload support</h3><div class="entry-meta"><span class="entry-kind kind-mobile">Mobile App</span><span class="date-pill">1.8</span></div></div><ul><li>Added stronger handling for larger upload batches.</li><li>Improved mobile upload behavior for heavier use.</li></ul></section>
+    <section class="card card-server"><div class="entry-head"><h3>Hardcoded config moved to configuration</h3><div class="entry-meta"><span class="entry-kind kind-server">Server</span><span class="date-pill">0.26.109</span></div></div><ul><li>Moved operational values out of hardcoded code paths.</li><li>Improved environment flexibility and reduced code edits for deploy changes.</li></ul></section>
+    <section class="card card-server"><div class="entry-head"><h3>Bulk/direct upload route work</h3><div class="entry-meta"><span class="entry-kind kind-server">Server</span><span class="date-pill">0.26.109</span></div></div><ul><li>Added bulk upload route capability for higher-throughput ingest scenarios.</li><li>Expanded server API surface for upload workflows used by clients.</li></ul></section>
+    <section class="card card-server"><div class="entry-head"><h3>Upload routing to avoid watcher conflicts</h3><div class="entry-meta"><span class="entry-kind kind-server">Server</span><span class="date-pill">0.26.106</span></div></div><ul><li>Routed specific upload paths and subfolders to avoid NightsWatch interference.</li><li>Prevented captures and uploads from being prematurely processed by scan workflows.</li></ul></section>
+    <section class="card card-server"><div class="entry-head"><h3>Kestrel/direct-upload stability</h3><div class="entry-meta"><span class="entry-kind kind-server">Server</span><span class="date-pill">0.25.1231</span></div></div><ul><li>Increased upload robustness for larger files and unstable connections.</li><li>Fixed direct upload connection behavior that previously failed under certain conditions.</li></ul></section>
+    <section class="card card-server"><div class="entry-head"><h3>DB cleanup and table removal</h3><div class="entry-meta"><span class="entry-kind kind-server">Server</span><span class="date-pill">0.25.1211</span></div></div><ul><li>Removed unused database tables and related dead methods.</li><li>Reduced schema and code complexity around stale storage paths.</li></ul></section>
+    <section class="card card-mobile"><div class="entry-head"><h3>Upload progress and background upload work</h3><div class="entry-meta"><span class="entry-kind kind-mobile">Mobile App</span><span class="date-pill">1.6</span></div></div><ul><li>Added upload progress groundwork and better background handling.</li><li>Improved transfer continuity during longer uploads.</li></ul></section>
+    <section class="card card-server"><div class="entry-head"><h3>Docker build/publish improvements</h3><div class="entry-meta"><span class="entry-kind kind-server">Server</span><span class="date-pill">0.25.1129</span></div></div><ul><li>Cleaned up Docker build and publish pipeline warnings and behavior.</li><li>Improved consistency for containerized deployment workflows.</li></ul></section>
+    <section class="card card-server"><div class="entry-head"><h3>Scanner matching and ignore hierarchy</h3><div class="entry-meta"><span class="entry-kind kind-server">Server</span><span class="date-pill">0.25.1129</span></div></div><ul><li>Improved TV episode matching logic including harder naming cases.</li><li>Implemented and hardened show, season, and episode ignore hierarchy behavior.</li></ul></section>
+    <section class="card card-server"><div class="entry-head"><h3>Server settings/version UI</h3><div class="entry-meta"><span class="entry-kind kind-server">Server</span><span class="date-pill">0.25.1108</span></div></div><ul><li>Added server settings surface in WebUI.</li><li>Exposed version information directly in UI for quicker diagnostics.</li></ul></section>
+    <section class="card card-server"><div class="entry-head"><h3>Windows LAN reachability update</h3><div class="entry-meta"><span class="entry-kind kind-server">Server</span><span class="date-pill">0.25.1106</span></div></div><ul><li>Switched to LAN-reachable binding behavior for Windows installs.</li><li>Made local network access easier for remote and mobile clients.</li></ul></section>
+    <section class="card card-mobile"><div class="entry-head"><h3>Settings and cloud login updates</h3><div class="entry-meta"><span class="entry-kind kind-mobile">Mobile App</span><span class="date-pill">1.5</span></div></div><ul><li>Added a stronger settings and configuration flow on mobile.</li><li>Improved how the app connected to the cloud and server setup.</li></ul></section>
+    <section class="card card-server"><div class="entry-head"><h3>Missing episodes/timezone correctness</h3><div class="entry-meta"><span class="entry-kind kind-server">Server</span><span class="date-pill">0.25.1124</span></div></div><ul><li>Corrected missing-episode ordering and date interpretation issues.</li><li>Fixed UTC and local-date behavior that caused same-day airing confusion.</li></ul></section>
+    <section class="card card-mobile"><div class="entry-head"><h3>Snapshot visuals and browsing refresh</h3><div class="entry-meta"><span class="entry-kind kind-mobile">Mobile App</span><span class="date-pill">1.4</span></div></div><ul><li>Added richer visuals and layout improvements to mobile browsing.</li><li>Improved the overall look and feel of the app.</li></ul></section>
+    <section class="card card-server"><div class="entry-head"><h3>Windows installer introduced</h3><div class="entry-meta"><span class="entry-kind kind-server">Server</span><span class="date-pill">0.25.902</span></div></div><ul><li>Added Windows installer support for packaged distribution.</li><li>Enabled packaged install flow rather than manual publish-only setup.</li></ul></section>
+    <section class="card card-server"><div class="entry-head"><h3>DB-on-launch and token usage fixes</h3><div class="entry-meta"><span class="entry-kind kind-server">Server</span><span class="date-pill">0.25.901</span></div></div><ul><li>Added startup database creation and initialization flow.</li><li>Corrected token usage from login so authenticated calls worked reliably.</li></ul></section>
+    <section class="card card-server"><div class="entry-head"><h3>Drives page added</h3><div class="entry-meta"><span class="entry-kind kind-server">Server</span><span class="date-pill">0.25.831</span></div></div><ul><li>Added UI for managing drive and media path configuration.</li><li>Made storage settings editable from the browser instead of file-only setup.</li></ul></section>
+    <section class="card card-server"><div class="entry-head"><h3>WebUI login working</h3><div class="entry-meta"><span class="entry-kind kind-server">Server</span><span class="date-pill">0.25.830</span></div></div><ul><li>Implemented a functional login flow for WebUI access.</li><li>Added initial auth gating so services and actions required authenticated access.</li></ul></section>
+    <section class="card card-server"><div class="entry-head"><h3>WebUI started</h3><div class="entry-meta"><span class="entry-kind kind-server">Server</span><span class="date-pill">0.25.830</span></div></div><ul><li>Introduced the initial WebUI project and early page framework.</li><li>Established the path for browser-based server administration.</li></ul></section>
+    <section class="card card-server"><div class="entry-head"><h3>NAS failover and .partial copy strategy</h3><div class="entry-meta"><span class="entry-kind kind-server">Server</span><span class="date-pill">0.25.826</span></div></div><ul><li>Added deferred queue behavior when NAS or storage is unavailable.</li><li>Introduced .partial handling to prevent incomplete media from being detected as complete.</li></ul></section>
+    <section class="card card-mobile"><div class="entry-head"><h3>Search and scrolling improvements</h3><div class="entry-meta"><span class="entry-kind kind-mobile">Mobile App</span><span class="date-pill">1.3</span></div></div><ul><li>Improved result paging and scrolling behavior.</li><li>Made larger libraries easier to browse on mobile.</li></ul></section>
+    <section class="card card-mobile"><div class="entry-head"><h3>Search screen introduced</h3><div class="entry-meta"><span class="entry-kind kind-mobile">Mobile App</span><span class="date-pill">1.2</span></div></div><ul><li>Added the first version of mobile search.</li><li>Expanded the app beyond its earliest snapshot-focused workflow.</li></ul></section>
+    <section class="card card-mobile"><div class="entry-head"><h3>Early mobile upload and login flow</h3><div class="entry-meta"><span class="entry-kind kind-mobile">Mobile App</span><span class="date-pill">1.1</span></div></div><ul><li>Improved the first mobile login and upload behavior.</li><li>Reduced rough edges in early app-to-server communication.</li></ul></section>
+    <section class="card card-server"><div class="entry-head"><h3>Connection resilience basics</h3><div class="entry-meta"><span class="entry-kind kind-server">Server</span><span class="date-pill">0.25.712</span></div></div><ul><li>Added keep-alive ping support to reduce stale relay and server sessions.</li><li>Explicitly terminated unauthenticated and tokenless connections for safer behavior.</li></ul></section>
+    <section class="card card-server"><div class="entry-head"><h3>Relay cert retrieval and local reuse</h3><div class="entry-meta"><span class="entry-kind kind-server">Server</span><span class="date-pill">0.25.711</span></div></div><ul><li>Server started consuming certificates provided by Relay after auth.</li><li>Certificate reuse was added so reconnects could avoid unnecessary regeneration.</li></ul></section>
+    <section class="card card-server"><div class="entry-head"><h3>NightsWatch added/integrated</h3><div class="entry-meta"><span class="entry-kind kind-server">Server</span><span class="date-pill">0.25.618</span></div></div><ul><li>Added NightsWatch projects into the solution and connected scanning components.</li><li>Brought over enough watcher functionality to be usable while cleanup remained.</li></ul></section>
+    <section class="card card-mobile"><div class="entry-head"><h3>Mobile app foundation</h3><div class="entry-meta"><span class="entry-kind kind-mobile">Mobile App</span><span class="date-pill">1.0</span></div></div><ul><li>Started the first Klypp mobile app track.</li><li>Established the base app structure and early connection flow.</li></ul></section>
+    <section class="card card-server"><div class="entry-head"><h3>Project initialized</h3><div class="entry-meta"><span class="entry-kind kind-server">Server</span><span class="date-pill">0.25.614</span></div></div><ul><li>Bootstrapped the repository with core project structure and solution files.</li><li>Took the original POC project and used it as the foundation for a new production-ready version.</li></ul></section>
 
     <p class="footer">© 2026 Klypp LLC · <a href="../index.html">Home</a> · <a href="../setup/index.html">Setup</a> · <a href="../support/index.html">Support</a> · <a href="../faq/index.html">FAQ</a> · <a href="../history/index.html">History</a> · <a href="../privacy/index.html">Privacy</a> · <a href="https://app.klyppedit.com/swagger">Server Downloads</a></p>
   </div>
