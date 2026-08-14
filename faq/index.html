@@ -269,6 +269,7 @@
       <nav>
         <a href="../index.html">Home</a>
         <a href="../setup/index.html">Setup</a>
+        <a href="../settings/">Settings</a>
         <a href="../support/index.html">Support</a>
         <a href="../faq/index.html" class="is-active" aria-current="page">FAQ</a>
         <a href="../history/index.html">History</a>
@@ -286,18 +287,33 @@
         </details>
 
         <details>
-          <summary>Where do my files go during upload?</summary>
-          <p>Uploads travel from your phone → the relay (optional) → your server. Klypp writes into a trio of folders: <em>FileSaveLocation</em> from the mobile drop, <em>IncompletePath</em> while files are being written, and <em>CompletedPath</em> when they are ready for the processor to move them into destinations such as Movies, TV, or Music. If you want to bypass the relay entirely, follow the <a href="../setup/index.html#direct-uploads">Advanced: Direct Uploads</a> steps and use a VPN so your phone talks straight to your server.</p>
-        </details>
-
-        <details>
           <summary>What Linux permissions helper should I run?</summary>
           <p>We publish a Linux Helper Script on the <a href="https://www.klyppedit.com/downloads">Downloads page</a> that adjusts ownership/permissions for the <code>klypp</code> service user. Run that script once after installing to avoid “access denied” errors when the server scans your folders.</p>
         </details>
 
         <details>
           <summary>How should I configure FileSave, Incomplete, and Completed folders?</summary>
-          <p>Always keep the three-folder flow: FileSaveLocation receives uploads from the mobile app, IncompletePath holds files while they are still being written, and CompletedPath is where our service picks up finished transfers to route them into Movies/TV/Music destinations. Writing directly into CompletedPath or skipping any of these steps can break processing.</p>
+          <p>The recommended flow is: FileSaveLocation receives uploads from the mobile app, IncompletePath holds files while they are still being written, and CompletedPath is where Klypp picks up finished transfers to route them into Movies, TV, or Music destinations. Some torrent clients can use the same folder for incomplete and completed downloads, but separate folders are usually easier to manage.</p>
+        </details>
+
+        <details>
+          <summary>Can I use Klypp with a torrent client?</summary>
+          <p>Yes. Klypp can work with torrent clients that watch for new <code>.torrent</code> files and use incomplete and completed download folders. qBittorrent is one example; see the <a href="../setup/index.html#torrent-client">Torrent Client Setup guide</a> for the recommended folder flow. Only use torrents for media you are legally authorized to download and share.</p>
+        </details>
+
+        <details>
+          <summary>Why use File Completed Mover quiet hours?</summary>
+          <p>Quiet hours let new files build in the Processing Queue without repeatedly waking a NAS during the day. When the mover resumes, Klypp processes the saved queue during your chosen window. See <a href="../settings/#mover">File Completed Mover and quiet hours</a> for details.</p>
+        </details>
+
+        <details>
+          <summary>How does Plex Media Sync avoid full library scans?</summary>
+          <p>After a successful move, Klypp can tell Plex exactly which movie or TV-show folder changed instead of relying on scheduled full-library scans. Klypp Drive Location paths must exactly match the library paths used by Plex on that server. See <a href="../settings/#plex">Plex Media Sync</a>.</p>
+        </details>
+
+        <details>
+          <summary>What can Klypp scripts run?</summary>
+          <p>Klypp can run any command or script that the Klypp Server machine can run from the command line, subject to the permissions available to the Klypp service. Scripts can be run and scheduled from Klypp Server or the mobile app. See <a href="../settings/#scripts">Scripts</a>.</p>
         </details>
 
         <details>
@@ -344,7 +360,7 @@
       <p class="note">Most answers here point back to the Setup and Privacy guides for deeper context.</p>
     </section>
 
-    <p class="footer">© 2025 Klypp LLC · <a href="../index.html">Home</a> · <a href="../setup/index.html">Setup</a> · <a href="../support/index.html">Support</a> · <a href="../history/index.html">History</a> · <a href="../privacy/index.html">Privacy</a> · <a href="https://app.klyppedit.com/swagger">Server Downloads</a></p>
+    <p class="footer">© 2025 Klypp LLC · <a href="../index.html">Home</a> · <a href="../setup/index.html">Setup</a> · <a href="../settings/">Settings</a> · <a href="../support/index.html">Support</a> · <a href="../history/index.html">History</a> · <a href="../privacy/index.html">Privacy</a> · <a href="https://app.klyppedit.com/swagger">Server Downloads</a></p>
   </div>
 </body>
 

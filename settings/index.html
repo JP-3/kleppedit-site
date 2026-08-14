@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Klypp LLC – Server Settings &amp; Automation</title>
+  <meta name="description"
+    content="Configure Klypp Server quiet hours, media organization, Plex Media Sync, scripts, notifications, scanner scheduling, LAN access, and mobile controls." />
+  <meta property="og:title" content="Klypp – Server Settings &amp; Automation" />
+  <meta property="og:site_name" content="Klypp LLC" />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://www.klyppedit.com/settings/" />
+  <meta property="og:description"
+    content="Configure Klypp Server quiet hours, Plex Media Sync, scripts, notifications, and other automation settings." />
+
+  <style>
+    @import url("https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap");
+
+    :root {
+      --bg: #0b0f17;
+      --fg: #e6edf7;
+      --muted: #9aa7bb;
+      --card: rgba(17, 23, 36, .72);
+      --link: #7fb2ff;
+      --accent: #3a7bff;
+      --accent-2: #36d1dc;
+      --ring: rgba(63, 135, 255, .28);
+      --border: rgba(141, 162, 196, .18);
+      --shadow: 0 28px 80px rgba(0, 0, 0, .45);
+      --shadow-soft: 0 14px 30px rgba(0, 0, 0, .28);
+      --radius: 20px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      padding: 34px 16px 54px;
+      font-family: "IBM Plex Sans", "Segoe UI", Tahoma, sans-serif;
+      color: var(--fg);
+      background:
+        radial-gradient(900px 520px at 5% -10%, rgba(58, 123, 255, .22) 0%, rgba(58, 123, 255, 0) 60%),
+        radial-gradient(1000px 520px at 110% 0%, rgba(54, 209, 220, .18) 0%, rgba(54, 209, 220, 0) 60%),
+        radial-gradient(1000px 700px at 50% 120%, rgba(20, 27, 45, .9) 0%, rgba(11, 15, 23, 0) 60%),
+        linear-gradient(180deg, #0b0f17 0%, #0c111b 100%);
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
+      background:
+        radial-gradient(circle at 20% 20%, rgba(255, 255, 255, .05), transparent 45%),
+        radial-gradient(circle at 80% 10%, rgba(255, 255, 255, .05), transparent 45%),
+        linear-gradient(90deg, rgba(255, 255, 255, .04) 1px, transparent 1px) 0 0/48px 48px,
+        linear-gradient(0deg, rgba(255, 255, 255, .03) 1px, transparent 1px) 0 0/48px 48px;
+    }
+
+    .wrap { max-width: 1040px; margin: 0 auto; }
+
+    .hero, .card, .subnav {
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-soft);
+      backdrop-filter: blur(12px);
+    }
+
+    .hero {
+      min-height: 220px;
+      padding: 24px 20px 18px;
+      text-align: center;
+      border-radius: 26px;
+      border-color: rgba(122, 150, 200, .25);
+      background: linear-gradient(135deg, rgba(58, 123, 255, .18), rgba(54, 209, 220, .16));
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+      backdrop-filter: blur(8px);
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      width: 280px;
+      height: 280px;
+      right: -120px;
+      top: -140px;
+      background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, .45), rgba(255, 255, 255, 0));
+      pointer-events: none;
+    }
+
+    .eyebrow {
+      padding: 6px 12px;
+      margin-bottom: 10px;
+      border: 1px solid rgba(141, 162, 196, .28);
+      border-radius: 999px;
+      background: rgba(10, 16, 28, .7);
+      color: #d6e2f5;
+      font-size: .82rem;
+      font-weight: 600;
+      letter-spacing: .6px;
+      text-transform: uppercase;
+    }
+
+    h1, h2, h3 { font-family: "Sora", "Trebuchet MS", sans-serif; }
+    h1 { margin: 0 0 6px; font-size: 2.25rem; }
+    h2 { margin: 0; font-size: 1.28rem; }
+    h3 { margin: 1.5rem 0 .45rem; font-size: 1.05rem; }
+    p, li { line-height: 1.7; }
+    .subtitle, .muted { color: var(--muted); }
+    .subtitle { margin: 0; }
+
+    .topnav, .subnav {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .topnav { margin: 14px 0 0; }
+    .subnav { margin: 0; padding: 14px; border-radius: 16px; background: rgba(12, 18, 30, .7); }
+    a { color: var(--link); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    .topnav a {
+      padding: 7px 12px;
+      border: 1px solid rgba(122, 150, 200, .28);
+      border-radius: 999px;
+      background: rgba(9, 14, 24, .7);
+      color: var(--accent);
+      font-size: .92rem;
+      font-weight: 600;
+    }
+
+    .subnav a {
+      padding: 7px 12px;
+      border: 1px solid transparent;
+      border-radius: 999px;
+      color: var(--link);
+      font-size: .93rem;
+      font-weight: 600;
+    }
+
+    .subnav a:hover {
+      border-color: #d6e2ff;
+      background: #eef4ff;
+      color: #15315c;
+      text-decoration: none;
+    }
+
+    .subnav a.is-active {
+      border-color: rgba(123, 158, 220, .65);
+      background: linear-gradient(135deg, rgba(58, 123, 255, .35), rgba(54, 209, 220, .25));
+      color: #e8f1ff;
+    }
+
+    .topnav .is-active {
+      border-color: rgba(123, 158, 220, .65);
+      background: linear-gradient(135deg, rgba(58, 123, 255, .35), rgba(54, 209, 220, .25));
+      color: #e8f1ff;
+      cursor: default;
+    }
+
+    .topnav a:hover {
+      background: rgba(14, 22, 36, .85);
+      border-color: rgba(140, 170, 220, .45);
+      text-decoration: none;
+    }
+
+    .card {
+      position: relative;
+      margin-bottom: 18px;
+      padding: 24px;
+      border-radius: var(--radius);
+      background: var(--card);
+      box-shadow: var(--shadow);
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: 0 0 auto;
+      height: 4px;
+      border-radius: var(--radius) var(--radius) 0 0;
+      background: linear-gradient(90deg, rgba(26, 91, 216, .6), rgba(0, 160, 166, .6));
+      opacity: .7;
+    }
+
+    .note {
+      padding: 12px;
+      border: 1px solid rgba(141, 162, 196, .25);
+      border-radius: 10px;
+      background: rgba(13, 20, 32, .7);
+    }
+
+    .list-tight li { margin: .3rem 0; }
+
+    section:target {
+      outline: 2px solid #cfe0ff;
+      box-shadow: 0 0 0 6px var(--ring);
+    }
+
+    figure { margin: 14px 0 18px; }
+    figure img { display: block; width: 100%; height: auto; border-radius: 12px; }
+    figcaption { padding: 8px 12px; color: var(--muted); font-size: .95rem; }
+    .phone-screenshot { max-width: 360px; margin-left: auto; margin-right: auto; }
+
+    .mobile-screenshots {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+      align-items: start;
+    }
+
+    .mobile-screenshots figure { width: 100%; }
+    .footer { margin-top: 22px; color: var(--muted); text-align: center; font-size: .95rem; }
+
+    .layout {
+      display: grid;
+      gap: 18px;
+      grid-template-columns: 1fr;
+      align-items: start;
+      margin-top: 18px;
+    }
+
+    .rail-title {
+      margin: 0 0 10px 6px;
+      color: var(--muted);
+      font-size: .85rem;
+      font-weight: 600;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+
+    .rail .subnav {
+      justify-content: flex-start;
+      padding: 14px;
+      border-radius: 16px;
+    }
+
+    .hero-badges {
+      position: absolute;
+      top: 16px;
+      left: 16px;
+      z-index: 2;
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .store-badge { display: inline-flex; align-items: center; }
+    .store-badge img { display: block; width: 150px; height: 35px; object-fit: contain; }
+    .store-badge.ios img { width: 164px; height: 39px; }
+
+    @media (min-width: 760px) {
+      .layout { grid-template-columns: 220px 1fr; }
+      .rail { position: sticky; top: 20px; }
+      .rail .subnav { flex-direction: column; align-items: flex-start; }
+      .rail .subnav a { width: 100%; }
+    }
+
+    @media (max-width: 560px) {
+      body { padding: 18px 12px 38px; }
+      .hero, .card { padding: 20px 16px; }
+      h1 { font-size: 1.85rem; }
+      .topnav a, .subnav a { font-size: .86rem; padding: 6px 10px; }
+      .hero-badges { position: static; align-self: flex-start; margin-bottom: 10px; }
+      .mobile-screenshots { grid-template-columns: 1fr; }
+    }
+  </style>
+
+  <script>
+    window.addEventListener('DOMContentLoaded', () => {
+      const links = document.querySelectorAll('.subnav a');
+      const setActive = () => {
+        const hash = location.hash || '#overview';
+        links.forEach(link => {
+          const active = link.getAttribute('href') === hash;
+          link.classList.toggle('is-active', active);
+          link.setAttribute('aria-current', active ? 'page' : 'false');
+        });
+      };
+      window.addEventListener('hashchange', setActive);
+      setActive();
+    });
+  </script>
+</head>
+
+<body>
+  <div class="wrap">
+    <header class="hero">
+      <div class="hero-badges">
+        <a class="store-badge ios" href="https://apps.apple.com/us/app/klypp/id6753725499" target="_blank"
+          rel="noreferrer" aria-label="Download on the App Store">
+          <img src="../assets/app-store-badge.svg" alt="Download on the App Store" />
+        </a>
+        <a class="store-badge" href="https://play.google.com/store/apps/details?id=com.klyppedit.klypp" target="_blank"
+          rel="noreferrer" aria-label="Get Klypp on Google Play (beta)">
+          <img src="../assets/google-play-badge.svg" alt="Get Klypp on Google Play" />
+        </a>
+      </div>
+      <div class="eyebrow">Server Settings</div>
+      <h1>Server Settings &amp; Automation</h1>
+      <p class="subtitle">Control media processing, Plex sync, scripts, notifications, scheduling, and mobile access.</p>
+      <nav class="topnav" aria-label="Site navigation">
+        <a href="../index.html">Home</a>
+        <a href="../setup/index.html">Setup</a>
+        <a href="../settings/" class="is-active" aria-current="page">Settings</a>
+        <a href="../support/index.html">Support</a>
+        <a href="../faq/index.html">FAQ</a>
+        <a href="../history/index.html">History</a>
+        <a href="../privacy/index.html">Privacy</a>
+        <a href="https://app.klyppedit.com/swagger">Server Downloads</a>
+      </nav>
+    </header>
+
+    <div class="layout">
+      <aside class="rail">
+        <div class="rail-title">On this page</div>
+        <nav class="subnav" aria-label="On this page">
+          <a href="#overview">Overview</a>
+          <a href="#mover">Mover &amp; Quiet Hours</a>
+          <a href="#organization">Organization</a>
+          <a href="#plex">Plex Sync</a>
+          <a href="#notifications">Notifications</a>
+          <a href="#scripts">Scripts</a>
+          <a href="#scanner">TV Scanner</a>
+          <a href="#lan">LAN Access</a>
+          <a href="#mobile">Mobile Controls</a>
+        </nav>
+      </aside>
+
+      <main>
+      <section id="overview" class="card" aria-labelledby="overview-title">
+        <h2 id="overview-title">Server Settings overview</h2>
+        <p class="muted">Use this guide to understand the options that control how your Klypp Server moves,
+          organizes, and synchronizes media. Mobile controls and app settings are shown at the end of this page.</p>
+      </section>
+
+      <section id="mover" class="card">
+        <h2>File Completed Mover and quiet hours</h2>
+        <p class="muted">The File Completed Mover handles media after it appears in <strong>App Completed
+            Downloads</strong>. It checks each file against your Klypp rules and moves it to the correct final
+          destination.</p>
+        <p class="muted">You can pause the mover manually or set quiet hours so it only processes files during the
+          times you choose. While the mover is paused, new files continue to be added to the Processing Queue; they
+          are not lost. When processing resumes, Klypp continues working through the saved queue.</p>
+        <p class="muted">Quiet hours are especially useful when your media is stored on a NAS. Pausing file moves
+          during the day can help prevent routine downloads from waking the NAS repeatedly. Klypp can then process
+          queued files during your chosen window, allowing the NAS drives to remain asleep longer and reducing
+          unnecessary drive activity.</p>
+        <p class="note">Manual pause or resume changes remain active until the next quiet-hours boundary. The Processing
+          Queue is persisted, so queued work survives a Klypp Server restart.</p>
+        <p class="muted"><strong>Resume mover</strong> is also available from the mobile app, so you can start
+          processing queued media while you are away from home instead of waiting for the next scheduled resume time.</p>
+        <figure>
+          <img src="../screenshots/Server-CompletedMover.png"
+            alt="Klypp Server File Completed Mover settings showing quiet hours and mover status" />
+          <figcaption>Set quiet hours to pause file moves while the queue continues to build.</figcaption>
+        </figure>
+      </section>
+
+      <section id="organization" class="card">
+        <h2>Media organization options</h2>
+        <p class="muted">These settings control how Klypp organizes media after processing.</p>
+        <ul class="list-tight">
+          <li><strong>Move Mode</strong> lets you choose whether Klypp processes media as individual files or moves an
+            entire folder as one unit. For most movie and TV libraries, choose <strong>Individual files</strong> so
+            Klypp moves only the movie or TV episode into its final library location.</li>
+          <li><strong>Music album naming</strong> lets you include an album’s release year in the album-folder name,
+            either at the beginning, such as <code>2003 Hail To The Thief</code>, or at the end, such as
+            <code>Hail To The Thief (2003)</code>.</li>
+          <li><strong>Track-number naming</strong> lets you add the track number to the beginning of each music file,
+            such as <code>03. Float On.mp3</code>, rather than using only the song title.</li>
+        </ul>
+        <figure>
+          <img src="../screenshots/Server-MediaOrganization.png"
+            alt="Klypp Server media organization settings for move mode, album-year naming, and track-number naming" />
+          <figcaption>Choose how Klypp moves media and names music folders and tracks.</figcaption>
+        </figure>
+      </section>
+
+      <section id="plex" class="card">
+        <h2>Plex Media Sync</h2>
+        <p class="muted">Plex Media Sync is useful for large libraries where Plex does not reliably detect new media
+          on its own. Instead of scheduling Plex to rescan an entire library at regular intervals, Klypp can notify
+          Plex after a successful move and tell it exactly which movie or TV-show folder changed. This helps new media
+          appear sooner while avoiding unnecessary full-library scans.</p>
+        <p class="muted">Enable <strong>Notify Plex after successful moves</strong>, then enter one or more Plex server
+          URLs and your Plex token. Klypp Drive Location paths must exactly match the library paths used by Plex on
+          that server, including capitalization and path style.</p>
+        <figure>
+          <img src="../screenshots/Server-PlexSync.png"
+            alt="Klypp Server Plex Media Sync settings for Plex server URLs and token" />
+          <figcaption>Configure Plex servers that Klypp should notify after successful media moves.</figcaption>
+        </figure>
+      </section>
+
+      <section id="notifications" class="card">
+        <h2>File Transfer Push Notifications</h2>
+        <p class="muted">Choose which events send push notifications to your mobile device: incomplete download
+          started, incomplete download finished, completed download started, and completed download finished. Push
+          delivery is best-effort and may arrive with a delay. Script notifications are configured per script.</p>
+        <figure>
+          <img src="../screenshots/Server-FileTransferPushNotification.png"
+            alt="Klypp Server file-transfer push-notification settings" />
+          <figcaption>Choose which file-transfer events send push notifications.</figcaption>
+        </figure>
+      </section>
+
+      <section id="scripts" class="card">
+        <h2>Scripts</h2>
+        <p class="muted">Scripts are fully user-defined. You can add any command or script that your Klypp Server
+          machine can run from the command line, such as a PowerShell script, shell script, maintenance command, or a
+          command that starts another program. What you automate is entirely up to you and the permissions available
+          to the Klypp Server service.</p>
+        <p class="muted">Each script can have a name, enabled state, optional schedule, and push-notification
+          preference. You can test a script, view its history, edit it, or delete it from Klypp Server.</p>
+        <p class="muted">Custom scripts can be run and managed from both Klypp Server and the mobile app. From mobile,
+          you can trigger a script remotely and update the schedule for when it runs on your Klypp Server.</p>
+        <figure>
+          <img src="../screenshots/Server-Scripts.png"
+            alt="Klypp Server scripts settings showing scheduled scripts and script actions" />
+          <figcaption>Add, test, schedule, and review user-defined server scripts.</figcaption>
+        </figure>
+        <figure class="phone-screenshot">
+          <img src="../screenshots/Mobile-ServerSettings-ScriptsSchedule.jpg"
+            alt="Klypp mobile app script schedule editor with scheduling and push-notification controls" />
+          <figcaption>Use the mobile app to update a script’s server schedule and notification preference.</figcaption>
+        </figure>
+      </section>
+
+      <section id="scanner" class="card">
+        <h2>TV scanner schedule</h2>
+        <p class="muted">Use the TV scanner schedule to refresh your TV-show data automatically, including episode
+          information and other metadata. Choose the day, time, and optional time zone for Klypp Server to run its
+          weekly scan. The scheduled scan uses the same synchronization and full metadata-refresh behavior as
+          <strong>Run Scanner</strong>. Restart Klypp Server after saving changes to apply the schedule.</p>
+        <figure>
+          <img src="../screenshots/Server-TVScanner.png" alt="Klypp Server TV scanner schedule settings" />
+          <figcaption>Schedule an automatic weekly refresh of TV-show and episode data.</figcaption>
+        </figure>
+      </section>
+
+      <section id="lan" class="card">
+        <h2>LAN access and Direct Upload URL</h2>
+        <p class="muted">By default, Klypp Server binds only to localhost, which limits access to the machine running
+          the server. Enable LAN access if other devices on your local network need to reach Klypp Server through its
+          Direct Upload URL, such as <code>http://YourComputerName:8081</code>. Restart Klypp Server after changing
+          this setting.</p>
+        <figure>
+          <img src="../screenshots/Server-LanAccess.png" alt="Klypp Server LAN access setting" />
+          <figcaption>Enable LAN access only when other devices need to reach Klypp Server.</figcaption>
+        </figure>
+      </section>
+
+      <section id="mobile" class="card">
+        <h2>Mobile app settings</h2>
+        <p class="muted">The mobile app includes two settings views: <strong>Server Settings</strong> controls your
+          home Klypp Server, while <strong>Mobile Settings</strong> controls this phone’s Klypp app and its connection
+          to the server.</p>
+        <div class="mobile-screenshots">
+          <figure class="phone-screenshot">
+            <img src="../screenshots/Moible-ServerSettings.jpg"
+              alt="Klypp mobile app showing the Server Settings page, including File Completed Mover controls and custom scripts" />
+            <figcaption><strong>Server Settings:</strong> control your home Klypp Server from the mobile app.</figcaption>
+          </figure>
+          <figure class="phone-screenshot">
+            <img src="../screenshots/Mobile-MobileSettings.jpg"
+              alt="Klypp mobile app Mobile Settings page showing Direct Upload URL and device-specific preferences" />
+            <figcaption><strong>Mobile Settings:</strong> control this phone’s app behavior and server connection.</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      </main>
+    </div>
+
+    <p class="footer">© 2025 Klypp LLC · <a href="../index.html">Home</a> · <a href="../setup/index.html">Setup</a>
+      · <a href="../settings/" class="is-active" aria-current="page">Settings</a> · <a href="../support/index.html">Support</a>
+      · <a href="../faq/index.html">FAQ</a> · <a href="../history/index.html">History</a> · <a href="../privacy/index.html">Privacy</a>
+      · <a href="https://app.klyppedit.com/swagger">Server Downloads</a></p>
+  </div>
+</body>
+
+</html>
