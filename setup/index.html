@@ -469,6 +469,60 @@
       border-radius: 12px;
     }
 
+    .diagram-zoom {
+      display: block;
+      width: 100%;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      cursor: zoom-in;
+    }
+
+    .diagram-zoom:focus-visible {
+      outline: 3px solid var(--accent-2);
+      outline-offset: -3px;
+    }
+
+    .lightbox[hidden] {
+      display: none;
+    }
+
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      z-index: 20;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      background: rgba(3, 7, 15, .92);
+    }
+
+    .lightbox img {
+      display: block;
+      max-width: 96vw;
+      max-height: 92vh;
+      width: auto;
+      height: auto;
+      object-fit: contain;
+      border-radius: 12px;
+      box-shadow: 0 24px 90px rgba(0, 0, 0, .65);
+    }
+
+    .lightbox-close {
+      position: fixed;
+      top: 16px;
+      right: 20px;
+      width: 42px;
+      height: 42px;
+      border: 1px solid rgba(230, 237, 247, .4);
+      border-radius: 50%;
+      background: rgba(12, 18, 30, .8);
+      color: var(--fg);
+      font-size: 1.6rem;
+      line-height: 1;
+      cursor: pointer;
+    }
+
     .setup-screenshot figcaption {
       padding: 8px 12px;
       color: var(--muted);
@@ -512,6 +566,28 @@
       };
       window.addEventListener('hashchange', setActive);
       setActive();
+
+      const zoomTrigger = document.querySelector('.diagram-zoom');
+      const lightbox = document.getElementById('diagram-lightbox');
+      const closeButton = lightbox.querySelector('.lightbox-close');
+      const closeLightbox = () => {
+        lightbox.hidden = true;
+        document.body.style.overflow = '';
+        zoomTrigger.focus();
+      };
+
+      zoomTrigger.addEventListener('click', () => {
+        lightbox.hidden = false;
+        document.body.style.overflow = 'hidden';
+        closeButton.focus();
+      });
+      closeButton.addEventListener('click', closeLightbox);
+      lightbox.addEventListener('click', event => {
+        if (event.target === lightbox) closeLightbox();
+      });
+      document.addEventListener('keydown', event => {
+        if (event.key === 'Escape' && !lightbox.hidden) closeLightbox();
+      });
     });
   </script>
 </head>
@@ -694,6 +770,13 @@
             client by sharing its download folders with Klypp. This lets you send a <code>.torrent</code> file from
             your mobile device to your server, have the torrent client download it, and then let Klypp organize the
             completed media.</p>
+          <figure class="setup-screenshot">
+            <button class="diagram-zoom" type="button" aria-label="Open the torrent workflow diagram full screen">
+              <img src="../assets/Torrent-Diagram.png"
+                alt="Torrent workflow showing Klypp Mobile, Klypp Server, a torrent client, and the download folders between them" />
+            </button>
+            <figcaption>Overview of how torrent files and completed media move between Klypp Mobile, Klypp Server, and the torrent client.</figcaption>
+          </figure>
           <p class="muted">This example uses qBittorrent, but the same workflow works with many torrent clients. The
             setting names and screens may differ, but you will generally need a client that can watch for new
             <code>.torrent</code> files and use download folders you control.</p>
@@ -919,10 +1002,16 @@
       </main>
     </div>
 
-    <p class="footer">© 2025 Klypp LLC · <a href="../index.html">Home</a> · <a href="../setup/index.html"
+  <p class="footer">© 2025 Klypp LLC · <a href="../index.html">Home</a> · <a href="../setup/index.html"
         class="is-active" aria-current="page">Setup</a> · <a href="../settings/">Settings</a> · <a href="../support/index.html">Support</a> · <a
         href="../faq/index.html">FAQ</a> · <a href="../history/index.html">History</a> · <a
         href="../privacy/index.html">Privacy</a> · <a href="https://app.klyppedit.com/swagger">Server Downloads</a></p>
+  </div>
+
+  <div id="diagram-lightbox" class="lightbox" role="dialog" aria-modal="true"
+    aria-label="Expanded torrent workflow diagram" hidden>
+    <button class="lightbox-close" type="button" aria-label="Close expanded diagram">&times;</button>
+    <img src="../assets/Torrent-Diagram.png" alt="Expanded torrent workflow diagram" />
   </div>
 </body>
 
