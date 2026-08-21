@@ -12,6 +12,7 @@ This repository is the public Klypp product website. It is a static HTML/CSS sit
 - Use semantic HTML, descriptive image `alt` text, keyboard-accessible links and controls, and responsive styles. Keep public copy consistent with the product and avoid inventing unsupported capabilities.
 - Do not add secrets, private URLs, generated build output, `.DS_Store` files, or unrelated formatting changes.
 - Check every page touched at desktop and narrow viewport sizes. Check that navigation, images, badges, and external links still resolve.
+- When updating release history or documenting a new product capability, inspect the related sibling projects under `/Users/johnprout/git/Code` (especially `KlyppServer`, `Klypp`, and `KlyppRelayServer`) for recent user-facing changes. Identify any matching website pages that also need updates, but keep unrelated project changes out of the site.
 
 ## Local verification
 

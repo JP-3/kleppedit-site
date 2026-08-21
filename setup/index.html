@@ -6,7 +6,7 @@
   <title>Klypp LLC – Server Setup Guide</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="description"
-    content="Configure Klypp server destinations (Movies/TV/Kids), optional 4K splits, and TV multi-drive priority behavior." />
+    content="Configure Klypp server destinations, connect a torrent client using shared download folders, and understand TV multi-drive priority behavior." />
 
   <!-- Open Graph -->
   <meta property="og:title" content="Klypp – Server Setup Guide" />
@@ -14,7 +14,7 @@
   <meta property="og:type" content="article" />
   <meta property="og:url" content="https://www.klyppedit.com/Setup/" />
   <meta property="og:description"
-    content="Configure Movies/TV/Kids destinations with optional 4K and understand TV drive priorities." />
+    content="Configure Klypp destinations, connect a torrent client using shared download folders, and understand TV drive priorities." />
 
   <style>
     @import url("https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap");
@@ -273,7 +273,6 @@
         grid-template-columns: 240px 1fr
       }
 
-      /* Make the whole left rail sticky (title + nav) */
       .rail {
         position: sticky;
         top: 20px;
@@ -281,10 +280,8 @@
         height: fit-content;
       }
 
-      /* Keep the nav vertical inside the sticky rail */
       .rail .subnav {
         position: static;
-        /* prevent double-sticky */
         flex-direction: column;
         align-items: flex-start;
       }
@@ -404,7 +401,6 @@
       margin: .25rem 0
     }
 
-    /* Section highlight when targeted */
     section:target {
       outline: 2px solid #cfe0ff;
       box-shadow: 0 0 0 6px var(--ring)
@@ -456,6 +452,83 @@
       margin-top: 10px;
     }
 
+    .jump-queue-screenshot {
+      max-width: 360px;
+      margin: 14px auto 0;
+    }
+
+    .setup-screenshot {
+      margin: 12px 0 16px;
+      padding: 0;
+    }
+
+    .setup-screenshot img {
+      display: block;
+      width: 100%;
+      height: auto;
+      border-radius: 12px;
+    }
+
+    .diagram-zoom {
+      display: block;
+      width: 100%;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      cursor: zoom-in;
+    }
+
+    .diagram-zoom:focus-visible {
+      outline: 3px solid var(--accent-2);
+      outline-offset: -3px;
+    }
+
+    .lightbox[hidden] {
+      display: none;
+    }
+
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      z-index: 20;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      background: rgba(3, 7, 15, .92);
+    }
+
+    .lightbox img {
+      display: block;
+      max-width: 96vw;
+      max-height: 92vh;
+      width: auto;
+      height: auto;
+      object-fit: contain;
+      border-radius: 12px;
+      box-shadow: 0 24px 90px rgba(0, 0, 0, .65);
+    }
+
+    .lightbox-close {
+      position: fixed;
+      top: 16px;
+      right: 20px;
+      width: 42px;
+      height: 42px;
+      border: 1px solid rgba(230, 237, 247, .4);
+      border-radius: 50%;
+      background: rgba(12, 18, 30, .8);
+      color: var(--fg);
+      font-size: 1.6rem;
+      line-height: 1;
+      cursor: pointer;
+    }
+
+    .setup-screenshot figcaption {
+      padding: 8px 12px;
+      color: var(--muted);
+      font-size: .95rem;
+    }
+
     @media (prefers-reduced-motion: reduce) {
       * {
         animation-duration: .001ms !important;
@@ -471,7 +544,7 @@
     "@context":"https://schema.org",
     "@type":"TechArticle",
     "headline":"Klypp – Server Setup Guide",
-    "about":["Movies","Television","Kids","4K","Folder routing","NAS priority"],
+    "about":["Movies","Television","Kids","4K","Folder routing","Torrent clients","NAS priority"],
     "author":{"@type":"Organization","name":"Klypp LLC"},
     "publisher":{"@type":"Organization","name":"Klypp LLC"},
     "inLanguage":"en-US",
@@ -493,6 +566,28 @@
       };
       window.addEventListener('hashchange', setActive);
       setActive();
+
+      const zoomTrigger = document.querySelector('.diagram-zoom');
+      const lightbox = document.getElementById('diagram-lightbox');
+      const closeButton = lightbox.querySelector('.lightbox-close');
+      const closeLightbox = () => {
+        lightbox.hidden = true;
+        document.body.style.overflow = '';
+        zoomTrigger.focus();
+      };
+
+      zoomTrigger.addEventListener('click', () => {
+        lightbox.hidden = false;
+        document.body.style.overflow = 'hidden';
+        closeButton.focus();
+      });
+      closeButton.addEventListener('click', closeLightbox);
+      lightbox.addEventListener('click', event => {
+        if (event.target === lightbox) closeLightbox();
+      });
+      document.addEventListener('keydown', event => {
+        if (event.key === 'Escape' && !lightbox.hidden) closeLightbox();
+      });
     });
   </script>
 </head>
@@ -512,10 +607,11 @@
       </div>
       <div class="eyebrow">Server Setup</div>
       <h1>Server Setup Guide</h1>
-      <p class="subtitle">Configure Movies/TV/Kids destinations, optional 4K splits, and TV multi-drive priority.</p>
+      <p class="subtitle">Configure media destinations, torrent-client folders, optional 4K splits, and TV multi-drive priority.</p>
       <nav class="topnav">
         <a href="../index.html">Home</a>
         <a href="../setup/index.html" class="is-active" aria-current="page">Setup</a>
+        <a href="../settings/">Settings</a>
         <a href="../support/index.html">Support</a>
         <a href="../faq/index.html">FAQ</a>
         <a href="../history/index.html">History</a>
@@ -531,11 +627,12 @@
         <nav class="subnav">
           <a href="#definitions">Definitions</a>
           <a href="#basic">Basic Setup</a>
+          <a href="#torrent-client">Torrent Client Setup</a>
+          <a href="#jump-queue">Jump Queue</a>
           <a href="#advanced">Advanced Setup</a>
           <a href="#advanced-movies">Advanced: Movie Setups</a>
           <a href="#advanced-tv">Advanced: TV Setups</a>
           <a href="#tv-priority">TV Priority Behavior</a>
-          <a href="#direct-uploads">Direct Uploads</a>
         </nav>
       </aside>
 
@@ -662,6 +759,115 @@
             <figure>
               <img src="../screenshots/Search.png" alt="Search screen" />
               <figcaption>Search</figcaption>
+            </figure>
+          </div>
+        </section>
+
+        <!-- TORRENT CLIENT -->
+        <section id="torrent-client" class="card">
+          <h2>Using Klypp with a Torrent Client</h2>
+          <p class="muted">If you use torrents to legally obtain media, you can connect Klypp Server to a torrent
+            client by sharing its download folders with Klypp. This lets you send a <code>.torrent</code> file from
+            your mobile device to your server, have the torrent client download it, and then let Klypp organize the
+            completed media.</p>
+          <figure class="setup-screenshot">
+            <button class="diagram-zoom" type="button" aria-label="Open the torrent workflow diagram full screen">
+              <img src="../assets/Torrent-Diagram.png"
+                alt="Torrent workflow showing Klypp Mobile, Klypp Server, a torrent client, and the download folders between them" />
+            </button>
+            <figcaption>Overview of how torrent files and completed media move between Klypp Mobile, Klypp Server, and the torrent client.</figcaption>
+          </figure>
+          <p class="muted">This example uses qBittorrent, but the same workflow works with many torrent clients. The
+            setting names and screens may differ, but you will generally need a client that can watch for new
+            <code>.torrent</code> files and use download folders you control.</p>
+
+          <h3>Klypp Server folder settings</h3>
+          <p class="muted">Klypp Server uses three folders for this workflow:</p>
+          <ul class="list-tight">
+            <li><strong>Mobile App Uploads</strong> — Where files uploaded from your mobile device are saved to the
+              server.</li>
+            <li><strong>App Incomplete Downloads</strong> — Where incomplete torrent downloads are stored while they
+              are downloading.</li>
+            <li><strong>App Completed Downloads</strong> — Where completed downloads are placed. Klypp Server watches
+              this folder and picks up new media to move it to its final movie, TV, music, or custom-rule destination.
+            </li>
+          </ul>
+          <p class="muted">In this example, <strong>Mobile App Uploads</strong> is set to
+            <code>C:\Users\user\Downloads</code>, <strong>App Incomplete Downloads</strong> is set to
+            <code>C:\td\Incomplete</code>, and <strong>App Completed Downloads</strong> is set to the folder where
+            your torrent client places finished downloads.</p>
+          <figure class="setup-screenshot">
+            <img src="../screenshots/TorrentDriveSetup.png"
+              alt="Klypp Server settings showing mobile uploads, incomplete downloads, completed downloads, and media destinations" />
+            <figcaption>Example Klypp Server folder and media-destination configuration.</figcaption>
+          </figure>
+          <p class="muted">Your Klypp Server destination rules can be as simple or as detailed as you need. For
+            example, you may use separate NAS locations for movies and TV, or create a custom matching rule for files
+            containing <code>UFC.Fight.Night</code>. These rules work for torrent downloads as well as any other media
+            that appears in the completed-downloads folder.</p>
+
+          <h3>Torrent client setup</h3>
+          <p class="muted">Configure your torrent client to use the same folders:</p>
+          <ul class="list-tight">
+            <li>Watch <code>C:\Users\user\Downloads</code> for new <code>.torrent</code> files.</li>
+            <li>Store active or incomplete downloads in <code>C:\td\Incomplete</code>.</li>
+            <li>Move finished downloads to the folder configured as <strong>App Completed Downloads</strong>.</li>
+          </ul>
+          <p class="muted">The exact names of these options vary between clients. In qBittorrent, these settings are
+            available in its download and folder settings.</p>
+
+          <h3>Optional RSS automation</h3>
+          <p class="muted">Many torrent clients can monitor RSS feeds and automatically add matching
+            <code>.torrent</code> files. When enabled, the torrent client starts the download in
+            <strong>App Incomplete Downloads</strong>, moves it to <strong>App Completed Downloads</strong> when
+            finished, and Klypp Server organizes the completed media as usual. No manual upload from Klypp Mobile is
+            required. You can optionally enable notifications when new media is added.</p>
+          <figure class="setup-screenshot">
+            <img src="../screenshots/TorrentTDFolders.png"
+              alt="qBittorrent settings showing folders for watching torrent files and saving downloads" />
+            <figcaption>qBittorrent shown as one example of a torrent-client folder setup.</figcaption>
+          </figure>
+
+          <h3>How the workflow operates</h3>
+          <ol class="list-tight">
+            <li>From the Klypp mobile app, send a <code>.torrent</code> file to your server.</li>
+            <li>Klypp saves the file in <strong>Mobile App Uploads</strong>: <code>C:\Users\user\Downloads</code>.
+            </li>
+            <li>Your torrent client detects the new file and starts downloading it.</li>
+            <li>While the torrent is downloading, its files remain in <strong>App Incomplete Downloads</strong>:
+              <code>C:\td\Incomplete</code>.</li>
+            <li>When the torrent finishes, the client moves the completed files to
+              <strong>App Completed Downloads</strong>.</li>
+            <li>Klypp Server detects the new media, checks it against your movie, TV, music, and custom matching
+              rules, and moves it to the correct final destination.</li>
+          </ol>
+          <p class="muted">For example, a file matching <code>UFC.Fight.Night</code> can follow a custom rule, while
+            recognized movies, TV episodes, and music follow their normal Klypp destination settings.</p>
+
+          <h3>Other valid setups</h3>
+          <p class="note">There are many ways to connect a torrent client to Klypp. The separate incomplete and
+            completed folders shown above are a straightforward example because they make the download flow easier to
+            understand and troubleshoot. Some torrent clients can use the same folder for incomplete and completed
+            downloads. This can work, but it is usually more complicated to configure and manage because Klypp needs to
+            avoid processing files before they are fully downloaded. Your setup may vary depending on your torrent
+            client, storage layout, and how you prefer to organize your media.</p>
+
+          <p class="note"><strong>Important:</strong> Only use this workflow for media you are legally authorized to
+            download and share. Klypp does not provide torrent content or determine whether downloaded media is lawful.
+          </p>
+        </section>
+
+        <section id="jump-queue" class="card">
+          <h2>Processing Queue &amp; Jump Queue</h2>
+          <p class="muted">If you have a large queue and want one item processed first, use
+            <strong>Jump Queue</strong> from the mobile app or Klypp Server. The selected file moves to the front of
+            the queue and is processed next.</p>
+          <p class="muted">This is useful when you need a specific movie, TV episode, or other media available before
+            the rest of the queue finishes.</p>
+          <div class="gallery jump-queue-screenshot" aria-label="Processing Queue screenshot">
+            <figure>
+              <img src="../screenshots/ProcessingQueue.png" alt="Klypp mobile app Processing Queue screen" />
+              <figcaption>Use Jump Queue to prioritize a selected item.</figcaption>
             </figure>
           </div>
         </section>
@@ -803,10 +1009,16 @@
       </main>
     </div>
 
-    <p class="footer">© 2025 Klypp LLC · <a href="../index.html">Home</a> · <a href="../setup/index.html"
-        class="is-active" aria-current="page">Setup</a> · <a href="../support/index.html">Support</a> · <a
+  <p class="footer">© 2025 Klypp LLC · <a href="../index.html">Home</a> · <a href="../setup/index.html"
+        class="is-active" aria-current="page">Setup</a> · <a href="../settings/">Settings</a> · <a href="../support/index.html">Support</a> · <a
         href="../faq/index.html">FAQ</a> · <a href="../history/index.html">History</a> · <a
         href="../privacy/index.html">Privacy</a> · <a href="https://app.klyppedit.com/swagger">Server Downloads</a></p>
+  </div>
+
+  <div id="diagram-lightbox" class="lightbox" role="dialog" aria-modal="true"
+    aria-label="Expanded torrent workflow diagram" hidden>
+    <button class="lightbox-close" type="button" aria-label="Close expanded diagram">&times;</button>
+    <img src="../assets/Torrent-Diagram.png" alt="Expanded torrent workflow diagram" />
   </div>
 </body>
 
