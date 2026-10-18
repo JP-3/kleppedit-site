@@ -379,27 +379,36 @@
             <code>Hail To The Thief (2003)</code>.</li>
           <li><strong>Track-number naming</strong> lets you add the track number to the beginning of each music file,
             such as <code>03. Float On.mp3</code>, rather than using only the song title.</li>
+          <li><strong>Auto Rename Media Filenames</strong> optionally applies Plex-style names to copied movie and TV
+            files, including movie years, season and episode numbers, episode titles, and multi-episode ranges. File
+            extensions are preserved.</li>
+          <li><strong>Rename History</strong> records automatic filename changes in Klypp Server. From the server UI,
+            you can review a change, rename the file manually, or undo an automatic rename when needed.</li>
         </ul>
         <figure>
           <img src="../screenshots/Server-MediaOrganization.png"
-            alt="Klypp Server media organization settings for move mode, album-year naming, and track-number naming" />
-          <figcaption>Choose how Klypp moves media and names music folders and tracks.</figcaption>
+            alt="Klypp Server media organization settings for move mode, album-year naming, track-number naming, and automatic media filename renaming" />
+          <figcaption>Choose how Klypp moves media and names music folders, tracks, movies, and TV episodes.</figcaption>
         </figure>
       </section>
 
       <section id="plex" class="card">
         <h2>Plex Media Sync</h2>
-        <p class="muted">Plex Media Sync is useful for large libraries where Plex does not reliably detect new media
-          on its own. Instead of scheduling Plex to rescan an entire library at regular intervals, Klypp can notify
-          Plex after a successful move and tell it exactly which movie or TV-show folder changed. This helps new media
-          appear sooner while avoiding unnecessary full-library scans.</p>
-        <p class="muted">Enable <strong>Notify Plex after successful moves</strong>, then enter one or more Plex server
-          URLs and your Plex token. Klypp Drive Location paths must exactly match the library paths used by Plex on
-          that server, including capitalization and path style.</p>
+        <p class="muted">Plex Media Sync is especially useful for large libraries where Plex's broad library scans or
+          folder watching can be slow or unreliable. Instead of asking Plex to scan everything, Klypp tells Plex
+          exactly which movie, episode, or music album changed after a successful move. These targeted refreshes help
+          new media appear quickly without waiting for a full-library scan.</p>
+        <p class="muted">Add each Plex server with its own URL and token, then test the connection from Klypp Server.
+          Klypp checks whether Plex lists the moved media, and you can retry a failed Plex update without copying the
+          file again. Klypp can also notify you when Plex has the media and it is ready to watch. Music updates are
+          grouped by album to avoid duplicate notifications.</p>
+        <p class="muted">Enable <strong>Notify Plex after successful moves</strong> and configure one or more Plex
+          servers. Klypp Drive Location paths must exactly match the library paths used by Plex on each server,
+          including capitalization and path style.</p>
         <figure>
           <img src="../screenshots/Server-PlexSync.png"
-            alt="Klypp Server Plex Media Sync settings for Plex server URLs and token" />
-          <figcaption>Configure Plex servers that Klypp should notify after successful media moves.</figcaption>
+            alt="Klypp Server Plex Media Sync settings for Plex server connections and notifications" />
+          <figcaption>Configure Plex connections, targeted refreshes, availability checks, and ready-to-watch notifications.</figcaption>
         </figure>
       </section>
 
@@ -408,10 +417,14 @@
         <p class="muted">Choose which events send push notifications to your mobile device: incomplete download
           started, incomplete download finished, completed download started, and completed download finished. Push
           delivery is best-effort and may arrive with a delay. Script notifications are configured per script.</p>
+        <p class="muted"><strong>Plex Push Notifications</strong> can notify you after Klypp sends a targeted refresh
+          and verifies that Plex lists the moved movie, episode, or music album. Choose <strong>Failure only</strong>
+          to hear about verification failures, or <strong>Always</strong> to receive success and failure summaries.
+          Music notifications are grouped by album to avoid duplicate alerts. Plex notifications require Notify Plex
+          and at least one configured Plex server.</p>
         <figure>
           <img src="../screenshots/Server-FileTransferPushNotification.png"
-            alt="Klypp Server file-transfer push-notification settings" />
-          <figcaption>Choose which file-transfer events send push notifications.</figcaption>
+            alt="Klypp Server file-transfer and Plex push-notification settings" />
         </figure>
       </section>
 
