@@ -5,354 +5,32 @@
   <title>Klypp History</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="description" content="Release and milestone history for Klypp and KlyppServer." />
-  <style>
-    @import url("https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap");
-
-    :root {
-      --bg: #0b0f17;
-      --fg: #e6edf7;
-      --muted: #9aa7bb;
-      --card: rgba(17, 23, 36, 0.72);
-      --link: #7fb2ff;
-      --accent: #3a7bff;
-      --accent-2: #36d1dc;
-      --ring: rgba(63, 135, 255, .28);
-      --radius: 20px;
-      --border: rgba(141, 162, 196, .18);
-      --shadow: 0 28px 80px rgba(0, 0, 0, .45);
-      --shadow-soft: 0 14px 30px rgba(0, 0, 0, .28);
-      --server-accent: #6aa8ff;
-      --server-accent-2: #47d0c7;
-      --mobile-accent: #78e08f;
-      --mobile-accent-2: #2ecc71;
-      --android-accent: #b5f07d;
-      --android-accent-2: #84cc16;
-      --ios-accent: #ffb37a;
-      --ios-accent-2: #ff7f50;
-    }
-
-    * { box-sizing: border-box; }
-
-    body {
-      font-family: "IBM Plex Sans", "Segoe UI", Tahoma, sans-serif;
-      margin: 0;
-      padding: 34px 16px 54px;
-      background:
-        radial-gradient(900px 520px at 5% -10%, rgba(58, 123, 255, .22) 0%, rgba(58, 123, 255, 0) 60%),
-        radial-gradient(1000px 520px at 110% 0%, rgba(54, 209, 220, .18) 0%, rgba(54, 209, 220, 0) 60%),
-        radial-gradient(1000px 700px at 50% 120%, rgba(20, 27, 45, .9) 0%, rgba(11, 15, 23, 0) 60%),
-        linear-gradient(180deg, #0b0f17 0%, #0c111b 100%);
-      color: var(--fg);
-    }
-
-    body::before {
-      content: "";
-      position: fixed;
-      inset: 0;
-      background:
-        radial-gradient(circle at 20% 20%, rgba(255, 255, 255, .05), transparent 45%),
-        radial-gradient(circle at 80% 10%, rgba(255, 255, 255, .05), transparent 45%),
-        linear-gradient(90deg, rgba(255, 255, 255, .04) 1px, transparent 1px) 0 0/48px 48px,
-        linear-gradient(0deg, rgba(255, 255, 255, .03) 1px, transparent 1px) 0 0/48px 48px;
-      pointer-events: none;
-      z-index: -1;
-    }
-
-    .wrap { max-width: 1040px; margin: 0 auto; }
-
-    header.hero {
-      text-align: center;
-      margin-bottom: 20px;
-      background: linear-gradient(135deg, rgba(58, 123, 255, .18), rgba(54, 209, 220, .16));
-      border: 1px solid rgba(122, 150, 200, .25);
-      border-radius: 26px;
-      padding: 24px 20px 18px;
-      box-shadow: var(--shadow-soft);
-      position: relative;
-      overflow: hidden;
-      backdrop-filter: blur(8px);
-      min-height: 220px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-    }
-
-    header.hero::after {
-      content: "";
-      position: absolute;
-      width: 260px;
-      height: 260px;
-      right: -120px;
-      top: -140px;
-      background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, .45), rgba(255, 255, 255, 0));
-      pointer-events: none;
-    }
-
-    .hero-badges {
-      position: absolute;
-      top: 16px;
-      left: 16px;
-      display: inline-flex;
-      flex-direction: column;
-      gap: 8px;
-      align-items: center;
-      z-index: 2;
-    }
-
-    .store-badge { display: inline-flex; align-items: center; text-decoration: none; background: transparent; padding: 0; border-radius: 0; }
-    .store-badge img { width: 150px; height: 35px; object-fit: contain; display: block; }
-    .store-badge.ios img { width: 164px; height: 39px; }
-
-    .eyebrow {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 6px 12px;
-      border-radius: 999px;
-      background: rgba(10, 16, 28, .7);
-      border: 1px solid rgba(141, 162, 196, .28);
-      color: #d6e2f5;
-      font-weight: 600;
-      font-size: .82rem;
-      margin-bottom: 10px;
-      text-transform: uppercase;
-      letter-spacing: .6px;
-    }
-
-    h1 { margin: 0 0 6px; font-family: "Sora", "Trebuchet MS", sans-serif; }
-    .subtitle { color: var(--muted); margin: 0; }
-    .legend {
-      display: flex;
-      gap: 10px;
-      justify-content: center;
-      flex-wrap: wrap;
-      margin: 14px 0 2px;
-    }
-
-    .legend-filter,
-    .legend-pill,
-    .entry-kind {
-      display: inline-flex;
-      align-items: center;
-      gap: 7px;
-      padding: 6px 11px;
-      border-radius: 999px;
-      border: 1px solid rgba(141, 162, 196, .24);
-      background: rgba(9, 14, 24, .58);
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: .08em;
-      text-transform: uppercase;
-      color: #e6edf7;
-    }
-
-    .legend-filter {
-      appearance: none;
-      cursor: pointer;
-      transition: transform .16s ease, border-color .16s ease, background .16s ease, opacity .16s ease;
-    }
-
-    .legend-filter:hover {
-      transform: translateY(-1px);
-      border-color: rgba(196, 210, 232, .38);
-      background: rgba(15, 22, 36, .76);
-    }
-
-    .legend-filter.is-off {
-      opacity: .55;
-      background: rgba(9, 14, 24, .28);
-      border-color: rgba(141, 162, 196, .14);
-    }
-
-    .legend-pill::before,
-    .legend-filter::before,
-    .entry-kind::before {
-      content: "";
-      width: 8px;
-      height: 8px;
-      border-radius: 999px;
-      background: currentColor;
-      box-shadow: 0 0 0 4px rgba(255, 255, 255, .05);
-    }
-
-    nav {
-      display: flex;
-      gap: 10px;
-      justify-content: center;
-      margin: 14px 0 0;
-      flex-wrap: wrap;
-    }
-
-    nav a {
-      color: var(--accent);
-      text-decoration: none;
-      padding: 6px 12px;
-      border-radius: 999px;
-      border: 1px solid rgba(122, 150, 200, .28);
-      background: rgba(9, 14, 24, .7);
-      font-weight: 600;
-      font-size: .92rem;
-    }
-
-    nav a:hover {
-      background: rgba(14, 22, 36, .85);
-      border-color: rgba(140, 170, 220, .45);
-    }
-
-    nav a.is-active {
-      background: linear-gradient(135deg, rgba(58, 123, 255, .35), rgba(54, 209, 220, .25));
-      border-color: rgba(123, 158, 220, .65);
-      color: #e8f1ff;
-      cursor: default;
-    }
-
-    .card {
-      background: var(--card);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      padding: 22px;
-      border: 1px solid var(--border);
-      position: relative;
-      backdrop-filter: blur(12px);
-      margin-bottom: 14px;
-    }
-
-    .card::before {
-      content: "";
-      position: absolute;
-      inset: 0 0 auto 0;
-      height: 4px;
-      border-radius: var(--radius) var(--radius) 0 0;
-      background: linear-gradient(90deg, rgba(26, 91, 216, .6), rgba(0, 160, 166, .6));
-      opacity: .7;
-    }
-
-    .entry-head { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; align-items: center; }
-    .entry-meta {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      flex-wrap: wrap;
-      justify-content: flex-end;
-    }
-    .entry-head h3 { margin: 0; font-family: "Sora", "Trebuchet MS", sans-serif; font-size: 1.05rem; }
-    .date-pill {
-      display: inline-block;
-      padding: 6px 10px;
-      border-radius: 999px;
-      border: 1px solid rgba(141, 162, 196, .45);
-      background: rgba(9, 14, 24, .6);
-      color: var(--muted);
-      font-size: 12px;
-      font-weight: 600;
-    }
-
-    .card-server {
-      background:
-        linear-gradient(180deg, rgba(18, 28, 46, .82), rgba(14, 19, 31, .74));
-      border-color: rgba(106, 168, 255, .22);
-    }
-
-    .card-server::before {
-      background: linear-gradient(90deg, rgba(106, 168, 255, .9), rgba(71, 208, 199, .8));
-    }
-
-    .card-mobile {
-      background:
-        linear-gradient(180deg, rgba(16, 34, 24, .82), rgba(11, 20, 15, .74));
-      border-color: rgba(120, 224, 143, .22);
-    }
-
-    .card-mobile::before {
-      background: linear-gradient(90deg, rgba(120, 224, 143, .95), rgba(46, 204, 113, .78));
-    }
-
-    .card-android {
-      background:
-        linear-gradient(180deg, rgba(32, 39, 14, .82), rgba(18, 22, 10, .74));
-      border-color: rgba(181, 240, 125, .22);
-    }
-
-    .card-android::before {
-      background: linear-gradient(90deg, rgba(181, 240, 125, .95), rgba(132, 204, 22, .78));
-    }
-
-    .card-ios {
-      background:
-        linear-gradient(180deg, rgba(41, 25, 18, .82), rgba(22, 16, 14, .74));
-      border-color: rgba(255, 179, 122, .24);
-    }
-
-    .card-ios::before {
-      background: linear-gradient(90deg, rgba(255, 179, 122, .95), rgba(255, 127, 80, .82));
-    }
-
-    .kind-server,
-    .legend-server {
-      color: var(--server-accent);
-    }
-
-    .kind-mobile,
-    .legend-mobile {
-      color: var(--mobile-accent);
-    }
-
-    .kind-android,
-    .legend-android {
-      color: var(--android-accent);
-    }
-
-    .kind-ios,
-    .legend-ios {
-      color: var(--ios-accent);
-    }
-
-    .card.is-hidden {
-      display: none;
-    }
-
-    ul { margin: 10px 0 0 1.1rem; }
-    li { line-height: 1.65; margin-bottom: 2px; }
-    a { color: var(--link); }
-    .footer { text-align: center; color: var(--muted); margin-top: 22px; font-size: .95rem; }
-
-    @media (max-width: 720px) {
-      .hero-badges { position: static; margin-bottom: 10px; align-self: flex-start; }
-    }
-  </style>
+  <link rel="stylesheet" href="../assets/site.css">
+<link rel="stylesheet" href="../assets/documentation.css">
 </head>
 <body>
-  <div class="wrap">
-    <header class="hero">
-      <div class="hero-badges">
-        <a class="store-badge ios" href="https://apps.apple.com/us/app/klypp/id6753725499" target="_blank" rel="noreferrer" aria-label="Download on the App Store">
-          <img src="../assets/app-store-badge.svg" alt="Download on the App Store" />
-        </a>
-        <a class="store-badge android" href="https://play.google.com/store/apps/details?id=com.klyppedit.klypp" target="_blank" rel="noreferrer" aria-label="Get Klypp on Google Play (beta)">
-          <img src="../assets/google-play-badge.svg" alt="Get it on Google Play" />
-        </a>
-      </div>
-      <div class="eyebrow">Release Notes</div>
-      <h1>Klypp History</h1>
-      <p class="subtitle">A timeline of product and platform milestones.</p>
-      <div class="legend" aria-label="History entry filters">
+<a class="skip" href="#main">Skip to content</a>
+<header class="site-header">
+<div class="container nav-row">
+<a class="logo" href="../" aria-label="Klypp home">
+<img class="brand-mascot" src="../assets/klypp-mascot.svg" width="40" height="40" alt="">klypp<span class="brand-dot">.</span>
+</a>
+<nav aria-label="Main navigation">
+<a href="../index.html#how-it-works">How it works</a>
+<a href="../downloads/index.html">Downloads</a>
+<a href="../documentation/index.html">Documentation</a>
+<a href="../support/index.html">Support</a>
+</nav>
+<a class="button small" href="../downloads/index.html">Get started <span aria-hidden="true">↗</span>
+</a>
+</div>
+</header>
+<main id="main" class="container document-content"><nav class="document-nav" aria-label="Guides and resources"><a href="../setup/index.html">Setup</a><a href="../settings/index.html">Settings</a><a href="../AdvancedDocumentation/index.html">Advanced guide</a><a href="../faq/index.html">FAQ</a><a href="../history/index.html" aria-current="page">History</a><a href="../privacy/index.html">Privacy</a></nav><header class="page-intro"><p class="eyebrow">Release Notes</p><h1>Klypp History</h1><p class="subtitle">A timeline of product and platform milestones.</p><div class="legend" aria-label="History entry filters">
         <button type="button" class="legend-filter legend-server" data-filter="server" aria-pressed="true">Server</button>
         <button type="button" class="legend-filter legend-mobile" data-filter="mobile" aria-pressed="true">Mobile App</button>
         <button type="button" class="legend-filter legend-android" data-filter="android" aria-pressed="true">Android</button>
         <button type="button" class="legend-filter legend-ios" data-filter="ios" aria-pressed="true">iOS</button>
-      </div>
-      <nav>
-        <a href="../index.html">Home</a>
-        <a href="../setup/index.html">Setup</a>
-        <a href="../settings/">Settings</a>
-        <a href="../support/index.html">Support</a>
-        <a href="../faq/index.html">FAQ</a>
-        <a href="../history/index.html" class="is-active" aria-current="page">History</a>
-        <a href="../privacy/index.html">Privacy</a>
-        <a href="https://app.klyppedit.com/swagger">Server Downloads</a>
-      </nav>
-    </header>
+      </div></header>
     <section class="card card-mobile"><div class="entry-head"><h3>Digital Releases and My Media browsing refresh</h3><div class="entry-meta"><span class="entry-kind kind-mobile">Mobile App</span><span class="date-pill">Android 2.14 · iOS 2.15</span></div></div><ul><li>Choose a detailed list or a poster grid with one to four posters per row in Digital Releases and My Media, with releases grouped by date.</li><li>Added view options to include up to 30 days of past releases alongside upcoming titles, with separate saved preferences for each view.</li><li>Added a movie details view with artwork, digital-release dates, descriptions, and reminder controls.</li></ul></section>
     <section class="card card-mobile"><div class="entry-head"><h3>Snapshot dates and smoother browsing</h3><div class="entry-meta"><span class="entry-kind kind-mobile">Mobile App</span><span class="date-pill">Android 2.14 · iOS 2.15</span></div></div><ul><li>Made Snapshot dates clearer, including digital-release dates for movies and calendar dates for older releases.</li><li>Improved scrolling, loading, and continuity when switching between Digital Releases and My Media, with more reliable refreshes after reminder changes.</li><li>Fixed server-update prompts that could be missed while the app was still connecting during startup.</li></ul></section>
     <section class="card card-server"><div class="entry-head"><h3>Media lookback and connection recovery</h3><div class="entry-meta"><span class="entry-kind kind-server">Server</span><span class="date-pill">Oct 25, 2026</span></div></div><ul><li>Added support for showing up to 30 days of past movies and TV episodes in My Media while keeping upcoming releases included.</li><li>Improved recovery when the server's authentication certificate is rejected during upload-access checks.</li><li>Improved account and device registration so repeated mobile sign-ins do not displace the server's certificate.</li></ul></section>
@@ -443,11 +121,30 @@
     <section class="card card-server"><div class="entry-head"><h3>Relay cert retrieval and local reuse</h3><div class="entry-meta"><span class="entry-kind kind-server">Server</span><span class="date-pill">0.25.711</span></div></div><ul><li>Server started consuming certificates provided by Relay after auth.</li><li>Certificate reuse was added so reconnects could avoid unnecessary regeneration.</li></ul></section>
     <section class="card card-server"><div class="entry-head"><h3>NightsWatch added/integrated</h3><div class="entry-meta"><span class="entry-kind kind-server">Server</span><span class="date-pill">0.25.618</span></div></div><ul><li>Added NightsWatch projects into the solution and connected scanning components.</li><li>Brought over enough watcher functionality to be usable while cleanup remained.</li></ul></section>
     <section class="card card-mobile"><div class="entry-head"><h3>Mobile app foundation</h3><div class="entry-meta"><span class="entry-kind kind-mobile">Mobile App</span><span class="date-pill">1.0</span></div></div><ul><li>Started the first Klypp mobile app track.</li><li>Established the base app structure and early connection flow.</li></ul></section>
-    <section class="card card-server"><div class="entry-head"><h3>Project initialized</h3><div class="entry-meta"><span class="entry-kind kind-server">Server</span><span class="date-pill">0.25.614</span></div></div><ul><li>Bootstrapped the repository with core project structure and solution files.</li><li>Took the original POC project and used it as the foundation for a new production-ready version.</li></ul></section>
-
-    <p class="footer">© 2026 Klypp LLC · <a href="../index.html">Home</a> · <a href="../setup/index.html">Setup</a> · <a href="../settings/">Settings</a> · <a href="../support/index.html">Support</a> · <a href="../faq/index.html">FAQ</a> · <a href="../history/index.html">History</a> · <a href="../privacy/index.html">Privacy</a> · <a href="https://app.klyppedit.com/swagger">Server Downloads</a></p>
-  </div>
-  <script>
+    <section class="card card-server"><div class="entry-head"><h3>Project initialized</h3><div class="entry-meta"><span class="entry-kind kind-server">Server</span><span class="date-pill">0.25.614</span></div></div><ul><li>Bootstrapped the repository with core project structure and solution files.</li><li>Took the original POC project and used it as the foundation for a new production-ready version.</li></ul></section></main>
+<footer class="container site-footer">
+<div class="footer-top">
+<a class="logo" href="../"><img class="brand-mascot" src="../assets/klypp-mascot.svg" width="40" height="40" alt="">klypp<span class="brand-dot">.</span>
+</a>
+<p>Your media. Your server. Within reach.</p>
+<a href="mailto:support@klyppedit.com">support@klyppedit.com ↗</a>
+</div>
+<div class="footer-bottom">
+<span>© 2026 Klypp LLC · Minnesota, United States</span>
+<nav aria-label="Footer navigation">
+<a href="../">Home</a>
+<a href="../setup/index.html">Setup</a>
+<a href="../settings/index.html">Settings</a>
+<a href="../support/index.html">Support</a>
+<a href="../faq/index.html">FAQ</a>
+<a href="../history/index.html">History</a>
+<a href="../privacy/index.html">Privacy</a>
+<a href="../delete-account/index.html">Delete account</a>
+<a href="https://app.klyppedit.com/swagger">Server downloads</a>
+</nav>
+</div>
+</footer>
+<script>
     (function () {
       const filters = Array.from(document.querySelectorAll(".legend-filter"));
       const cards = Array.from(document.querySelectorAll(".card"));

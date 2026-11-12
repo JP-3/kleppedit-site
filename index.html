@@ -1,301 +1,22 @@
 <!-- index.html -->
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8" />
-  <title>Klypp LLC – Official Website</title>
-  <link rel="icon" href="favicon.ico">
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description"
+<meta charset="UTF-8" />
+<title>Klypp LLC – Official Website</title>
+<link rel="icon" href="favicon.ico">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="description"
     content="Klypp LLC builds secure remote-to-home media workflow software, including the Klypp app." />
-
-  <!-- Open Graph -->
-  <meta property="og:title" content="Klypp LLC – Official Website" />
-  <meta property="og:site_name" content="Klypp LLC" />
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://www.klyppedit.com/" />
-  <meta property="og:description" content="Klypp LLC builds secure remote-to-home media workflow software." />
-
-  <style>
-    @import url("https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap");
-
-    :root {
-      --bg: #0b0f17;
-      --fg: #e6edf7;
-      --muted: #9aa7bb;
-      --card: rgba(17, 23, 36, .72);
-      --link: #7fb2ff;
-      --accent: #3a7bff;
-      --accent-2: #36d1dc;
-      --ring: rgba(63, 135, 255, .28);
-      --radius: 20px;
-      --border: rgba(141, 162, 196, .18);
-      --shadow: 0 28px 80px rgba(0, 0, 0, .45);
-      --shadow-soft: 0 14px 30px rgba(0, 0, 0, .28);
-    }
-
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
-      font-family: "IBM Plex Sans", "Segoe UI", Tahoma, sans-serif;
-      margin: 0;
-      padding: 34px 16px 54px;
-      background:
-        radial-gradient(900px 520px at 5% -10%, rgba(58, 123, 255, .22) 0%, rgba(58, 123, 255, 0) 60%),
-        radial-gradient(1000px 520px at 110% 0%, rgba(54, 209, 220, .18) 0%, rgba(54, 209, 220, 0) 60%),
-        radial-gradient(1000px 700px at 50% 120%, rgba(20, 27, 45, .9) 0%, rgba(11, 15, 23, 0) 60%),
-        linear-gradient(180deg, #0b0f17 0%, #0c111b 100%);
-      color: var(--fg);
-    }
-
-    body::before {
-      content: "";
-      position: fixed;
-      inset: 0;
-      background:
-        radial-gradient(circle at 20% 20%, rgba(255, 255, 255, .05), transparent 45%),
-        radial-gradient(circle at 80% 10%, rgba(255, 255, 255, .05), transparent 45%),
-        linear-gradient(90deg, rgba(255, 255, 255, .04) 1px, transparent 1px) 0 0/48px 48px,
-        linear-gradient(0deg, rgba(255, 255, 255, .03) 1px, transparent 1px) 0 0/48px 48px;
-      pointer-events: none;
-      z-index: -1;
-    }
-
-    .wrap {
-      max-width: 1040px;
-      margin: 0 auto;
-    }
-
-    header.hero {
-      text-align: center;
-      margin-bottom: 28px;
-      background: linear-gradient(135deg, rgba(58, 123, 255, .18), rgba(54, 209, 220, .16));
-      border: 1px solid rgba(122, 150, 200, .25);
-      border-radius: 26px;
-      padding: 26px 20px 20px;
-      box-shadow: var(--shadow-soft);
-      position: relative;
-      overflow: hidden;
-      backdrop-filter: blur(8px);
-      min-height: 220px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-    }
-
-    header.hero::after {
-      content: "";
-      position: absolute;
-      width: 280px;
-      height: 280px;
-      right: -120px;
-      top: -140px;
-      background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, .45), rgba(255, 255, 255, 0));
-      pointer-events: none;
-    }
-
-    .eyebrow {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 6px 12px;
-      border-radius: 999px;
-      background: rgba(10, 16, 28, .7);
-      border: 1px solid rgba(141, 162, 196, .28);
-      color: #d6e2f5;
-      font-weight: 600;
-      font-size: .82rem;
-      margin-bottom: 10px;
-      text-transform: uppercase;
-      letter-spacing: .6px;
-    }
-
-    h1 {
-      margin: 0 0 6px;
-      font-size: 2.25rem;
-      font-family: "Sora", "Trebuchet MS", sans-serif;
-      letter-spacing: .2px;
-    }
-
-    .subtitle {
-      color: var(--muted);
-      margin: 0;
-    }
-
-    nav {
-      display: flex;
-      gap: 10px;
-      justify-content: center;
-      margin: 16px 0 0;
-      flex-wrap: wrap;
-    }
-
-    nav a {
-      color: var(--accent);
-      text-decoration: none;
-      padding: 6px 12px;
-      border-radius: 999px;
-      border: 1px solid rgba(122, 150, 200, .28);
-      background: rgba(9, 14, 24, .7);
-      font-weight: 600;
-      font-size: .92rem;
-    }
-
-    nav a:hover {
-      background: rgba(14, 22, 36, .85);
-      border-color: rgba(140, 170, 220, .45);
-    }
-
-    nav a.is-active {
-      background: linear-gradient(135deg, rgba(58, 123, 255, .35), rgba(54, 209, 220, .25));
-      border-color: rgba(123, 158, 220, .65);
-      color: #e8f1ff;
-      cursor: default;
-    }
-
-    .hero-badges {
-      position: absolute;
-      top: 16px;
-      left: 16px;
-      display: inline-flex;
-      flex-direction: column;
-      gap: 8px;
-      align-items: center;
-      z-index: 2;
-    }
-
-    .store-badge {
-      display: inline-flex;
-      align-items: center;
-      text-decoration: none;
-      background: transparent;
-      padding: 0;
-      border-radius: 0;
-    }
-
-    .store-badge img {
-      width: 150px;
-      height: 35px;
-      object-fit: contain;
-      display: block;
-    }
-
-    .store-badge.ios img {
-      width: 164px;
-      height: 39px;
-    }
-
-    .store-badge:hover {
-      text-decoration: none;
-    }
-
-    @media (max-width: 720px) {
-      .hero-badges {
-        position: static;
-        margin-bottom: 10px;
-        align-self: flex-start;
-      }
-    }
-
-    .grid {
-      display: grid;
-      gap: 18px;
-      grid-template-columns: 1fr;
-    }
-
-    @media (min-width: 880px) {
-      .grid {
-        grid-template-columns: 1fr 1fr;
-      }
-    }
-
-    .card {
-      background: var(--card);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      padding: 22px;
-      border: 1px solid var(--border);
-      position: relative;
-      backdrop-filter: blur(12px);
-    }
-
-    .card::before {
-      content: "";
-      position: absolute;
-      inset: 0 0 auto 0;
-      height: 4px;
-      border-radius: var(--radius) var(--radius) 0 0;
-      background: linear-gradient(90deg, rgba(26, 91, 216, .6), rgba(0, 160, 166, .6));
-      opacity: .7;
-    }
-
-    h2 {
-      margin-top: 0;
-      font-size: 1.2rem;
-      font-family: "Sora", "Trebuchet MS", sans-serif;
-    }
-
-    p {
-      line-height: 1.7;
-    }
-
-    ul {
-      margin: .6rem 0 .2rem 1.1rem;
-    }
-
-    a {
-      color: var(--link);
-      text-decoration: none;
-    }
-
-    a:hover {
-      text-decoration: underline;
-    }
-
-    .kbd {
-      display: inline-block;
-      padding: 2px 6px;
-      border-radius: 6px;
-      background: rgba(10, 16, 28, .85);
-      border: 1px solid rgba(141, 162, 196, .4);
-      color: #e6edf7;
-      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-      font-size: .9em;
-    }
-
-    .footer {
-      text-align: center;
-      color: var(--muted);
-      margin-top: 22px;
-      font-size: .95rem;
-    }
-
-    .note {
-      background: rgba(13, 20, 32, .7);
-      border: 1px solid rgba(141, 162, 196, .25);
-      padding: 12px;
-      border-radius: 10px;
-    }
-
-    .brand {
-      font-weight: 600;
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      * {
-        animation-duration: .001ms !important;
-        animation-iteration-count: 1 !important;
-        transition: none !important;
-      }
-    }
-  </style>
-
-  <!-- JSON-LD -->
-  <script type="application/ld+json">
+<!-- Open Graph -->
+<meta property="og:title" content="Klypp LLC – Official Website" />
+<meta property="og:site_name" content="Klypp LLC" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://www.klyppedit.com/" />
+<meta property="og:description" content="Klypp LLC builds secure remote-to-home media workflow software." />
+<link rel="stylesheet" href="assets/site.css?v=link-cues">
+<!-- JSON-LD -->
+<script type="application/ld+json">
   {
     "@context":"https://schema.org",
     "@type":"Organization",
@@ -307,72 +28,187 @@
   }
   </script>
 </head>
-
 <body>
-  <div class="wrap">
-    <header class="hero">
-      <div class="hero-badges">
-        <a class="store-badge ios" href="https://apps.apple.com/us/app/klypp/id6753725499" target="_blank" rel="noreferrer" aria-label="Download on the App Store">
-          <img src="assets/app-store-badge.svg" alt="Download on the App Store" />
-        </a>
-        <a class="store-badge android" href="https://play.google.com/store/apps/details?id=com.klyppedit.klypp" target="_blank" rel="noreferrer" aria-label="Get Klypp on Google Play (beta)">
-          <img src="assets/google-play-badge.svg" alt="Get it on Google Play" />
-        </a>
-      </div>
-      <div class="eyebrow">Official Site</div>
-      <h1>Klypp LLC</h1>
-      <p class="subtitle">Minnesota-registered limited liability company</p>
-      <nav>
-        <a href="/" class="is-active" aria-current="page">Home</a>
-        <a href="setup/index.html">Setup</a>
-        <a href="settings/index.html">Settings</a>
-        <a href="support/index.html">Support</a>
-        <a href="faq/index.html">FAQ</a>
-        <a href="history/index.html">History</a>
-        <a href="privacy/index.html">Privacy</a>
-        <a href="https://app.klyppedit.com/swagger">Server Downloads</a>
-      </nav>
-    </header>
-
-    <div class="grid">
-      <section class="card">
-        <h2>About</h2>
-        <p><span class="brand">Klypp LLC</span> builds secure <em>remote-to-home media workflow</em> software. Our
-          flagship product, <strong>Klypp</strong>, connects your mobile devices to your home media server through a
-          secure relay, enabling private, authenticated transfers and management for media you own or are licensed to
-          use.</p>
-        <p class="note">This is the official website for Klypp LLC, publicly available at <span
-            class="kbd">klyppedit.com</span>.</p>
-      </section>
-
-      <section class="card">
-        <h2>Contact</h2>
-        <p>Email: <a href="mailto:support@klyppedit.com">support@klyppedit.com</a></p>
-        <p>Mailing location: Minnesota, United States</p>
-      </section>
-
-      <section class="card">
-        <h2>Products</h2>
-        <p><strong>Klypp</strong> — a secure relay-backed app that moves files from your phone to your self-hosted media
-          server. Features include certificate-based auth, end-to-end encrypted transport, and a focus on personal,
-          authorized libraries (no third-party catalogs or downloads).</p>
-          <ul>
-            <li>Platform: iOS &amp; Android (in development)</li>
-            <li>Server: .NET 8 · runs on Linux, macOS, Windows, Raspberry Pi, or NAS (self-hosted)</li>
-            <li>Relay: managed by Klypp LLC with mutual TLS (mTLS); traffic is transient and never stored</li>
-          </ul>
-      </section>
-
-      <section class="card">
-        <h2>Privacy</h2>
-        <p>We design our products to minimize data collection. Klypp processes transfers with authentication and
-          encryption. We do not sell personal data.</p>
-        <p><a href="privacy/index.html">Read our Privacy Policy</a></p>
-      </section>
-    </div>
-
-    <p class="footer">© 2025 Klypp LLC · <a href="/">Home</a> · <a href="setup/index.html">Setup</a> · <a
-        href="support/index.html">Support</a> · <a href="faq/index.html">FAQ</a> · <a href="history/index.html">History</a> · <a href="privacy/index.html">Privacy</a> · <a href="https://app.klyppedit.com/swagger">Server Downloads</a></p>
-  </div>
+<a class="skip" href="#main">Skip to content</a>
+<header class="site-header">
+<div class="container nav-row">
+<a class="logo" href="./" aria-label="Klypp home">
+<img class="brand-mascot" src="assets/klypp-mascot.svg" width="40" height="40" alt="">klypp<span class="brand-dot">.</span>
+</a>
+<nav aria-label="Main navigation">
+<a href="index.html#how-it-works">How it works</a>
+<a href="downloads/index.html">Downloads</a>
+<a href="documentation/index.html">Documentation</a>
+<a href="support/index.html">Support</a>
+</nav>
+<a class="button small" href="downloads/index.html">Get started <span aria-hidden="true">→</span>
+</a>
+</div>
+</header>
+<main id="main">
+<section class="container hero-section">
+<div class="hero-copy">
+<p class="eyebrow">
+<span class="status-dot">
+</span> YOUR HOME MEDIA, CONNECTED</p>
+<h1>A little closer<br>to your <span>library.</span>
+</h1>
+<p class="lead">From your phone to your home media server. Transfer files, follow their progress, and keep your library organized with Klypp.</p>
+<div class="actions">
+<a class="button" href="downloads/index.html">Get started with Klypp <span aria-hidden="true">→</span>
+</a>
+<a class="text-link" href="#how-it-works">See how it works <span aria-hidden="true">↓</span>
+</a>
+</div>
+<p class="hero-note">For your own media. On your own server.</p>
+</div>
+<div class="hero-visual">
+<div class="orbit orbit-one">
+</div>
+<div class="orbit orbit-two">
+</div>
+<span class="visual-label">YOUR LIBRARY. IN YOUR HANDS.</span>
+<figure class="phone hero-phone">
+<img src="screenshots/RecentlyAddedMedia.png" width="1320" height="2868" alt="Klypp mobile app showing recently processed movies and TV episodes" fetchpriority="high">
+</figure>
+<div class="connection-tag">
+<span class="status-dot">
+</span> Phone → Home server</div>
+<span class="visual-index">01 / THE KLYPP APP</span>
+</div>
+</section>
+<div class="platform-strip">
+<div class="container">
+<span>BUILT AROUND YOUR SETUP</span>
+<p>iOS <i> / </i> Android <span class="beta">BETA</span>
+</p>
+<p>Linux <i> / </i> macOS <i> / </i> Windows</p>
+<p>Self-hosted server
+</p>
+</div>
+</div>
+<section class="container section" id="how-it-works">
+<div class="section-heading">
+<div>
+<p class="eyebrow">A SIMPLE CONNECTION</p>
+<h2>At home. Away.<br>All connected.</h2>
+</div>
+<p>Klypp connects the phone you carry to the media server you run. Here’s where it starts.</p>
+</div>
+<ol class="steps">
+<li>
+<span class="step-number">01</span>
+<h3>Give your library a home.</h3>
+<p>Install KlyppServer on your computer or compatible self-hosted device. Choose where your media belongs.</p>
+<a class="text-link" href="setup/index.html">Explore server setup <span aria-hidden="true">→</span>
+</a>
+</li>
+<li>
+<span class="step-number">02</span>
+<h3>Bring your phone along.</h3>
+<p>Get Klypp for iOS or Android and connect it to your server through the secure relay.</p>
+<a class="text-link" href="downloads/index.html#mobile">Get the mobile app <span aria-hidden="true">→</span>
+</a>
+</li>
+<li>
+<span class="step-number">03</span>
+<h3>Send it. Follow it.</h3>
+<p>Upload your files, see transfer progress, and manage the processing queue as your library grows.</p>
+<a class="text-link" href="#in-control">Take a closer look <span aria-hidden="true">↓</span>
+</a>
+</li>
+</ol>
+</section>
+<section class="feature-band" id="in-control">
+<div class="container feature-layout">
+<div class="app-showcase">
+<figure class="phone feature-phone">
+<img src="screenshots/Transfers.png" width="1320" height="2868" loading="lazy" alt="Klypp Media Transfers screen with file transfer progress">
+</figure>
+<figure class="phone secondary-phone">
+<img src="screenshots/ProcessingQueue.png" width="1320" height="2868" loading="lazy" alt="Klypp Processing Queue screen showing queued media files">
+</figure>
+</div>
+<div class="feature-copy">
+<p class="eyebrow">LESS GUESSWORK. MORE CONTROL.</p>
+<h2>Know what’s moving.<br>Choose what’s next.</h2>
+<p class="section-intro">Your media workflow shouldn’t be a mystery. Keep an eye on transfers and processing from your phone.</p>
+<div class="feature-detail">
+<span>01 / TRANSFERS</span>
+<h3>Follow your files home.</h3>
+<p>See file progress in Media Transfers, then check Snapshot for a quick view of your server.</p>
+</div>
+<div class="feature-detail">
+<span>02 / PROCESSING</span>
+<h3>Put the next file first.</h3>
+<p>Review your processing queue and use Jump queue when a file should be processed next.</p>
+</div>
+<a class="text-link" href="setup/index.html#jump-queue">Explore the workflow <span aria-hidden="true">→</span>
+</a>
+</div>
+</div>
+</section>
+<section class="container section organization">
+<div class="section-heading">
+<div>
+<p class="eyebrow">A PLACE FOR EVERYTHING</p>
+<h2>Your library.<br>Your way of organizing.</h2>
+</div>
+<p>Set destinations for movies, TV, and music. Keep kids’ media and 4K content separate when your setup calls for it.</p>
+</div>
+<figure class="desktop-window">
+<div class="window-bar">
+<span aria-hidden="true">● ● ●</span>
+<span>KlyppServer / Media organization</span>
+</div>
+<img src="screenshots/Server-MediaOrganization.png" width="1786" height="698" loading="lazy" alt="KlyppServer media organization settings, including move mode and automatic file naming">
+<figcaption>Configure your workflow in the server interface.</figcaption>
+</figure>
+<a class="text-link" href="setup/index.html">Find the right setup for your library <span aria-hidden="true">→</span>
+</a>
+</section>
+<section class="container privacy-section">
+<div>
+<p class="eyebrow">SELF-HOSTED AT HEART</p>
+<h2>Home is where<br>your media lives.</h2>
+</div>
+<div>
+<p class="section-intro">Your server is the destination. Klypp’s relay connects your devices with authenticated, encrypted transport; relayed traffic is transient and isn’t stored.</p>
+<p>Built for personal media you own or are licensed to use. We do not sell personal data.</p>
+<a class="text-link" href="privacy/index.html">Read about privacy <span aria-hidden="true">→</span>
+</a>
+</div>
+</section>
+<section class="container closing">
+<p class="eyebrow">MAKE THE CONNECTION</p>
+<h2>Your library is home.<br>Take the controls with you.</h2>
+<p>Start with the server. Connect your phone. Make it yours.</p>
+<a class="button" href="downloads/index.html">Get started with Klypp <span aria-hidden="true">→</span>
+</a>
+<a class="text-link closing-help" href="support/index.html">Need a hand? We’re here to help.</a>
+</section>
+</main>
+<footer class="container site-footer">
+<div class="footer-top">
+<a class="logo" href="./"><img class="brand-mascot" src="assets/klypp-mascot.svg" width="40" height="40" alt="">klypp<span class="brand-dot">.</span>
+</a>
+<p>Your media. Your server. Within reach.</p>
+<a href="mailto:support@klyppedit.com">support@klyppedit.com ↗</a>
+</div>
+<div class="footer-bottom">
+<span>© 2026 Klypp LLC · Minnesota, United States</span>
+<nav aria-label="Footer navigation">
+<a href="./">Home</a>
+<a href="setup/index.html">Setup</a>
+<a href="settings/index.html">Settings</a>
+<a href="support/index.html">Support</a>
+<a href="faq/index.html">FAQ</a>
+<a href="history/index.html">History</a>
+<a href="privacy/index.html">Privacy</a>
+<a href="delete-account/index.html">Delete account</a>
+<a href="https://app.klyppedit.com/swagger">Server downloads</a>
+</nav>
+</div>
+</footer>
 </body>
 </html>

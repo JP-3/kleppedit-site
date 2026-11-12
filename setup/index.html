@@ -16,527 +16,8 @@
   <meta property="og:description"
     content="Configure Klypp destinations, connect a torrent client using shared download folders, and understand TV drive priorities." />
 
-  <style>
-    @import url("https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap");
-
-    :root {
-      --bg: #0b0f17;
-      --fg: #e6edf7;
-      --muted: #9aa7bb;
-      --card: rgba(17, 23, 36, .72);
-      --link: #7fb2ff;
-      --accent: #3a7bff;
-      --accent-2: #36d1dc;
-      --ring: rgba(63, 135, 255, .28);
-      --radius: 20px;
-      --border: rgba(141, 162, 196, .18);
-      --shadow: 0 28px 80px rgba(0, 0, 0, .45);
-      --shadow-soft: 0 14px 30px rgba(0, 0, 0, .28);
-    }
-
-    * {
-      box-sizing: border-box
-    }
-
-    html {
-      scroll-behavior: smooth
-    }
-
-    body {
-      font-family: "IBM Plex Sans", "Segoe UI", Tahoma, sans-serif;
-      margin: 0;
-      padding: 34px 16px 54px;
-      background:
-        radial-gradient(900px 520px at 5% -10%, rgba(58, 123, 255, .22) 0%, rgba(58, 123, 255, 0) 60%),
-        radial-gradient(1000px 520px at 110% 0%, rgba(54, 209, 220, .18) 0%, rgba(54, 209, 220, 0) 60%),
-        radial-gradient(1000px 700px at 50% 120%, rgba(20, 27, 45, .9) 0%, rgba(11, 15, 23, 0) 60%),
-        linear-gradient(180deg, #0b0f17 0%, #0c111b 100%);
-      color: var(--fg);
-    }
-
-    body::before {
-      content: "";
-      position: fixed;
-      inset: 0;
-      background:
-        radial-gradient(circle at 20% 20%, rgba(255, 255, 255, .05), transparent 45%),
-        radial-gradient(circle at 80% 10%, rgba(255, 255, 255, .05), transparent 45%),
-        linear-gradient(90deg, rgba(255, 255, 255, .04) 1px, transparent 1px) 0 0/48px 48px,
-        linear-gradient(0deg, rgba(255, 255, 255, .03) 1px, transparent 1px) 0 0/48px 48px;
-      pointer-events: none;
-      z-index: -1;
-    }
-
-    .wrap {
-      max-width: 1040px;
-      margin: 0 auto
-    }
-
-    header.hero {
-      text-align: center;
-      margin-bottom: 22px;
-      background: linear-gradient(135deg, rgba(58, 123, 255, .18), rgba(54, 209, 220, .16));
-      border: 1px solid rgba(122, 150, 200, .25);
-      border-radius: 26px;
-      padding: 24px 20px 18px;
-      box-shadow: var(--shadow-soft);
-      position: relative;
-      overflow: hidden;
-      backdrop-filter: blur(8px);
-      min-height: 220px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-    }
-
-    header.hero::after {
-      content: "";
-      position: absolute;
-      width: 280px;
-      height: 280px;
-      right: -120px;
-      top: -140px;
-      background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, .45), rgba(255, 255, 255, 0));
-      pointer-events: none;
-    }
-
-    h1 {
-      margin: 0 0 6px;
-      font-family: "Sora", "Trebuchet MS", sans-serif;
-      font-size: 2.25rem;
-      letter-spacing: .2px;
-    }
-
-    .subtitle {
-      color: var(--muted);
-      margin: 0
-    }
-
-    .eyebrow {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 6px 12px;
-      border-radius: 999px;
-      background: rgba(10, 16, 28, .7);
-      border: 1px solid rgba(141, 162, 196, .28);
-      color: #d6e2f5;
-      font-weight: 600;
-      font-size: .82rem;
-      margin-bottom: 10px;
-      text-transform: uppercase;
-      letter-spacing: .6px;
-    }
-
-    /* Top site nav */
-    .topnav {
-      display: flex;
-      gap: 10px;
-      justify-content: center;
-      margin: 14px 0 0;
-      flex-wrap: wrap;
-    }
-
-    .topnav a {
-      color: var(--accent);
-      text-decoration: none;
-      padding: 6px 12px;
-      border-radius: 999px;
-      border: 1px solid rgba(122, 150, 200, .28);
-      background: rgba(9, 14, 24, .7);
-      font-weight: 600;
-      font-size: .92rem;
-    }
-
-    .topnav a:hover {
-      background: rgba(14, 22, 36, .85);
-      border-color: rgba(140, 170, 220, .45);
-    }
-
-    .topnav a.is-active {
-      background: linear-gradient(135deg, rgba(58, 123, 255, .35), rgba(54, 209, 220, .25));
-      border-color: rgba(123, 158, 220, .65);
-      color: #e8f1ff;
-      cursor: default;
-    }
-
-    .hero-badges {
-      position: absolute;
-      top: 16px;
-      left: 16px;
-      display: inline-flex;
-      flex-direction: column;
-      gap: 8px;
-      align-items: center;
-      z-index: 2;
-    }
-
-    .store-badge {
-      display: inline-flex;
-      align-items: center;
-      text-decoration: none;
-      background: transparent;
-      padding: 0;
-      border-radius: 0;
-    }
-
-    .store-badge img {
-      width: 150px;
-      height: 35px;
-      object-fit: contain;
-      display: block;
-    }
-
-    .store-badge.ios img {
-      width: 164px;
-      height: 39px;
-    }
-
-    .store-badge:hover {
-      text-decoration: none;
-    }
-
-    @media (max-width:720px) {
-      .hero-badges {
-        position: static;
-        margin-bottom: 10px;
-        align-self: flex-start;
-      }
-    }
-
-    /* In-page subnav */
-    .subnav {
-      display: flex;
-      gap: 10px;
-      justify-content: center;
-      flex-wrap: wrap;
-      margin: 16px auto 20px;
-      padding: 10px 12px;
-      max-width: 920px;
-      background: rgba(12, 18, 30, .7);
-      border: 1px solid rgba(141, 162, 196, .18);
-      border-radius: 16px;
-      box-shadow: var(--shadow-soft);
-    }
-
-    .subnav a {
-      text-decoration: none;
-      color: var(--link);
-      padding: 7px 12px;
-      border-radius: 999px;
-      border: 1px solid transparent;
-      font-weight: 600;
-      font-size: .93rem;
-    }
-
-    .subnav a:hover {
-      background: #eef4ff;
-      border-color: #d6e2ff
-    }
-
-    .subnav a.is-active {
-      background: linear-gradient(135deg, rgba(58, 123, 255, .35) 0%, rgba(54, 209, 220, .25) 100%);
-      border-color: rgba(123, 158, 220, .65);
-      color: #e8f1ff;
-    }
-
-    .layout {
-      display: grid;
-      gap: 18px;
-      grid-template-columns: 1fr;
-      align-items: start;
-    }
-
-    .rail {
-      position: relative;
-    }
-
-    .rail .subnav {
-      margin: 0;
-      justify-content: flex-start;
-      padding: 14px;
-      border-radius: 16px;
-    }
-
-    .rail-title {
-      font-size: .85rem;
-      text-transform: uppercase;
-      letter-spacing: .12em;
-      color: #9aa7bb;
-      margin: 0 0 10px 6px;
-      font-weight: 600;
-    }
-
-    @media (min-width:980px) {
-      .layout {
-        grid-template-columns: 240px 1fr
-      }
-
-      .rail {
-        position: sticky;
-        top: 20px;
-        align-self: start;
-        height: fit-content;
-      }
-
-      .rail .subnav {
-        position: static;
-        flex-direction: column;
-        align-items: flex-start;
-      }
-
-      .rail .subnav a {
-        width: 100%
-      }
-    }
-
-
-    .card {
-      background: var(--card);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      padding: 22px;
-      border: 1px solid var(--border);
-      margin-bottom: 18px;
-      animation: rise .5s ease both;
-      position: relative;
-      backdrop-filter: blur(12px);
-    }
-
-    .card::before {
-      content: "";
-      position: absolute;
-      inset: 0 0 auto 0;
-      height: 4px;
-      border-radius: var(--radius) var(--radius) 0 0;
-      background: linear-gradient(90deg, rgba(26, 91, 216, .6), rgba(0, 160, 166, .6));
-      opacity: .7;
-    }
-
-    @keyframes rise {
-      from {
-        transform: translateY(6px);
-        opacity: .75
-      }
-
-      to {
-        transform: translateY(0);
-        opacity: 1
-      }
-    }
-
-    h2 {
-      margin-top: 0;
-      font-size: 1.25rem;
-      font-family: "Sora", "Trebuchet MS", sans-serif;
-      letter-spacing: .2px;
-    }
-
-    h3 {
-      margin: 1.1rem 0 .4rem;
-      font-size: 1.05rem;
-      font-family: "Sora", "Trebuchet MS", sans-serif;
-    }
-
-    p {
-      line-height: 1.7
-    }
-
-    ul {
-      margin: .6rem 0 .2rem 1.1rem
-    }
-
-    a {
-      color: var(--link);
-      text-decoration: none
-    }
-
-    a:hover {
-      text-decoration: underline
-    }
-
-    .kbd {
-      display: inline-block;
-      padding: 2px 6px;
-      border-radius: 6px;
-      background: rgba(10, 16, 28, .85);
-      border: 1px solid rgba(141, 162, 196, .4);
-      color: #e6edf7;
-      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-      font-size: .9em;
-    }
-
-    .note {
-      background: rgba(13, 20, 32, .7);
-      border: 1px solid rgba(141, 162, 196, .25);
-      padding: 12px;
-      border-radius: 10px;
-    }
-
-    .footer {
-      text-align: center;
-      color: var(--muted);
-      margin-top: 22px;
-      font-size: .95rem
-    }
-
-    .grid {
-      display: grid;
-      gap: 16px;
-      grid-template-columns: 1fr
-    }
-
-    @media (min-width:880px) {
-      .grid {
-        grid-template-columns: 1fr 1fr
-      }
-    }
-
-    .muted {
-      color: var(--muted)
-    }
-
-    .list-tight li {
-      margin: .25rem 0
-    }
-
-    section:target {
-      outline: 2px solid #cfe0ff;
-      box-shadow: 0 0 0 6px var(--ring)
-    }
-
-    /* Gallery for mobile screenshots */
-    .gallery {
-      display: grid;
-      gap: 12px;
-      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-      align-items: start;
-    }
-
-    .gallery figure {
-      margin: 0;
-      background: rgba(12, 18, 30, .75);
-      border: 1px solid rgba(141, 162, 196, .2);
-      border-radius: 12px;
-      overflow: hidden;
-      box-shadow: var(--shadow-soft);
-    }
-
-    .gallery img {
-      display: block;
-      width: 100%;
-      height: auto
-    }
-
-    .gallery figcaption {
-      padding: 8px 10px;
-      color: var(--muted);
-      font-size: .9rem
-    }
-
-    /* Basic section spacing tweaks */
-    #basic p.muted {
-      margin: 8px 0;
-    }
-
-    #basic .list-tight {
-      margin: 4px 0 6px 1.1rem;
-    }
-
-    #basic figure {
-      margin: 8px 0 10px !important;
-    }
-
-    #basic .gallery {
-      margin-top: 10px;
-    }
-
-    .jump-queue-screenshot {
-      max-width: 360px;
-      margin: 14px auto 0;
-    }
-
-    .setup-screenshot {
-      margin: 12px 0 16px;
-      padding: 0;
-    }
-
-    .setup-screenshot img {
-      display: block;
-      width: 100%;
-      height: auto;
-      border-radius: 12px;
-    }
-
-    .diagram-zoom {
-      display: block;
-      width: 100%;
-      padding: 0;
-      border: 0;
-      background: transparent;
-      cursor: zoom-in;
-    }
-
-    .diagram-zoom:focus-visible {
-      outline: 3px solid var(--accent-2);
-      outline-offset: -3px;
-    }
-
-    .lightbox[hidden] {
-      display: none;
-    }
-
-    .lightbox {
-      position: fixed;
-      inset: 0;
-      z-index: 20;
-      display: grid;
-      place-items: center;
-      padding: 24px;
-      background: rgba(3, 7, 15, .92);
-    }
-
-    .lightbox img {
-      display: block;
-      max-width: 96vw;
-      max-height: 92vh;
-      width: auto;
-      height: auto;
-      object-fit: contain;
-      border-radius: 12px;
-      box-shadow: 0 24px 90px rgba(0, 0, 0, .65);
-    }
-
-    .lightbox-close {
-      position: fixed;
-      top: 16px;
-      right: 20px;
-      width: 42px;
-      height: 42px;
-      border: 1px solid rgba(230, 237, 247, .4);
-      border-radius: 50%;
-      background: rgba(12, 18, 30, .8);
-      color: var(--fg);
-      font-size: 1.6rem;
-      line-height: 1;
-      cursor: pointer;
-    }
-
-    .setup-screenshot figcaption {
-      padding: 8px 12px;
-      color: var(--muted);
-      font-size: .95rem;
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      * {
-        animation-duration: .001ms !important;
-        animation-iteration-count: 1 !important;
-        transition: none !important
-      }
-    }
-  </style>
+  <link rel="stylesheet" href="../assets/site.css">
+<link rel="stylesheet" href="../assets/documentation.css?v=torrent-guide">
 
   <!-- JSON-LD -->
   <script type="application/ld+json">
@@ -567,58 +48,33 @@
       window.addEventListener('hashchange', setActive);
       setActive();
 
-      const zoomTrigger = document.querySelector('.diagram-zoom');
-      const lightbox = document.getElementById('diagram-lightbox');
-      const closeButton = lightbox.querySelector('.lightbox-close');
-      const closeLightbox = () => {
-        lightbox.hidden = true;
-        document.body.style.overflow = '';
-        zoomTrigger.focus();
-      };
-
-      zoomTrigger.addEventListener('click', () => {
-        lightbox.hidden = false;
-        document.body.style.overflow = 'hidden';
-        closeButton.focus();
-      });
-      closeButton.addEventListener('click', closeLightbox);
-      lightbox.addEventListener('click', event => {
-        if (event.target === lightbox) closeLightbox();
-      });
-      document.addEventListener('keydown', event => {
-        if (event.key === 'Escape' && !lightbox.hidden) closeLightbox();
+      const diagram = document.getElementById('diagram-lightbox');
+      document.querySelector('.diagram-zoom').addEventListener('click', () => diagram.showModal());
+      diagram.addEventListener('click', event => {
+        if (event.target === diagram) diagram.close();
       });
     });
   </script>
 </head>
 
 <body>
-  <div class="wrap">
-    <header class="hero">
-      <div class="hero-badges">
-        <a class="store-badge ios" href="https://apps.apple.com/us/app/klypp/id6753725499" target="_blank"
-          rel="noreferrer" aria-label="Download on the App Store">
-          <img src="../assets/app-store-badge.svg" alt="Download on the App Store" />
-        </a>
-        <a class="store-badge android" href="https://play.google.com/store/apps/details?id=com.klyppedit.klypp"
-          target="_blank" rel="noreferrer" aria-label="Get Klypp on Google Play (beta)">
-          <img src="../assets/google-play-badge.svg" alt="Get it on Google Play" />
-        </a>
-      </div>
-      <div class="eyebrow">Server Setup</div>
-      <h1>Server Setup Guide</h1>
-      <p class="subtitle">Configure media destinations, torrent-client folders, optional 4K splits, and TV multi-drive priority.</p>
-      <nav class="topnav">
-        <a href="../index.html">Home</a>
-        <a href="../setup/index.html" class="is-active" aria-current="page">Setup</a>
-        <a href="../settings/">Settings</a>
-        <a href="../support/index.html">Support</a>
-        <a href="../faq/index.html">FAQ</a>
-        <a href="../history/index.html">History</a>
-        <a href="../privacy/index.html">Privacy</a>
-        <a href="https://app.klyppedit.com/swagger">Server Downloads</a>
-      </nav>
-    </header>
+<a class="skip" href="#main">Skip to content</a>
+<header class="site-header">
+<div class="container nav-row">
+<a class="logo" href="../" aria-label="Klypp home">
+<img class="brand-mascot" src="../assets/klypp-mascot.svg" width="40" height="40" alt="">klypp<span class="brand-dot">.</span>
+</a>
+<nav aria-label="Main navigation">
+<a href="../index.html#how-it-works">How it works</a>
+<a href="../downloads/index.html">Downloads</a>
+<a href="../documentation/index.html">Documentation</a>
+<a href="../support/index.html">Support</a>
+</nav>
+<a class="button small" href="../downloads/index.html">Get started <span aria-hidden="true">↗</span>
+</a>
+</div>
+</header>
+<div id="main" class="container document-content"><nav class="document-nav" aria-label="Guides and resources"><a href="../setup/index.html" aria-current="page">Setup</a><a href="../settings/index.html">Settings</a><a href="../AdvancedDocumentation/index.html">Advanced guide</a><a href="../faq/index.html">FAQ</a><a href="../history/index.html">History</a><a href="../privacy/index.html">Privacy</a></nav><header class="page-intro"><p class="eyebrow">Server Setup</p><h1>Server Setup Guide</h1><p class="subtitle">Configure media destinations, torrent-client folders, optional 4K splits, and TV multi-drive priority.</p></header>
 
     <div class="layout">
       <aside class="rail">
@@ -1007,19 +463,34 @@
         </section>
 
       </main>
-    </div>
-
-  <p class="footer">© 2025 Klypp LLC · <a href="../index.html">Home</a> · <a href="../setup/index.html"
-        class="is-active" aria-current="page">Setup</a> · <a href="../settings/">Settings</a> · <a href="../support/index.html">Support</a> · <a
-        href="../faq/index.html">FAQ</a> · <a href="../history/index.html">History</a> · <a
-        href="../privacy/index.html">Privacy</a> · <a href="https://app.klyppedit.com/swagger">Server Downloads</a></p>
-  </div>
-
-  <div id="diagram-lightbox" class="lightbox" role="dialog" aria-modal="true"
-    aria-label="Expanded torrent workflow diagram" hidden>
-    <button class="lightbox-close" type="button" aria-label="Close expanded diagram">&times;</button>
-    <img src="../assets/Torrent-Diagram.png" alt="Expanded torrent workflow diagram" />
-  </div>
+    </div></div>
+<footer class="container site-footer">
+<div class="footer-top">
+<a class="logo" href="../"><img class="brand-mascot" src="../assets/klypp-mascot.svg" width="40" height="40" alt="">klypp<span class="brand-dot">.</span>
+</a>
+<p>Your media. Your server. Within reach.</p>
+<a href="mailto:support@klyppedit.com">support@klyppedit.com ↗</a>
+</div>
+<div class="footer-bottom">
+<span>© 2026 Klypp LLC · Minnesota, United States</span>
+<nav aria-label="Footer navigation">
+<a href="../">Home</a>
+<a href="../setup/index.html">Setup</a>
+<a href="../settings/index.html">Settings</a>
+<a href="../support/index.html">Support</a>
+<a href="../faq/index.html">FAQ</a>
+<a href="../history/index.html">History</a>
+<a href="../privacy/index.html">Privacy</a>
+<a href="../delete-account/index.html">Delete account</a>
+<a href="https://app.klyppedit.com/swagger">Server downloads</a>
+</nav>
+</div>
+</footer>
+<dialog id="diagram-lightbox" class="lightbox" aria-label="Expanded torrent workflow diagram">
+  <form method="dialog">
+    <button class="lightbox-close" aria-label="Close expanded diagram">&times;</button>
+  </form>
+  <img src="../assets/Torrent-Diagram.png" alt="Expanded torrent workflow diagram">
+</dialog>
 </body>
-
 </html>
